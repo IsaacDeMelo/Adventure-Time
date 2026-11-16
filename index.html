@@ -1,0 +1,2156 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ficha RPG de Ooo</title>
+<link rel="icon" type="image/png" href="img/favicon.png">
+<meta name="description" content="Crie sua ficha do RPG de Hora de Aventura, role dados, escreva cenas, consulte as regras e mande tudo no Zap.">
+<meta name="theme-color" content="#2b9be0">
+<!-- Prévia do link (WhatsApp, Discord, etc.). Quando o site estiver online,
+     troque "img/preview.jpg" pelo endereço completo, ex: https://SEU-SITE/img/preview.jpg -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ficha de Ooo">
+<meta property="og:title" content="Que horas são? Hora da Ficha!">
+<meta property="og:description" content="Crie sua ficha do RPG de Hora de Aventura, role dados, escreva cenas e mande no Zap.">
+<meta property="og:image" content="img/preview.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="img/preview.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1f1d36; --muted:#5d5a75;
+  --paper:#fffaf0; --paper2:#fff1d2;
+  --finn:#2b9be0; --finn-d:#176fae;
+  --jake:#f6b73c; --jake-d:#d98e10;
+  --grass:#7cc950; --grass-d:#4c9a2a;
+  --pb:#f48fb1; --bmo:#4fc3ad; --fire:#ff6a3d; --lsp:#a77fe0; --red:#e5484d;
+  --line:3px solid var(--ink);
+}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+html,body{margin:0}
+body{
+  font-family:'Nunito',system-ui,sans-serif; font-weight:700; color:var(--ink);
+  background:#c8ecfb linear-gradient(180deg,#8fd3f4 0,#c8ecfb 520px,#e9f8dc 100%);
+  min-height:100vh; padding-bottom:110px; overflow-x:hidden;
+}
+h1,h2,h3,.display{font-family:'Luckiest Guy','Nunito',sans-serif;font-weight:400;letter-spacing:.5px}
+a{color:var(--finn-d)}
+::selection{background:var(--jake)}
+
+/* ---------- NAV ---------- */
+.nav{position:sticky;top:0;z-index:40;background:var(--finn);border-bottom:var(--line)}
+.nav-in{max-width:1040px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:12px;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand img{width:50px;height:50px;flex:none;filter:drop-shadow(2px 2px 0 var(--ink))}
+.brand-t{font-family:'Luckiest Guy';color:#fff;font-size:24px;line-height:1;text-shadow:2px 2px 0 var(--ink);-webkit-text-stroke:1px var(--ink)}
+.brand-s{color:#e8f6ff;font-size:12px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:260px}
+.nav-actions{display:flex;gap:6px;flex-wrap:nowrap}
+@media (max-width:900px){.nav-actions .t{display:none}}
+@media (max-width:640px){
+  .nav-in{flex-wrap:wrap}
+  .nav-actions{width:100%;overflow-x:auto;padding:2px 4px 6px 2px}
+  .brand-s{max-width:200px}
+}
+
+/* ---------- LAYOUT ---------- */
+main{max-width:1040px;margin:0 auto;padding:24px 16px;display:flex;flex-direction:column;gap:30px}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.span2{grid-column:span 2}
+@media (max-width:760px){.g2,.g3{grid-template-columns:minmax(0,1fr)}.span2{grid-column:auto}}
+
+/* ---------- BUTTONS ---------- */
+.btn{font:inherit;font-weight:900;font-size:14px;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 14px;border:var(--line);border-radius:12px;background:#fff;color:var(--ink);box-shadow:3px 3px 0 var(--ink);cursor:pointer;transition:transform .08s,box-shadow .08s,filter .1s;white-space:nowrap;text-decoration:none}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
+.btn:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:3px 3px 0 var(--ink)}
+.btn.blue{background:var(--finn);color:#fff}
+.btn.yellow{background:var(--jake)}
+.btn.green{background:var(--grass)}
+.btn.pink{background:var(--pb)}
+.btn.purple{background:var(--lsp);color:#fff}
+.btn.red{background:var(--red);color:#fff}
+.btn.teal{background:var(--bmo)}
+.btn.big{font-family:'Luckiest Guy';font-weight:400;font-size:20px;padding:12px 20px;letter-spacing:.6px;white-space:normal;text-align:center;line-height:1.15}
+@media (max-width:640px){.btn.big{font-size:17px}}
+.btn.sm{font-size:12px;padding:6px 10px;border-radius:10px;box-shadow:2px 2px 0 var(--ink)}
+.btn.sm:active{transform:translate(2px,2px)}
+.btn.round{width:40px;height:40px;padding:0;border-radius:50%;font-size:22px;font-family:'Luckiest Guy'}
+.linkbtn{background:none;border:0;font:inherit;font-weight:800;font-size:13px;color:#fff;text-decoration:underline;cursor:pointer;text-shadow:1px 1px 0 #000}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;border:var(--line);border-radius:26px;overflow:hidden;box-shadow:7px 7px 0 var(--ink);
+  background:#f59a3b url(img/casa-da-arvore-por-do-sol.jpg) center 45%/cover;min-height:330px;display:flex;align-items:flex-end}
+.hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 25%,rgba(45,18,0,.72) 100%)}
+.hero-in{position:relative;z-index:2;padding:26px;display:flex;gap:18px;align-items:flex-end;justify-content:space-between;width:100%;flex-wrap:wrap}
+.hero h1{font-size:clamp(36px,6.4vw,62px);margin:8px 0 0;color:var(--jake);-webkit-text-stroke:2px var(--ink);text-shadow:4px 4px 0 var(--ink);line-height:.95}
+.hero p{color:#fff;font-weight:800;max-width:540px;text-shadow:1px 1px 0 #000;margin:10px 0 0;line-height:1.45}
+.hero p b{color:var(--jake)}
+.pills{display:flex;gap:6px;flex-wrap:wrap}
+.pill{display:inline-block;font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border:2px solid var(--ink);border-radius:999px;background:#fff;box-shadow:2px 2px 0 var(--ink)}
+.hero-cta{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.poster{position:absolute;right:28px;top:22px;width:140px;transform:rotate(6deg);border:var(--line);border-radius:12px;box-shadow:5px 5px 0 var(--ink);z-index:2}
+@media (max-width:760px){.poster{display:none}.hero-cta{align-items:stretch;width:100%}.hero{min-height:300px}}
+
+/* ---------- CARD ---------- */
+.card{background:var(--paper);border:var(--line);border-radius:22px;box-shadow:7px 7px 0 var(--ink);padding:24px;position:relative}
+@media (max-width:640px){.card{padding:18px}}
+.card-head{display:flex;gap:14px;align-items:center;margin-bottom:20px;padding-bottom:16px;border-bottom:3px dashed #e3d3ae;flex-wrap:wrap}
+.card-head .grow{flex:1;min-width:200px}
+.badge{width:52px;height:52px;border-radius:16px;background:var(--c,var(--jake));border:var(--line);display:grid;place-items:center;font-size:26px;box-shadow:3px 3px 0 var(--ink);flex:none;transform:rotate(-5deg)}
+.card-head h2{margin:0;font-size:28px;line-height:1}
+.card-head p{margin:5px 0 0;color:var(--muted);font-size:14px;font-weight:700}
+.head-actions{display:flex;gap:8px;flex-wrap:wrap}
+.sticker{position:absolute;background:#fff;border:var(--line);border-radius:50%;box-shadow:4px 4px 0 var(--ink);overflow:hidden;display:grid;place-items:center}
+.sticker img{width:100%;height:100%;object-fit:contain}
+.finn-sticker{width:96px;height:96px;top:-34px;right:22px;transform:rotate(9deg)}
+@media (max-width:640px){.finn-sticker{width:70px;height:70px;top:-26px;right:12px}.has-sticker{padding-right:62px}}
+
+/* ---------- FORM ---------- */
+.lbl{display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:900;font-size:12px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.lbl .req{color:var(--red)}
+.lbl .hint{font-size:10px;padding:2px 7px;border-radius:999px;background:var(--paper2);border:2px solid var(--ink);letter-spacing:.03em}
+.inp{width:100%;font:inherit;font-weight:800;font-size:15px;padding:10px 12px;border:var(--line);border-radius:12px;background:#fff;color:var(--ink);outline:none;transition:box-shadow .15s}
+.inp:focus{box-shadow:4px 4px 0 var(--finn)}
+.inp.bad{background:#ffe4e4;border-color:var(--red)}
+select.inp{appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:38px;
+  background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='10' viewBox='0 0 14 10'%3E%3Cpath d='M1.5 1.5 7 8l5.5-6.5' fill='none' stroke='%231f1d36' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 13px center}
+textarea.inp{resize:vertical;min-height:84px;line-height:1.5;font-weight:700}
+.warn-txt{color:var(--red);font-size:12px;font-weight:900;margin:6px 0 0}
+.check{display:inline-flex;align-items:center;gap:8px;font-weight:900;cursor:pointer;user-select:none;padding:6px 12px;border:var(--line);border-radius:999px;background:#fff;box-shadow:2px 2px 0 var(--ink)}
+.check input{width:18px;height:18px;accent-color:var(--lsp)}
+.note{background:var(--paper2);border:2px dashed var(--ink);border-radius:14px;padding:12px 14px;font-size:13px;line-height:1.55;font-weight:700}
+.note p{margin:4px 0}
+
+/* ---------- INFO CARDS ---------- */
+.info{border:var(--line);border-radius:16px;padding:14px;background:var(--bg,#fff);box-shadow:3px 3px 0 var(--ink);font-size:13px;line-height:1.5}
+.info h3{margin:0 0 6px;font-size:18px;display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.info h3 a{font-family:'Nunito';font-size:11px;font-weight:900;white-space:nowrap}
+.info p{margin:0 0 8px}
+.info .passive{background:rgba(255,255,255,.75);border:2px solid var(--ink);border-radius:10px;padding:8px 10px;margin-top:8px}
+.info .passive b{display:block;margin-bottom:2px}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{display:inline-block;font-size:11px;font-weight:900;padding:3px 8px;border:2px solid var(--ink);border-radius:8px;background:#fff}
+.chip.pos{background:#c9f2b0}
+.chip.neg{background:#ffc9c9}
+.mini-t{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;margin:8px 0 5px;color:var(--muted)}
+
+/* ---------- POPULARITY ---------- */
+.pop{margin-top:20px;border:var(--line);border-radius:18px;padding:16px;background:linear-gradient(135deg,#fff6dc,#ffe9f1);box-shadow:4px 4px 0 var(--ink)}
+.pop.inf{background:linear-gradient(135deg,#ffe0d6,#f3dcff)}
+.pop-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.pop-top h3{margin:0;font-size:20px}
+.seg{display:inline-flex;border:var(--line);border-radius:12px;overflow:hidden;box-shadow:2px 2px 0 var(--ink)}
+.seg button{font:inherit;font-weight:900;font-size:13px;padding:7px 12px;border:0;background:#fff;cursor:pointer;color:var(--ink)}
+.seg button+button{border-left:var(--line)}
+.seg button.on.fama{background:var(--grass)}
+.seg button.on.infamia{background:var(--red);color:#fff}
+.status{display:flex;flex-direction:column;gap:6px;justify-content:flex-end}
+.status-pill{border:var(--line);border-radius:12px;padding:8px 12px;background:#fff;font-size:13px;font-weight:900}
+.status-pill small{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+
+/* ---------- SNIPPETS ---------- */
+.snips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.snip{font:inherit;font-size:12px;font-weight:800;padding:5px 10px;border:2px solid var(--ink);border-radius:999px;background:#fff;cursor:pointer;color:var(--ink);transition:background .1s}
+.snip:hover{background:var(--jake)}
+
+/* ---------- VITALS ---------- */
+.vitals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:18px}
+@media (max-width:640px){.vitals{grid-template-columns:minmax(0,1fr)}}
+.vital{border:var(--line);border-radius:16px;padding:12px 14px;background:var(--bg);box-shadow:3px 3px 0 var(--ink);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.vital small{display:block;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.05em}
+.vital b{font-family:'Luckiest Guy';font-weight:400;font-size:30px;line-height:1.05;display:block}
+.vital span.sub{font-size:11px;font-weight:800;opacity:.8}
+.vital .emo{font-size:34px}
+
+/* ---------- ATTRIBUTES ---------- */
+.pool{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:var(--line);border-radius:999px;font-weight:900;font-size:14px;box-shadow:3px 3px 0 var(--ink)}
+.pool.ok{background:var(--grass)} .pool.warn{background:var(--jake);animation:wiggle 1.6s ease-in-out infinite} .pool.bad{background:var(--red);color:#fff}
+@keyframes wiggle{0%,100%{transform:rotate(0)}10%{transform:rotate(-3deg)}20%{transform:rotate(3deg)}30%{transform:rotate(0)}}
+.attrs{display:flex;flex-direction:column;gap:12px}
+.attr{border:var(--line);border-radius:18px;background:#fff;box-shadow:4px 4px 0 var(--ink);overflow:hidden}
+.attr-main{display:grid;grid-template-columns:minmax(0,1.3fr) auto minmax(0,1.4fr);gap:14px;align-items:center;padding:14px;border-left:14px solid var(--c)}
+@media (max-width:860px){.attr-main{grid-template-columns:minmax(0,1fr)}}
+.attr-id{display:flex;gap:10px;align-items:flex-start}
+.attr-ico{width:42px;height:42px;border-radius:12px;border:var(--line);background:var(--c);display:grid;place-items:center;font-size:21px;flex:none}
+.attr-id h3{margin:0;font-size:20px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.attr-id p{margin:3px 0 0;font-size:12px;color:var(--muted);line-height:1.4}
+.attr-ctl{display:flex;align-items:center;gap:8px}
+.num{text-align:center;min-width:44px}
+.num b{display:block;font-family:'Luckiest Guy';font-weight:400;font-size:30px;line-height:1}
+.num small{font-size:10px;font-weight:900;text-transform:uppercase;color:var(--muted)}
+.num.total{background:var(--c);border:var(--line);border-radius:14px;padding:4px 8px;box-shadow:2px 2px 0 var(--ink)}
+.num.total small{color:var(--ink)}
+.arrow{font-size:20px;color:var(--muted)}
+.attr-tier{font-size:12.5px;line-height:1.45;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.tier-t{font-weight:900;font-size:12px;background:var(--paper2);border:2px solid var(--ink);border-radius:8px;padding:2px 8px}
+.drawer{border-top:var(--line);background:#fffbf0;padding:14px;display:flex;flex-direction:column;gap:8px}
+.drawer h4{margin:0;font-size:13px;text-transform:uppercase;letter-spacing:.05em}
+.rule{background:#fff3c4;border:2px solid var(--ink);border-radius:10px;padding:8px 10px;font-size:12.5px}
+.tiers{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+@media (max-width:860px){.tiers{grid-template-columns:minmax(0,1fr)}}
+.tier{border:2px solid var(--ink);border-radius:12px;padding:9px;font-size:12px;background:#fff;line-height:1.4}
+.tier.cur{background:var(--c);box-shadow:3px 3px 0 var(--ink)}
+.tier .r{font-family:'Luckiest Guy';font-size:16px}
+.tier .tt{font-weight:900;margin:2px 0}
+
+/* ---------- SKILLS ---------- */
+.econ{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:16px}
+@media (max-width:640px){.econ{grid-template-columns:minmax(0,1fr)}}
+.econ div{border:var(--line);border-radius:14px;padding:10px 12px;background:var(--bg);font-size:13px;box-shadow:2px 2px 0 var(--ink)}
+.econ b{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.05em}
+.econ .over{background:#ffc9c9 !important}
+.skill{border:var(--line);border-radius:18px;background:#fff;box-shadow:4px 4px 0 var(--ink);padding:14px;margin-bottom:14px}
+.skill-top{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.skill-n{display:flex;align-items:center;gap:8px;font-family:'Luckiest Guy';font-size:18px}
+.skill-n i{font-style:normal;width:32px;height:32px;border-radius:50%;background:var(--lsp);color:#fff;border:var(--line);display:grid;place-items:center;font-size:16px}
+.skill .btns{display:flex;gap:6px;flex-wrap:wrap}
+
+/* ---------- INVENTORY ---------- */
+.money{display:flex;align-items:center;border:var(--line);border-radius:12px;overflow:hidden;background:#fff}
+.money span{padding:0 12px;font-family:'Luckiest Guy';font-size:22px;background:var(--grass);align-self:stretch;display:grid;place-items:center;border-right:var(--line)}
+.money .inp{border:0;border-radius:0}
+.money .inp:focus{box-shadow:none}
+.weapon{border:var(--line);border-radius:18px;padding:14px;background:linear-gradient(135deg,#fff,#eef8ff);box-shadow:4px 4px 0 var(--ink)}
+.weapon-top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.weapon-top h3{margin:0;font-size:20px}
+.items{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.item{display:inline-flex;align-items:center;gap:6px;border:2px solid var(--ink);border-radius:10px;background:#fff;padding:5px 6px 5px 10px;font-size:13px;font-weight:800;max-width:100%}
+.item span{overflow-wrap:anywhere}
+.item button{border:0;background:var(--red);color:#fff;border-radius:7px;width:24px;height:24px;cursor:pointer;font-weight:900;flex:none}
+.row{display:flex;gap:8px}
+.row .inp{flex:1;min-width:0}
+
+/* ---------- STUDY ---------- */
+.bar{height:26px;border:var(--line);border-radius:999px;background:#fff;overflow:hidden;position:relative;margin-top:8px}
+.bar i{display:block;height:100%;background:repeating-linear-gradient(45deg,var(--c) 0 14px,color-mix(in srgb,var(--c) 75%,#fff) 14px 28px);transition:width .4s}
+.bar em{position:absolute;inset:0;display:grid;place-items:center;font-style:normal;font-weight:900;font-size:13px}
+.locked{opacity:.55}
+
+/* ---------- FOOTER BAR ---------- */
+.foot{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--grass);border-top:var(--line)}
+.foot::before{content:'';position:absolute;left:0;right:0;top:-15px;height:15px;
+  background:radial-gradient(circle at 20px 22px,var(--grass) 17px,var(--ink) 18px 20.5px,transparent 21px) 0 0/40px 30px repeat-x}
+.foot-in{max-width:1040px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.stats{display:flex;gap:6px;flex-wrap:wrap}
+.stat{background:#fff;border:2px solid var(--ink);border-radius:10px;padding:4px 9px;font-size:13px;font-weight:900;box-shadow:2px 2px 0 var(--ink)}
+.stat em{font-style:normal;color:var(--muted);font-size:11px;margin-right:3px}
+.foot .acts{display:flex;gap:6px}
+@media (max-width:640px){.foot .t{display:none}.stat{padding:3px 7px;font-size:12px}}
+
+/* ---------- MODAL ---------- */
+.modal{position:fixed;inset:0;z-index:60;background:rgba(31,29,54,.6);display:flex;align-items:center;justify-content:center;padding:16px}
+.modal[hidden]{display:none}
+.modal-box{background:var(--paper);border:var(--line);border-radius:24px;box-shadow:9px 9px 0 var(--ink);width:100%;max-width:740px;max-height:calc(100vh - 32px);display:flex;flex-direction:column;overflow:hidden;animation:pop .22s cubic-bezier(.3,1.5,.6,1)}
+@keyframes pop{from{transform:scale(.85) rotate(-2deg);opacity:0}to{transform:none;opacity:1}}
+.modal-banner{height:130px;background:center/cover;border-bottom:var(--line);position:relative;flex:none}
+.modal-head{padding:14px 18px;border-bottom:var(--line);display:flex;gap:12px;align-items:center;background:var(--hc,var(--jake));flex:none}
+.modal-head h2{margin:0;font-size:24px;line-height:1.05}
+.modal-head p{margin:3px 0 0;font-size:12.5px;font-weight:800}
+.modal-head .x{margin-left:auto;flex:none}
+.modal-head .ava{width:58px;height:58px;border-radius:50%;border:var(--line);background:#fff;overflow:hidden;flex:none;box-shadow:2px 2px 0 var(--ink)}
+.modal-head .ava img{width:100%;height:100%;object-fit:cover}
+.modal-head .ava.contain img{object-fit:contain}
+.modal-body{padding:18px;overflow:auto;display:flex;flex-direction:column;gap:14px}
+.modal-foot{padding:12px 18px;border-top:var(--line);display:flex;gap:10px;justify-content:flex-end;align-items:center;flex-wrap:wrap;background:var(--paper2);flex:none}
+.modal-foot .grow{flex:1;font-size:12px;font-weight:800;min-width:160px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab.on{background:var(--jake)}
+.bubble{background:#dcf8c6;border:var(--line);border-radius:18px 18px 18px 4px;padding:14px;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Consolas,monospace;font-size:12.5px;line-height:1.5;max-height:46vh;overflow:auto;margin:0;font-weight:600}
+.rules h3{margin:6px 0 4px;font-size:19px}
+.rules p{margin:4px 0;font-size:14px;line-height:1.55}
+.npc{display:grid;grid-template-columns:130px 1fr;gap:8px;border:2px solid var(--ink);border-radius:10px;padding:8px 10px;background:#fff;font-size:13px}
+@media (max-width:520px){.npc{grid-template-columns:1fr}}
+
+/* dice */
+.dice{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:520px){.dice{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.die{flex-direction:column;gap:2px;padding:12px 8px;white-space:normal;text-align:center}
+.die b{font-family:'Luckiest Guy';font-weight:400;font-size:28px;line-height:1}
+.die span{font-size:13px}
+.die small{font-size:10.5px;font-weight:800;opacity:.85}
+.result{border:var(--line);border-radius:18px;background:#fff;padding:16px;box-shadow:4px 4px 0 var(--ink);display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.result .big{width:96px;height:96px;border-radius:50%;border:var(--line);background:var(--jake);display:grid;place-items:center;font-family:'Luckiest Guy';font-size:36px;flex:none;box-shadow:3px 3px 0 var(--ink);animation:roll .45s ease-out}
+@keyframes roll{from{transform:rotate(-360deg) scale(.4)}to{transform:none}}
+.result .txt{flex:1;min-width:200px}
+.result .tag{display:inline-block;font-size:11px;font-weight:900;padding:3px 8px;border:2px solid var(--ink);border-radius:8px;margin:4px 0}
+.tag.ok{background:var(--grass)} .tag.fail{background:#ffc9c9} .tag.epic{background:var(--jake)}
+
+/* nerf */
+.nerf-res{border:var(--line);border-radius:16px;padding:14px;background:#fff;box-shadow:4px 4px 0 var(--ink)}
+.nerf-res.did{background:#fff4dc}
+.nerf-res.fine{background:#e8f8dc}
+.nerf-res h3{margin:0 0 8px;font-size:19px}
+.nerf-res ul{margin:4px 0 10px;padding-left:20px;font-size:13px}
+.balanced{border:2px dashed var(--ink);border-radius:12px;padding:10px;background:#fff;font-size:13.5px;line-height:1.5}
+.gen-box{display:flex;gap:12px;align-items:center;justify-content:space-between;border:var(--line);border-radius:16px;padding:12px 14px;background:linear-gradient(135deg,#efe3ff,#ffe3f0);flex-wrap:wrap}
+.gen-box div{font-size:13px;flex:1;min-width:200px}
+.gen-box b{display:block;font-size:14px}
+
+/* toast */
+.toast{position:fixed;top:84px;left:50%;transform:translateX(-50%);z-index:80;background:var(--jake);border:var(--line);border-radius:14px;padding:10px 16px;font-weight:900;font-size:14px;box-shadow:4px 4px 0 var(--ink);max-width:calc(100vw - 32px);text-align:center;animation:pop .2s}
+.toast[hidden]{display:none}
+
+/* ---------- ÍCONES SVG ---------- */
+.ic{width:1.3em;height:1.3em;flex:none;vertical-align:-0.3em;overflow:visible}
+.btn .ic{width:20px;height:20px;vertical-align:middle}
+.btn.big .ic{width:28px;height:28px}
+.btn.sm .ic{width:17px;height:17px}
+.btn.round .ic{width:18px;height:18px}
+.badge .ic{width:34px;height:34px}
+.attr-ico .ic{width:28px;height:28px}
+.vital .emo .ic{width:44px;height:44px}
+.card-head h2 .ic,.modal-head h2 .ic{width:28px;height:28px;vertical-align:-0.18em}
+.rules h3 .ic,.pop-top h3 .ic,.weapon-top h3 .ic,.info h3 .ic,.nerf-res h3 .ic{width:24px;height:24px;vertical-align:-0.22em;margin-right:2px}
+.pill .ic{width:15px;height:15px;vertical-align:-0.25em}
+.toast{display:flex;align-items:center;gap:8px}
+.toast .ic{width:24px;height:24px}
+.die .ic{width:22px;height:22px}
+
+/* ---------- TELAS ---------- */
+body{padding-bottom:0}
+body.with-foot{padding-bottom:110px}
+.screen[hidden],.foot[hidden],.nav[hidden]{display:none !important}
+.nav-in{justify-content:space-between}
+.nav .brand{flex:1;justify-content:center}
+.modal.screen{position:static;inset:auto;background:none;padding:24px 16px 48px;display:block;z-index:auto}
+.modal.screen .modal-box{margin:0 auto;max-height:none;max-width:780px}
+.modal.screen .modal-body{overflow:visible}
+.modal.screen .modal-head .x{display:none}
+
+/* ---------- TELA INICIAL ---------- */
+.home-hero{position:relative;background:#f59a3b url(img/casa-da-arvore-por-do-sol.jpg) center 42%/cover;border-bottom:var(--line);overflow:hidden;padding:44px 16px 100px}
+.home-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(40,15,0,.55) 0,rgba(40,15,0,.15) 60%,rgba(40,15,0,.05) 100%)}
+.home-wrap{position:relative;z-index:2;max-width:1000px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:48px}
+.home-top{flex:1;min-width:0;text-align:left}
+.home-pills{justify-content:flex-start}
+.home-hero h1{font-size:clamp(40px,6.4vw,74px);color:var(--jake);-webkit-text-stroke:3px var(--ink);paint-order:stroke fill;text-shadow:6px 6px 0 var(--ink);margin:14px 0 6px;line-height:.92}
+.home-hero p{color:#fff;font-weight:900;font-size:clamp(16px,2.2vw,21px);text-shadow:2px 2px 0 var(--ink);margin:8px 0 0}
+.poster-frame{position:relative;flex:none;width:290px;transform:rotate(4deg);margin:10px 36px 10px 0}
+.poster-img{display:block;width:100%;border:5px solid var(--ink);border-radius:18px;box-shadow:10px 10px 0 var(--ink);background:#fff}
+.home-finn{width:112px;height:112px;left:-58px;bottom:-34px;transform:rotate(-12deg);animation:bob 3.4s ease-in-out infinite}
+.home-jake{width:104px;height:104px;right:-50px;top:-30px;transform:rotate(10deg);animation:bob 2.8s ease-in-out .4s infinite}
+@keyframes bob{0%,100%{translate:0 0}50%{translate:0 -8px}}
+@media (max-width:760px){
+  .home-hero{padding:32px 16px 96px}
+  .home-hero::after{background:rgba(40,15,0,.3)}
+  .home-wrap{flex-direction:column;gap:30px}
+  .home-top{text-align:center}
+  .home-pills{justify-content:center}
+  .poster-frame{width:min(210px,58vw);margin:0 auto}
+  .home-finn{width:78px;height:78px;left:-46px;bottom:-20px}
+  .home-jake{width:72px;height:72px;right:-42px;top:-22px}
+}
+.home-main{max-width:1000px;margin:-56px auto 0;padding:0 16px 48px;position:relative;z-index:3}
+.char-strip{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:var(--paper);border:var(--line);border-radius:22px;box-shadow:7px 7px 0 var(--ink);padding:16px 18px}
+.char-ava{width:64px;height:64px;border-radius:50%;border:var(--line);background:var(--pb);display:grid;place-items:center;font-family:'Luckiest Guy';font-size:32px;box-shadow:3px 3px 0 var(--ink);flex:none}
+.char-info{flex:1;min-width:180px;display:flex;flex-direction:column}
+.char-info small{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.char-info b{font-family:'Luckiest Guy';font-weight:400;font-size:26px;line-height:1.1;overflow-wrap:anywhere}
+.char-info span{font-size:13px;font-weight:800;color:var(--muted)}
+.char-acts{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.menu{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:24px}
+@media (max-width:760px){.menu{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}}
+.tile{position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:20px;background:var(--paper);border:var(--line);border-radius:22px;box-shadow:6px 6px 0 var(--ink);text-decoration:none;color:var(--ink);transition:transform .12s,box-shadow .12s}
+.tile::after{content:'';position:absolute;right:-34px;bottom:-34px;width:120px;height:120px;border-radius:50%;background:var(--c);opacity:.28}
+.tile:hover{transform:translate(-3px,-3px) rotate(-1deg);box-shadow:9px 9px 0 var(--ink)}
+.tile:active{transform:translate(4px,4px);box-shadow:2px 2px 0 var(--ink)}
+.tile .ti{width:72px;height:72px;border-radius:20px;background:var(--c);border:var(--line);display:grid;place-items:center;box-shadow:3px 3px 0 var(--ink);transform:rotate(-6deg);margin-bottom:6px}
+.tile .ti .ic{width:46px;height:46px}
+.tile b{font-family:'Luckiest Guy';font-weight:400;font-size:27px;line-height:1}
+.tile span{font-size:14px;color:var(--muted);font-weight:800;position:relative;z-index:1}
+@media (max-width:640px){.tile{padding:14px}.tile .ti{width:56px;height:56px;border-radius:16px}.tile .ti .ic{width:36px;height:36px}.tile b{font-size:21px}.tile span{font-size:12.5px}}
+.rpg-banner{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:30px;padding:22px 22px;border:var(--line);border-radius:22px;box-shadow:7px 7px 0 var(--ink);text-decoration:none;color:#fff;background:#2b9be0 url(img/casa-da-arvore-dia.jpg) center 35%/cover;transition:transform .12s,box-shadow .12s}
+.rpg-banner::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(23,40,80,.85) 0,rgba(23,40,80,.55) 55%,rgba(23,40,80,.15) 100%)}
+.rpg-banner > *{position:relative}
+.rpg-banner:hover{transform:translate(-3px,-3px);box-shadow:10px 10px 0 var(--ink)}
+.rpg-text{display:flex;flex-direction:column;min-width:0}
+.rpg-text small{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--jake)}
+.rpg-text b{font-family:"Luckiest Guy";font-weight:400;font-size:clamp(22px,3.4vw,30px);line-height:1.05;text-shadow:2px 2px 0 var(--ink);margin:2px 0 4px}
+.rpg-text span{font-size:13px;font-weight:800;opacity:.9;overflow-wrap:anywhere}
+@media (max-width:640px){.rpg-btn{width:100%}}
+.home-foot{text-align:center;font-size:13px;font-weight:800;color:var(--muted);margin-top:26px}
+
+/* ---------- PASSOS DA FICHA ---------- */
+.stepper{display:flex;gap:8px;overflow-x:auto;padding:4px 6px 10px 2px}
+.stp{flex:1 0 auto;display:flex;align-items:center;justify-content:center;gap:6px;font:inherit;font-weight:900;font-size:13px;padding:8px 12px;border:var(--line);border-radius:999px;background:#fff;box-shadow:2px 2px 0 var(--ink);cursor:pointer;color:var(--ink)}
+.stp i{font-style:normal;width:22px;height:22px;border-radius:50%;background:var(--paper2);border:2px solid var(--ink);display:grid;place-items:center;font-size:11px}
+.stp .ic{width:18px;height:18px}
+.stp.on{background:var(--jake);transform:translateY(-2px)}
+.stp.done i{background:var(--grass)}
+@media (max-width:760px){.stp .t{display:none}.stp i{display:none}.stp{padding:8px}.stp .ic{width:22px;height:22px}}
+.step{display:none}
+.step.on{display:block;animation:pop .22s cubic-bezier(.3,1.5,.6,1)}
+.step-nav{display:flex;justify-content:space-between;align-items:center;gap:10px}
+@media (max-width:640px){.nav .brand img{display:none}.nav .brand-t{font-size:20px}}
+#step-count{font-family:'Luckiest Guy';font-size:18px}
+
+/* ---------- IMAGENS NOVAS ---------- */
+.tile .pic{position:relative;width:92px;height:92px;margin-bottom:8px;z-index:1}
+.tile .pic img{width:100%;height:100%;border-radius:50%;border:var(--line);object-fit:cover;background:#fff;box-shadow:3px 3px 0 var(--ink);transition:transform .2s}
+.tile .pic img.contain{object-fit:contain}
+.tile:hover .pic img{transform:rotate(-6deg) scale(1.05)}
+.tile .pic .ti{position:absolute;right:-12px;bottom:-6px;width:44px;height:44px;border-radius:13px;margin:0;transform:rotate(-8deg)}
+.tile .pic .ti .ic{width:28px;height:28px}
+@media (max-width:640px){.tile .pic{width:68px;height:68px}.tile .pic .ti{width:34px;height:34px;border-radius:10px;right:-10px}.tile .pic .ti .ic{width:22px;height:22px}}
+.sticker.photo img{object-fit:cover}
+.card-head.has-sticker{padding-right:104px}
+@media (max-width:640px){.card-head.has-sticker{padding-right:62px}}
+.info-img{display:block;width:100%;height:130px;object-fit:cover;border:var(--line);border-radius:12px;margin-bottom:10px;box-shadow:2px 2px 0 var(--ink)}
+.pop{position:relative}
+.pop-sticker{width:72px;height:72px;top:-30px;right:16px;transform:rotate(10deg);display:none}
+.pop.inf .pop-sticker{display:grid}
+.pop.inf .pop-top{padding-right:80px}
+.snack-banner{position:relative;height:160px;margin:-4px 0 22px;border:var(--line);border-radius:16px;box-shadow:4px 4px 0 var(--ink)}
+.snack-main{width:100%;height:100%;object-fit:cover;object-position:center 62%;border-radius:13px;display:block}
+.snack-tag{position:absolute;left:14px;bottom:-14px;background:var(--jake);border:var(--line);border-radius:999px;padding:4px 14px;font-family:'Luckiest Guy';font-size:17px;box-shadow:3px 3px 0 var(--ink)}
+.polaroid{position:absolute;width:118px;height:96px;object-fit:cover;background:#fff;border:6px solid #fff;outline:3px solid var(--ink);border-radius:4px;box-shadow:5px 5px 0 var(--ink)}
+.polaroid.p1{right:120px;top:-18px;transform:rotate(-7deg)}
+.polaroid.p2{right:14px;top:22px;transform:rotate(6deg)}
+@media (max-width:640px){.snack-banner{height:130px}.polaroid{width:78px;height:64px;border-width:4px}.polaroid.p1{right:74px;top:-14px}.polaroid.p2{right:8px;top:16px}}
+
+/* ---------- EXPORTAR / IMPORTAR ---------- */
+.bk-box{border:var(--line);border-radius:18px;background:#fff;padding:16px;box-shadow:4px 4px 0 var(--ink)}
+.bk-box h3{margin:0 0 4px;font-size:21px}
+.bk-box h3 .ic{width:22px;height:22px;vertical-align:-0.2em}
+.bk-box p{margin:0 0 12px;font-size:14px;color:var(--muted)}
+.bk-code{font-family:ui-monospace,Consolas,monospace;font-size:12px;font-weight:600;margin-top:10px;word-break:break-all;resize:vertical}
+</style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+<defs>
+<symbol id="i-sword" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+  <path d="M8 20L24 4h4v4L12 24z" fill="#8ee05a"/><path d="M11.5 19.5L25 6" stroke="#fff" stroke-width="1.2" opacity=".8"/>
+  <path d="M9.5 22.5l-5 5" stroke-width="5"/><path d="M9.5 22.5l-5 5" stroke="#b5651d" stroke-width="2"/>
+  <path d="M5 18.5l8.5 8.5" stroke-width="6"/><path d="M5 18.5l8.5 8.5" stroke="#f6b73c" stroke-width="2.6"/>
+</symbol>
+<symbol id="i-swords" viewBox="0 0 32 32"><use href="#i-sword"/><use href="#i-sword" transform="matrix(-1 0 0 1 32 0)"/></symbol>
+<symbol id="i-scale" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" fill="none">
+  <path d="M16 6v19M5 9h22M6 9l-4 8M6 9l4 8M26 9l-4 8M26 9l4 8"/>
+  <path d="M1.5 17h9a4.5 3.5 0 0 1-9 0zM21.5 17h9a4.5 3.5 0 0 1-9 0z" fill="#f6b73c"/>
+  <path d="M10 28h12l-2-3.5h-8z" fill="#f6b73c"/><circle cx="16" cy="5" r="2.4" fill="#ff6a3d"/>
+</symbol>
+<symbol id="i-dice" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round">
+  <g transform="rotate(-10 16 16)"><rect x="5.5" y="5.5" width="21" height="21" rx="5" fill="#fff"/><path d="M8.5 24h15" stroke="#cfd6ea" stroke-width="2.5" stroke-linecap="round"/>
+  <g fill="#e5484d" stroke="none"><circle cx="11" cy="11" r="2"/><circle cx="16" cy="16" r="2"/><circle cx="21" cy="21" r="2"/></g></g>
+</symbol>
+<symbol id="i-clapper" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+  <rect x="4" y="13" width="24" height="15" rx="2.5" fill="#a77fe0"/>
+  <g transform="rotate(-14 4 13)"><rect x="4" y="7" width="24" height="6" rx="1.5" fill="#fff"/><path d="M10 7l-3 6M16 7l-3 6M22 7l-3 6M28 7l-3 6" stroke-width="2.2"/></g>
+  <path d="M16 17l1.3 2.6 2.9.4-2.1 2 .5 2.9-2.6-1.4-2.6 1.4.5-2.9-2.1-2 2.9-.4z" fill="#f6d33c" stroke-width="1.3"/>
+</symbol>
+<symbol id="i-book" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+  <path d="M16 8.5C13 6.5 8.5 5.5 3.5 6.5v18c5-1 9.5 0 12.5 2z" fill="#8fd3f4"/><path d="M16 8.5c3-2 7.5-3 12.5-2v18c-5-1-9.5 0-12.5 2z" fill="#2b9be0"/>
+  <path d="M7 11c2-.3 4 0 6 .8M7 15c2-.3 4 0 6 .8M19 11.8c2-.8 4-1.1 6-.8M19 15.8c2-.8 4-1.1 6-.8" stroke-width="1.5" fill="none"/>
+</symbol>
+<symbol id="i-chest" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round">
+  <path d="M4 14h24v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z" fill="#c8843c"/><path d="M4 14c0-5 4-8.5 12-8.5S28 9 28 14z" fill="#e8a65a"/>
+  <path d="M10 6.5V28M22 6.5V28" stroke-width="1.6"/><rect x="12.5" y="11.5" width="7" height="7.5" rx="1.8" fill="#f6d33c"/><circle cx="16" cy="15" r="1.1" fill="#1f1d36" stroke="none"/>
+</symbol>
+<symbol id="i-trash" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+  <path d="M7 10h18l-1.5 16.5a2.2 2.2 0 0 1-2.2 2H10.7a2.2 2.2 0 0 1-2.2-2z" fill="#fff"/><path d="M4.5 10h23" stroke-width="2.4"/><path d="M12 10V6.5h8V10" fill="#fff"/><path d="M13 15v9M19 15v9"/>
+</symbol>
+<symbol id="i-chat" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round">
+  <path d="M16 4C9 4 4 8.5 4 14c0 3 1.5 5.6 4 7.5L7 28l6.5-3.6c.8.2 1.7.4 2.5.4 7 0 12-4.5 12-10.6S23 4 16 4z" fill="#7cc950"/>
+  <g fill="#1f1d36" stroke="none"><circle cx="11" cy="14.5" r="1.8"/><circle cx="16" cy="14.5" r="1.8"/><circle cx="21" cy="14.5" r="1.8"/></g>
+</symbol>
+<symbol id="i-clipboard" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+  <rect x="6" y="6" width="20" height="23" rx="3" fill="#f6b73c"/><rect x="9" y="10" width="14" height="16" rx="1.5" fill="#fff"/><rect x="11" y="3" width="10" height="6" rx="2" fill="#8fd3f4"/>
+  <path d="M12 15h8M12 19h8M12 23h5" stroke-width="1.6"/>
+</symbol>
+<symbol id="i-sparkle" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round">
+  <path d="M14 3c1 6.5 3 9 9.5 10-6.5 1-8.5 3.5-9.5 12-1-8.5-3-11-9.5-12C11 12 13 9.5 14 3z" fill="#f6d33c"/>
+  <path d="M25 18c.5 2.6 1.3 3.5 4 4-2.7.5-3.5 1.4-4 4.5-.5-3.1-1.3-4-4-4.5 2.7-.5 3.5-1.4 4-4z" fill="#f48fb1" stroke-width="1.6"/>
+</symbol>
+<symbol id="i-wand" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+  <path d="M5 27.5L18 14.5" stroke-width="5.5"/><path d="M5 27.5L18 14.5" stroke="#a77fe0" stroke-width="2.4"/>
+  <path d="M22 2.5l2 4.6 5 .5-3.8 3.3 1.1 4.9-4.3-2.6-4.3 2.6 1.1-4.9L15 7.6l5-.5z" fill="#f6d33c"/>
+  <path d="M8 6v3M6.5 7.5h3M27 20v3M25.5 21.5h3" stroke-width="1.6"/>
+</symbol>
+<symbol id="i-star" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round">
+  <path d="M16 3l3.8 7.7 8.4 1.2-6.1 6 1.5 8.4L16 22.3l-7.6 4 1.5-8.4-6.1-6 8.4-1.2z" fill="#f6d33c"/>
+  <g fill="#1f1d36" stroke="none"><circle cx="13.5" cy="15.5" r="1.2"/><circle cx="18.5" cy="15.5" r="1.2"/></g><path d="M14.5 18.3c1 .8 2 .8 3 0" fill="none" stroke-width="1.3" stroke-linecap="round"/>
+</symbol>
+<symbol id="i-skull" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+  <path d="M16 4C9.5 4 5 8.5 5 14c0 3.5 1.8 6 4 7.3V26a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4.7c2.2-1.3 4-3.8 4-7.3C27 8.5 22.5 4 16 4z" fill="#fff"/>
+  <circle cx="11.5" cy="15" r="3" fill="#1f1d36"/><circle cx="20.5" cy="15" r="3" fill="#1f1d36"/><path d="M16 18.5l-1.5 2.8h3z" fill="#1f1d36"/><path d="M13 25v3M16 25v3M19 25v3" stroke-width="1.6"/>
+</symbol>
+<symbol id="i-fire" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round">
+  <path d="M16 29c-6 0-10-4-10-9.5 0-5 4-7.5 5-12 2.5 2 3 4.5 3 6.5 1-3 3-7 6-10 0 5 6 8 6 15.5 0 5.5-4 9.5-10 9.5z" fill="#ff6a3d"/>
+  <path d="M16 29c-3 0-5-2-5-5 0-3 2.5-4 3.5-6.5 1 1.5 1.5 2.5 1.5 3.5.8-1.2 2-2.5 3-3.5.5 2.5 2 3.5 2 6.5 0 3-2 5-5 5z" fill="#f6d33c"/>
+</symbol>
+<symbol id="i-palette" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round">
+  <path d="M16 4C9 4 4 9 4 15.5S9 28 15 28c2 0 2.5-1.2 2-2.5-.6-1.6.2-3 2-3h3c3.5 0 6-2.5 6-6C28 9 22.5 4 16 4z" fill="#f48fb1"/>
+  <circle cx="10" cy="13.5" r="2.3" fill="#2b9be0"/><circle cx="15" cy="9" r="2.3" fill="#f6d33c"/><circle cx="21" cy="10" r="2.3" fill="#7cc950"/><circle cx="10.5" cy="20" r="2.3" fill="#fff"/>
+</symbol>
+<symbol id="i-bulb" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+  <path d="M16 4a8.5 8.5 0 0 0-5 15.4c1 .8 1.5 2 1.5 3.1V23h7v-.5c0-1.2.5-2.3 1.5-3.1A8.5 8.5 0 0 0 16 4z" fill="#f6d33c"/>
+  <rect x="12.5" y="23" width="7" height="5" rx="1.5" fill="#cfd6ea"/><path d="M13 11.5a4 4 0 0 1 3-3" stroke="#fff" stroke-width="1.8" fill="none"/>
+</symbol>
+<symbol id="i-dumbbell" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round">
+  <rect x="9" y="14" width="14" height="4" rx="1" fill="#cfd6ea"/>
+  <rect x="3.5" y="8" width="6" height="16" rx="2" fill="#ff6a3d"/><rect x="22.5" y="8" width="6" height="16" rx="2" fill="#ff6a3d"/>
+  <rect x="1" y="11.5" width="3" height="9" rx="1" fill="#ff9d85"/><rect x="28" y="11.5" width="3" height="9" rx="1" fill="#ff9d85"/>
+</symbol>
+<symbol id="i-fist" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+  <path d="M7 13a4 4 0 0 1 4-4h11a5 5 0 0 1 5 5v7a8 8 0 0 1-8 8h-4.5A7.5 7.5 0 0 1 7 21.5z" fill="#ffcf9e"/>
+  <path d="M13.5 9v5.5M18.5 9v5.5M23 10v5" stroke-width="1.7"/><path d="M7 15h7.5a2.3 2.3 0 0 0 0-4.6H11" fill="#ffcf9e"/>
+</symbol>
+<symbol id="i-brain" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+  <path d="M16 6c-1.5-2-5-2-6.5 0C6 6 4.5 9 5.5 11.5c-2 1.5-2 5.5 0 7-.5 3.5 2.5 6.5 5.5 6 1.5 2 4 1.5 5 0z" fill="#f48fb1"/>
+  <path d="M16 6c1.5-2 5-2 6.5 0 3.5 0 5 3 4 5.5 2 1.5 2 5.5 0 7 .5 3.5-2.5 6.5-5.5 6-1.5 2-4 1.5-5 0z" fill="#f9b4cd"/>
+  <path d="M9 12c2 0 3 1 3 3M23 12c-2 0-3 1-3 3M10 19.5c1.5 0 2.5-1 3-2M22 19.5c-1.5 0-2.5-1-3-2" fill="none" stroke-width="1.6"/>
+</symbol>
+<symbol id="i-heart" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+  <path d="M16 27S4 19.5 4 11.5C4 7.5 7 5 10.5 5c2.5 0 4.3 1.4 5.5 3.3C17.2 6.4 19 5 21.5 5 25 5 28 7.5 28 11.5 28 19.5 16 27 16 27z" fill="#e5484d"/>
+  <path d="M8.5 11c.2-1.7 1.4-2.8 3-2.9" stroke="#fff" stroke-width="1.8" fill="none"/>
+</symbol>
+<symbol id="i-heartplus" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+  <path d="M16 27S4 19.5 4 11.5C4 7.5 7 5 10.5 5c2.5 0 4.3 1.4 5.5 3.3C17.2 6.4 19 5 21.5 5 25 5 28 7.5 28 11.5 28 19.5 16 27 16 27z" fill="#7cc950"/>
+  <path d="M16 11.5v8M12 15.5h8" stroke="#fff" stroke-width="3"/>
+</symbol>
+<symbol id="i-shield" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round">
+  <path d="M16 3l11 4v8c0 7-5 11.5-11 14C10 26.5 5 22 5 15V7z" fill="#f6d33c"/><path d="M16 3l11 4v8c0 7-5 11.5-11 14z" fill="#f6b73c" stroke="none"/>
+  <path d="M16 3l11 4v8c0 7-5 11.5-11 14C10 26.5 5 22 5 15V7z" fill="none"/><path d="M16 10l1.8 3.6 4 .6-2.9 2.8.7 4-3.6-1.9-3.6 1.9.7-4-2.9-2.8 4-.6z" fill="#fff" stroke-width="1.4"/>
+</symbol>
+<symbol id="i-bolt" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round">
+  <path d="M18.5 2.5L6.5 18h7.5l-2.5 11.5 12-15.5H16z" fill="#f6d33c"/>
+</symbol>
+<symbol id="i-portal" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+  <circle cx="16" cy="16" r="12.5" fill="#a77fe0"/>
+  <path d="M16 16.5c0-1.6 2.2-1.6 2.2 0 0 2.8-4.4 2.8-4.4 0 0-4.2 6.6-4.2 6.6 0 0 5.6-8.8 5.6-8.8 0 0-7 11-7 11 0" fill="none" stroke="#fff" stroke-width="2"/>
+</symbol>
+<symbol id="i-backpack" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+  <path d="M7.5 13c0-5.5 3.8-9 8.5-9s8.5 3.5 8.5 9v13a2.5 2.5 0 0 1-2.5 2.5H10A2.5 2.5 0 0 1 7.5 26z" fill="#7cc950"/>
+  <path d="M10.5 17.5h11v6a1.5 1.5 0 0 1-1.5 1.5h-8a1.5 1.5 0 0 1-1.5-1.5z" fill="#a6e38a"/><path d="M10.5 20.5h11" stroke-width="1.6"/>
+  <path d="M11 10.5c.6-2.6 2.6-4 5-4" stroke="#c9f2b0" stroke-width="1.8" fill="none"/>
+</symbol>
+<symbol id="i-money" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+  <rect x="3" y="8" width="26" height="16" rx="2.5" fill="#7cc950"/><circle cx="16" cy="16" r="4.6" fill="#c9f2b0"/>
+  <path d="M17.6 14.2h-2.2a1.2 1.2 0 0 0 0 2.4h1.2a1.2 1.2 0 0 1 0 2.4h-2.3M16 12.8v6.6" stroke-width="1.4" fill="none"/>
+  <g fill="#c9f2b0" stroke="none"><circle cx="7" cy="12" r="1.3"/><circle cx="25" cy="20" r="1.3"/></g>
+</symbol>
+<symbol id="i-crown" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round">
+  <path d="M4.5 23.5L3 9.5l7.5 6.5L16 5.5 21.5 16 29 9.5l-1.5 14z" fill="#f6d33c"/><rect x="4.5" y="23.5" width="23" height="4" rx="1" fill="#f6b73c"/>
+  <circle cx="16" cy="18.5" r="2.1" fill="#e5484d"/><circle cx="9.5" cy="20" r="1.4" fill="#2b9be0"/><circle cx="22.5" cy="20" r="1.4" fill="#7cc950"/>
+</symbol>
+<symbol id="i-castle" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round">
+  <rect x="8" y="14" width="16" height="14" fill="#f48fb1"/><rect x="3" y="10" width="7" height="18" rx="1" fill="#f9b4cd"/><rect x="22" y="10" width="7" height="18" rx="1" fill="#f9b4cd"/>
+  <path d="M2.5 10.5L6.5 3l4 7.5zM21.5 10.5l4-7.5 4 7.5z" fill="#a77fe0"/><path d="M10.5 14.5L16 6l5.5 8.5z" fill="#2b9be0"/>
+  <path d="M13 28v-5a3 3 0 0 1 6 0v5" fill="#f6b73c"/>
+</symbol>
+<symbol id="i-orb" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+  <path d="M8 28h16l-2.5-4.5h-11z" fill="#f6b73c"/><circle cx="16" cy="13.5" r="10" fill="#a77fe0"/>
+  <path d="M10.5 11a6 6 0 0 1 4.5-4" stroke="#fff" stroke-width="2" fill="none"/><path d="M19 15.5l.8 1.6 1.7.3-1.2 1.2.3 1.7-1.6-.8-1.6.8.3-1.7-1.2-1.2 1.7-.3z" fill="#f6d33c" stroke-width="1"/>
+</symbol>
+<symbol id="i-plus" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round">
+  <path d="M13 5h6v8h8v6h-8v8h-6v-8H5v-6h8z" fill="#7cc950"/>
+</symbol>
+<symbol id="i-ok" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+  <circle cx="16" cy="16" r="12.5" fill="#7cc950"/><path d="M10 16.5l4 4 8-9" stroke="#fff" stroke-width="3.2" fill="none"/>
+</symbol>
+<symbol id="i-close" viewBox="0 0 32 32" stroke="#1f1d36" stroke-linecap="round">
+  <path d="M9 9l14 14M23 9L9 23" stroke-width="4"/>
+</symbol>
+<symbol id="i-warning" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+  <path d="M16 4L2.5 27.5h27z" fill="#f6d33c"/><path d="M16 12v7" stroke-width="3"/><circle cx="16" cy="23.3" r="1.6" fill="#1f1d36" stroke="none"/>
+</symbol>
+<symbol id="i-scroll" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+  <rect x="7" y="5" width="18" height="22" rx="1.5" fill="#fff6dc"/><rect x="5" y="3" width="22" height="5" rx="2.5" fill="#f6d9a0"/><rect x="5" y="24" width="22" height="5" rx="2.5" fill="#f6d9a0"/>
+  <path d="M11 12h10M11 15.5h10M11 19h6" stroke-width="1.6"/>
+</symbol>
+<symbol id="i-hammer" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round">
+  <g transform="rotate(45 16 16)"><rect x="14" y="11" width="4.5" height="19" rx="1.8" fill="#c8843c"/><rect x="7.5" y="4" width="17" height="8" rx="2" fill="#9aa3b5"/><path d="M10 6.5h12" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/></g>
+</symbol>
+<symbol id="i-lock" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round">
+  <path d="M11 14v-4a5 5 0 0 1 10 0v4" fill="none" stroke-width="2.6"/><rect x="7" y="14" width="18" height="14" rx="3" fill="#f6b73c"/><circle cx="16" cy="20.5" r="2" fill="#1f1d36"/>
+</symbol>
+<symbol id="i-chartup" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round">
+  <rect x="4" y="18" width="6" height="10" rx="1" fill="#a6e38a"/><rect x="13" y="12" width="6" height="16" rx="1" fill="#7cc950"/><rect x="22" y="5" width="6" height="23" rx="1" fill="#4c9a2a"/>
+</symbol>
+<symbol id="i-chartdown" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round">
+  <rect x="4" y="5" width="6" height="23" rx="1" fill="#e5484d"/><rect x="13" y="12" width="6" height="16" rx="1" fill="#ff9d85"/><rect x="22" y="18" width="6" height="10" rx="1" fill="#ffc9c9"/>
+</symbol>
+<symbol id="i-target" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2">
+  <circle cx="16" cy="16" r="12.5" fill="#e5484d"/><circle cx="16" cy="16" r="8.5" fill="#fff"/><circle cx="16" cy="16" r="4.3" fill="#e5484d"/>
+</symbol>
+<symbol id="i-medal" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round">
+  <path d="M9 3h5.5l3.5 9h-5.5zM23 3h-5.5L14 12h5.5z" fill="#2b9be0"/><circle cx="16" cy="20" r="8.5" fill="#f6d33c"/>
+  <path d="M16 15.5l1.4 2.8 3 .4-2.2 2.1.5 3-2.7-1.4-2.7 1.4.5-3-2.2-2.1 3-.4z" fill="#fff" stroke-width="1.2"/>
+</symbol>
+<symbol id="i-siren" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+  <path d="M8 22.5V16a8 8 0 0 1 16 0v6.5z" fill="#e5484d"/><rect x="5" y="22.5" width="22" height="5.5" rx="1.5" fill="#9aa3b5"/>
+  <path d="M12.5 15.5a3.5 3.5 0 0 1 3.5-3.5" stroke="#fff" fill="none"/><path d="M16 2.5v2.5M5 6.5l1.8 1.8M27 6.5l-1.8 1.8"/>
+</symbol>
+<symbol id="i-globe" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round">
+  <circle cx="16" cy="16" r="12.5" fill="#2b9be0"/>
+  <path d="M9 8.5c3 0 4.5 2 3.5 4.2s-4 1.8-4 4.8-3.5.3-3.5-2.2c0-3 1.5-6.8 4-6.8zM20 18.5c2.2-1.2 5.5-.2 5.5 2s-3.3 5-5.3 4-2.4-4.8-.2-6zM18 6.5c2 0 4 1 4 2.5S19.5 11 18.5 10 16 6.5 18 6.5z" fill="#7cc950" stroke-width="1.6"/>
+</symbol>
+<symbol id="i-paw" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2">
+  <path d="M16 15c-4.5 0-8 4.5-8 8 0 2.5 2 4 4 4 1.5 0 2.5-1 4-1s2.5 1 4 1c2 0 4-1.5 4-4 0-3.5-3.5-8-8-8z" fill="#f6b73c"/>
+  <ellipse cx="7" cy="13" rx="2.6" ry="3.3" fill="#f6b73c"/><ellipse cx="12.3" cy="7.8" rx="2.6" ry="3.4" fill="#f6b73c"/><ellipse cx="19.7" cy="7.8" rx="2.6" ry="3.4" fill="#f6b73c"/><ellipse cx="25" cy="13" rx="2.6" ry="3.3" fill="#f6b73c"/>
+</symbol>
+<symbol id="i-monster" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round">
+  <path d="M6 27.5V15a10 10 0 0 1 20 0v12.5l-3.3-2.5-3.4 2.5-3.3-2.5-3.3 2.5-3.4-2.5z" fill="#7cc950"/>
+  <circle cx="12" cy="14.5" r="3.2" fill="#fff"/><circle cx="20" cy="14.5" r="3.2" fill="#fff"/>
+  <g fill="#1f1d36" stroke="none"><circle cx="12.6" cy="15" r="1.4"/><circle cx="20.6" cy="15" r="1.4"/></g><path d="M13.5 20.5c1.6 1.2 3.4 1.2 5 0" fill="none" stroke-linecap="round" stroke-width="1.6"/>
+</symbol>
+<symbol id="i-home" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+  <path d="M13 29v-9h6v9" fill="#c8843c"/><path d="M16 3c-6 0-10 4-10 9 0 4 3 7 7 7.5V20h6v-.5c4-.5 7-3.5 7-7.5 0-5-4-9-10-9z" fill="#7cc950"/>
+  <rect x="13.5" y="9" width="5" height="5" rx="1" fill="#f6d33c"/><path d="M9 29h14" />
+</symbol>
+<symbol id="i-back" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round">
+  <path d="M14 5L3 16l11 11v-6.5h14v-9H14z" fill="#f6b73c"/>
+</symbol>
+<symbol id="i-next" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round">
+  <path d="M18 5l11 11-11 11v-6.5H4v-9h14z" fill="#7cc950"/>
+</symbol>
+</defs>
+</svg>
+
+
+<!-- ================= BARRA DO TOPO ================= -->
+<header class="nav" id="appbar" hidden>
+  <div class="nav-in">
+    <button class="btn sm" id="btn-back"><svg class="ic" aria-hidden="true"><use href="#i-back"/></svg> <span class="t">Voltar</span></button>
+    <div class="brand">
+      <img src="img/finn-bolha.png" alt="">
+      <div style="min-width:0">
+        <div class="brand-t" id="bar-title">Ficha de Ooo</div>
+        <div class="brand-s" id="nav-sub"></div>
+      </div>
+    </div>
+    <a class="btn sm" href="#inicio" aria-label="Início"><svg class="ic" aria-hidden="true"><use href="#i-home"/></svg> <span class="t">Início</span></a>
+  </div>
+</header>
+
+<!-- ================= TELA INICIAL ================= -->
+<div class="screen" id="s-home">
+  <section class="home-hero">
+    <div class="home-wrap">
+      <div class="home-top">
+        <div class="pills home-pills">
+          <span class="pill" style="background:var(--jake)">Ficha RPG de Ooo</span>
+          <span class="pill" style="background:var(--grass)"><svg class="ic" aria-hidden="true"><use href="#i-scale"/></svg> Nerfador ativo</span>
+        </div>
+        <h1>Que horas são?<br>Hora da Ficha!</h1>
+        <p>O RPG de Hora de Aventura. O que vamos fazer hoje?</p>
+      </div>
+      <div class="poster-frame">
+        <img class="poster-img" src="img/poster.jpg" alt="Pôster de Hora de Aventura">
+        <div class="sticker home-finn"><img src="img/finn.jpg" alt=""></div>
+        <div class="sticker home-jake"><img src="img/jake.gif" alt=""></div>
+      </div>
+    </div>
+  </section>
+  <div class="home-main">
+    <div class="char-strip">
+      <div class="char-ava" id="hc-ava">?</div>
+      <div class="char-info"><small>Seu personagem</small><b id="hc-name">Nenhum ainda</b><span id="hc-meta">Crie sua ficha pra começar a aventura!</span></div>
+      <div class="char-acts">
+        <a class="btn blue" href="#ficha" id="hc-go"><svg class="ic" aria-hidden="true"><use href="#i-sword"/></svg> <span id="hc-go-t">Criar minha ficha</span></a>
+        <button class="btn sm teal" data-open="m-backup"><svg class="ic" aria-hidden="true"><use href="#i-chest"/></svg> Exportar / Importar</button>
+        <button class="btn sm" id="btn-reset"><svg class="ic" aria-hidden="true"><use href="#i-trash"/></svg> Ficha nova</button>
+      </div>
+    </div>
+    <nav class="menu">
+      <a class="tile" href="#ficha" style="--c:var(--finn)"><span class="pic"><img src="img/bruxa-cacadora.jpg" alt=""><span class="ti"><svg class="ic" aria-hidden="true"><use href="#i-sword"/></svg></span></span><b>Minha Ficha</b><span>Criar e editar seu personagem</span></a>
+      <a class="tile" href="#cena" style="--c:var(--lsp)"><span class="pic"><img src="img/jake-capuz.jpg" alt=""><span class="ti"><svg class="ic" aria-hidden="true"><use href="#i-clapper"/></svg></span></span><b>Escrever Cena</b><span>Gerar o cabeçalho #iniciarcena</span></a>
+      <a class="tile" href="#dados" style="--c:var(--jake)"><span class="pic"><img class="contain" src="img/jake.gif" alt=""><span class="ti"><svg class="ic" aria-hidden="true"><use href="#i-dice"/></svg></span></span><b>Rolar Dados</b><span>Ataque, dano, defesa e mais</span></a>
+      <a class="tile" href="#regras" style="--c:var(--bmo)"><span class="pic"><img src="img/finn-oculos.jpg" alt=""><span class="ti"><svg class="ic" aria-hidden="true"><use href="#i-book"/></svg></span></span><b>Regras</b><span>O manual de bolso de Ooo</span></a>
+      <a class="tile" href="#nerfador" style="--c:var(--fire)"><span class="pic"><img src="img/rei-vampiro.jpg" alt=""><span class="ti"><svg class="ic" aria-hidden="true"><use href="#i-scale"/></svg></span></span><b>Nerfador</b><span>Deixa poderes e armas justos</span></a>
+      <a class="tile" href="#zap" style="--c:var(--grass)"><span class="pic"><img src="img/caracol.jpg" alt=""><span class="ti"><svg class="ic" aria-hidden="true"><use href="#i-chat"/></svg></span></span><b>Mandar no Zap</b><span>Copiar a ficha prontinha</span></a>
+    </nav>
+    <a class="rpg-banner" href="https://honor-rating.onrender.com/rpg/adventure-time" target="_blank" rel="noopener">
+      <span class="rpg-text"><small>Página oficial do RPG</small><b>Hora de Aventura no Honor Rating</b><span>honor-rating.onrender.com/rpg/adventure-time</span></span>
+      <span class="btn yellow rpg-btn">Abrir página do RPG <svg class="ic" aria-hidden="true"><use href="#i-next"/></svg></span>
+    </a>
+    <p class="home-foot">A ficha é salva sozinha neste navegador.</p>
+  </div>
+</div>
+
+<!-- ================= TELA DA FICHA ================= -->
+<div class="screen" id="s-ficha" hidden>
+<main>
+  <div class="stepper" id="stepper">
+    <button class="stp" data-step="0"><i>1</i><svg class="ic" aria-hidden="true"><use href="#i-sword"/></svg><span class="t">Identidade</span></button>
+    <button class="stp" data-step="1"><i>2</i><svg class="ic" aria-hidden="true"><use href="#i-palette"/></svg><span class="t">Aparência</span></button>
+    <button class="stp" data-step="2"><i>3</i><svg class="ic" aria-hidden="true"><use href="#i-dumbbell"/></svg><span class="t">Atributos</span></button>
+    <button class="stp" data-step="3"><i>4</i><svg class="ic" aria-hidden="true"><use href="#i-sparkle"/></svg><span class="t">Poderes</span></button>
+    <button class="stp" data-step="4"><i>5</i><svg class="ic" aria-hidden="true"><use href="#i-backpack"/></svg><span class="t">Mochila</span></button>
+    <button class="stp" data-step="5"><i>6</i><svg class="ic" aria-hidden="true"><use href="#i-book"/></svg><span class="t">Estudo</span></button>
+  </div>
+
+  <!-- ================= 1. IDENTIDADE ================= -->
+  <section class="card step" data-step="0">
+    <div class="sticker finn-sticker photo"><img src="img/finn-joinha.jpg" alt="" style="object-position:center 30%"></div>
+    <div class="card-head has-sticker">
+      <span class="badge" style="--c:var(--finn)"><svg class="ic" aria-hidden="true"><use href="#i-sword"/></svg></span>
+      <div class="grow"><h2>Identidade do Aventureiro</h2><p>Os dados fundamentais para o registro do seu personagem</p></div>
+    </div>
+
+    <div class="grid g3">
+      <div class="span2">
+        <label class="lbl" for="f-nome"><span>Nome do personagem <span class="req">*</span></span></label>
+        <input class="inp" id="f-nome" data-bind="nome" type="text" placeholder="Ex: Jax, Lírio Gosmento, Capitã Bolacha...">
+      </div>
+      <div>
+        <label class="lbl" for="f-idade"><span>Idade <span class="req">*</span></span><span class="hint">18 mínimo</span></label>
+        <input class="inp" id="f-idade" data-bind="idade" type="number" min="18" placeholder="18">
+        <p class="warn-txt" id="age-warn" hidden><svg class="ic" aria-hidden="true"><use href="#i-warning"/></svg> Regra do RPG: a idade mínima é 18 anos.</p>
+      </div>
+      <div>
+        <label class="lbl" for="f-nivel"><span>Nível</span><span class="hint">começa no 1</span></label>
+        <input class="inp" id="f-nivel" data-bind="nivel" type="number" min="1" max="2000">
+      </div>
+      <div>
+        <label class="lbl" for="f-raca"><span>Raça / espécie <span class="req">*</span></span></label>
+        <select class="inp" id="f-raca" data-bind="raca"></select>
+      </div>
+      <div>
+        <label class="lbl" for="f-reino"><span>Reino de origem <span class="req">*</span></span></label>
+        <select class="inp" id="f-reino" data-bind="reinoOrigem"></select>
+      </div>
+      <div class="span2">
+        <label class="lbl" for="f-div"><span>Divindade / devoção</span><span class="hint">opcional</span></label>
+        <select class="inp" id="f-div" data-bind="divindade"></select>
+      </div>
+    </div>
+
+    <div class="grid g3" style="margin-top:18px">
+      <div class="info" style="--bg:#ffe3ee" id="race-card"></div>
+      <div class="info" style="--bg:#e4f6d6" id="kingdom-card"></div>
+      <div class="info" style="--bg:#efe6ff" id="deity-card"></div>
+    </div>
+
+    <div class="pop" id="pop">
+      <div class="sticker pop-sticker photo"><img src="img/caveira-rei.jpg" alt=""></div>
+      <div class="pop-top">
+        <h3><svg class="ic" aria-hidden="true"><use href="#i-fire"/></svg> Popularidade em Ooo</h3>
+        <div class="seg">
+          <button type="button" class="fama" data-pop="Fama"><svg class="ic" aria-hidden="true"><use href="#i-star"/></svg> Fama (heroica)</button>
+          <button type="button" class="infamia" data-pop="Infâmia"><svg class="ic" aria-hidden="true"><use href="#i-skull"/></svg> Infâmia (procurado)</button>
+        </div>
+      </div>
+      <div class="grid g3">
+        <div>
+          <label class="lbl" for="f-popp"><span>Pontuação</span></label>
+          <input class="inp" id="f-popp" data-bind="popularidadePontos" type="number" min="0" max="3000" placeholder="000">
+        </div>
+        <div>
+          <label class="lbl" for="f-popr"><span>Reino onde é conhecido</span></label>
+          <input class="inp" id="f-popr" data-bind="reinoPopularidade" type="text" placeholder="Ex: Reino Doce">
+        </div>
+        <div class="status" id="pop-status"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 2. APARÊNCIA ================= -->
+  <section class="card step" data-step="1">
+    <div class="sticker finn-sticker photo"><img src="img/bruxa-cacadora.jpg" alt="" style="object-position:center 40%"></div>
+    <div class="card-head has-sticker">
+      <span class="badge" style="--c:var(--pb)"><svg class="ic" aria-hidden="true"><use href="#i-palette"/></svg></span>
+      <div class="grow"><h2>Aparência</h2><p>Descreva o visual cartunesco do seu personagem</p></div>
+      <div class="head-actions"><button class="btn sm pink" id="btn-tpl"><svg class="ic" aria-hidden="true"><use href="#i-wand"/></svg> Inserir template oficial</button></div>
+    </div>
+    <textarea class="inp" id="f-apar" data-bind="aparencia" rows="5" placeholder="Ex: Jovem com pele bronzeada, cabelo castanho bagunçado e olhos curiosos. Usa jaqueta verde-musgo cheia de remendos de reinos distantes, botas de couro e uma bandoleira cheia de poções..."></textarea>
+    <div class="mini-t" style="margin-top:12px"><svg class="ic" aria-hidden="true"><use href="#i-sparkle"/></svg> Detalhes rápidos para adicionar</div>
+    <div class="snips" id="snips"></div>
+    <div class="note" style="margin-top:14px"><svg class="ic" aria-hidden="true"><use href="#i-bulb"/></svg> <b>Dica:</b> em Ooo, personagens originais se destacam por silhuetas bem definidas, formas simples, proporções caricatas e cores chapadas bem vivas.</div>
+  </section>
+
+  <!-- ================= 3. ATRIBUTOS ================= -->
+  <section class="card step" data-step="2">
+    <div class="sticker finn-sticker photo"><img src="img/vampiro.jpg" alt="" style="object-position:center 30%"></div>
+    <div class="card-head has-sticker">
+      <span class="badge" style="--c:var(--fire)"><svg class="ic" aria-hidden="true"><use href="#i-dumbbell"/></svg></span>
+      <div class="grow"><h2>Atributos de Combate</h2><p>15 pontos iniciais, até 10 por atributo. O bônus da raça entra sozinho.</p></div>
+      <div class="pool" id="pool"></div>
+    </div>
+    <div class="vitals">
+      <div class="vital" style="--bg:#ffd6d6"><div><small>Vida máxima</small><b id="v-hp">100 HP</b><span class="sub" id="v-hp-sub"></span></div><span class="emo"><svg class="ic" aria-hidden="true"><use href="#i-heart"/></svg></span></div>
+      <div class="vital" style="--bg:#d4ecff"><div><small>Estamina Arcana</small><b id="v-ea">100 EA</b><span class="sub">-5 / -8 / -15 EA por turno</span></div><span class="emo"><svg class="ic" aria-hidden="true"><use href="#i-bolt"/></svg></span></div>
+      <div class="vital" style="--bg:#ece0ff"><div><small>Teletransportes</small><b>3 TPs</b><span class="sub">Duelo 1d20 vs atacante</span></div><span class="emo"><svg class="ic" aria-hidden="true"><use href="#i-portal"/></svg></span></div>
+    </div>
+    <div class="attrs" id="attrs"></div>
+  </section>
+
+  <!-- ================= 4. PODERES ================= -->
+  <section class="card step" data-step="3">
+    <div class="sticker finn-sticker photo"><img src="img/finn-magico.jpg" alt="" style="object-position:center 35%"></div>
+    <div class="card-head has-sticker">
+      <span class="badge" style="--c:var(--lsp)"><svg class="ic" aria-hidden="true"><use href="#i-sparkle"/></svg></span>
+      <div class="grow"><h2>Poderes & Habilidades</h2><p>2 skills iniciais específicas, coerentes com Ooo e com o limite do seu nível</p></div>
+      <div class="head-actions">
+        <button class="btn sm purple" id="btn-gen-skill"><svg class="ic" aria-hidden="true"><use href="#i-wand"/></svg> Gerar skill nerfada</button>
+        <button class="btn sm yellow" data-open="m-nerf"><svg class="ic" aria-hidden="true"><use href="#i-scale"/></svg> Nerfador</button>
+        <button class="btn sm" id="btn-add-skill"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg> Nova skill</button>
+      </div>
+    </div>
+    <div class="econ" id="econ"></div>
+    <div id="skills"></div>
+    <div class="note">
+      <p><b><svg class="ic" aria-hidden="true"><use href="#i-scroll"/></svg> Regras de balanceamento de Ooo:</b></p>
+      <p>• <b>Sem hit-kill e sem roubar turno:</b> habilidades não podem matar na hora nem impedir o próximo turno do atacante.</p>
+      <p>• <b>Regra de falha:</b> tirou menos de 10 no d20 inicial? A técnica entra em recarga de 2 turnos.</p>
+      <p>• <b>Contra-ataques de habilidade:</b> sem dado de dano puro, só precisam de sucesso no d20.</p>
+    </div>
+  </section>
+
+  <!-- ================= 5. INVENTÁRIO ================= -->
+  <section class="card step" data-step="4">
+    <div class="snack-banner">
+      <img class="snack-main" src="img/sanduiches.jpg" alt="">
+      <span class="snack-tag">Lanches de aventura</span>
+      <img class="polaroid p1" src="img/torta.jpg" alt="">
+      <img class="polaroid p2" src="img/bolo-de-carne.jpg" alt="">
+    </div>
+    <div class="card-head">
+      <span class="badge" style="--c:var(--grass)"><svg class="ic" aria-hidden="true"><use href="#i-backpack"/></svg></span>
+      <div class="grow"><h2>Inventário & Equipamento</h2><p>Armas, dólares e tudo que cabe na mochila</p></div>
+      <div class="head-actions">
+        <button class="btn sm teal" id="btn-gen-weapon"><svg class="ic" aria-hidden="true"><use href="#i-wand"/></svg> Gerar arma nerfada</button>
+        <button class="btn sm yellow" data-open="m-nerf" data-tab="arma"><svg class="ic" aria-hidden="true"><use href="#i-scale"/></svg> Oficina do Nerfador</button>
+      </div>
+    </div>
+    <div class="grid g3">
+      <div>
+        <label class="lbl" for="f-dol"><span><svg class="ic" aria-hidden="true"><use href="#i-money"/></svg> Dólares</span><span class="hint">padrão 100</span></label>
+        <div class="money"><span>$</span><input class="inp" id="f-dol" data-bind="dolares" type="number" min="0" placeholder="100"></div>
+        <p style="font-size:12px;color:var(--muted);margin:8px 0 0;line-height:1.45">A moeda oficial do RPG é o Dólar. Ganhe mais em missões, cenas e exploração.</p>
+      </div>
+      <div class="weapon span2">
+        <div class="weapon-top">
+          <h3><svg class="ic" aria-hidden="true"><use href="#i-swords"/></svg> Arma inicial</h3>
+          <div class="row" style="flex-wrap:wrap">
+            <label class="check"><input type="checkbox" id="f-mag" data-bind="armaMagica"> <svg class="ic" aria-hidden="true"><use href="#i-orb"/></svg> Mágica</label>
+            <button class="btn sm yellow" id="btn-nerf-weapon"><svg class="ic" aria-hidden="true"><use href="#i-scale"/></svg> Nerfar arma</button>
+          </div>
+        </div>
+        <div class="grid g2">
+          <div>
+            <label class="lbl" for="f-arma"><span>Nome da arma</span></label>
+            <input class="inp" id="f-arma" data-bind="armaNome" type="text" placeholder="Ex: Espada de Grama, Cajado de Gelo...">
+          </div>
+          <div>
+            <label class="lbl" for="f-efeito"><span>Efeito (regra DA)</span></label>
+            <input class="inp" id="f-efeito" data-bind="armaEfeito" type="text" placeholder="Ex: +1d50 de dano cortante (DA)">
+          </div>
+        </div>
+        <div class="mini-t">Sugestões rápidas</div>
+        <div class="snips" id="presets" style="margin-top:0"></div>
+      </div>
+    </div>
+    <div style="margin-top:18px">
+      <label class="lbl" for="f-item"><span>Outros itens na mochila / consumíveis</span></label>
+      <div class="row">
+        <input class="inp" id="f-item" type="text" placeholder="Ex: 2x Poção de 15% HP, Flauta Mágica, Cantil de água...">
+        <button class="btn green" id="btn-add-item"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg> <span class="t">Adicionar</span></button>
+      </div>
+      <div class="items" id="items"></div>
+    </div>
+    <div class="note" style="margin-top:16px">
+      <p><svg class="ic" aria-hidden="true"><use href="#i-scroll"/></svg> <b>Regra DA (Descrição Anterior):</b> no primeiro turno de combate, declare o item e o efeito. Nos turnos seguintes basta citar o nome com a sigla (DA).</p>
+      <p><svg class="ic" aria-hidden="true"><use href="#i-scale"/></svg> <b>Armas mágicas:</b> abaixo de 40 EA o efeito cai pela metade; abaixo de 20 EA a arma perde todo o efeito.</p>
+    </div>
+  </section>
+
+  <!-- ================= 6. ESTUDO & PROJETO ================= -->
+  <section class="card step" data-step="5">
+    <div class="sticker finn-sticker photo"><img src="img/simon.jpg" alt="" style="object-position:center 40%"></div>
+    <div class="card-head has-sticker">
+      <span class="badge" style="--c:var(--bmo)"><svg class="ic" aria-hidden="true"><use href="#i-book"/></svg></span>
+      <div class="grow"><h2>Estudo & Projeto</h2><p>Todo domingo, gire 1d100. Primeiro o Estudo (500), depois o Projeto (1000), que começa do zero.</p></div>
+      <div class="head-actions"><button class="btn sm teal" id="btn-sunday"><svg class="ic" aria-hidden="true"><use href="#i-dice"/></svg> Giro de domingo (1d100)</button></div>
+    </div>
+    <div class="grid g2">
+      <div style="--c:var(--bmo)">
+        <label class="lbl" for="f-est"><span><svg class="ic" aria-hidden="true"><use href="#i-book"/></svg> Estudo</span><span class="hint">0 / 500</span></label>
+        <input class="inp" id="f-est" data-bind="estudoPontos" type="number" min="0" max="500">
+        <div class="bar"><i id="bar-est"></i><em id="bar-est-t"></em></div>
+      </div>
+      <div style="--c:var(--jake)" id="proj-box">
+        <label class="lbl" for="f-proj"><span><svg class="ic" aria-hidden="true"><use href="#i-hammer"/></svg> Projeto</span><span class="hint">0 / 1000</span></label>
+        <input class="inp" id="f-proj" data-bind="projetoPontos" type="number" min="0" max="1000">
+        <div class="bar"><i id="bar-proj"></i><em id="bar-proj-t"></em></div>
+      </div>
+    </div>
+  </section>
+  <div class="step-nav">
+    <button class="btn" id="step-prev"><svg class="ic" aria-hidden="true"><use href="#i-back"/></svg> Anterior</button>
+    <span id="step-count">1 de 6</span>
+    <button class="btn green" id="step-next">Próximo <svg class="ic" aria-hidden="true"><use href="#i-next"/></svg></button>
+  </div>
+</main>
+</div>
+
+<!-- ================= FOOTER ================= -->
+<footer class="foot" hidden>
+  <div class="foot-in">
+    <div class="stats">
+      <span class="stat"><em>NÍVEL</em><span id="s-lvl">1</span></span>
+      <span class="stat"><em>HP</em><span id="s-hp">100</span></span>
+      <span class="stat"><em>EA</em><span id="s-ea">100</span></span>
+      <span class="stat"><em>PONTOS</em><span id="s-pts">15/15</span></span>
+    </div>
+    <div class="acts">
+      <button class="btn sm" id="btn-save"><svg class="ic" aria-hidden="true"><use href="#i-chest"/></svg> <span class="t">Salvar</span></button>
+      <button class="btn blue" data-open="m-zap"><svg class="ic" aria-hidden="true"><use href="#i-chat"/></svg> Mandar no Zap</button>
+    </div>
+  </div>
+</footer>
+
+<!-- ================= MODAL: WHATSAPP ================= -->
+<div class="modal screen" id="m-zap" hidden>
+  <div class="modal-box">
+    <div class="modal-head" style="--hc:var(--grass)">
+      <div class="ava"><img src="img/caracol.jpg" alt=""></div>
+      <div><h2><svg class="ic" aria-hidden="true"><use href="#i-chat"/></svg> Exportar para o WhatsApp</h2><p>Copie com 1 clique e cole no grupo ou no privado do mestre</p></div>
+      <button class="btn sm round x" data-close aria-label="Fechar"><svg class="ic" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="row" style="justify-content:space-between;flex-wrap:wrap;align-items:center">
+        <div class="tabs" id="zap-tabs">
+          <button class="btn sm tab" data-mode="oficial"><svg class="ic" aria-hidden="true"><use href="#i-sparkle"/></svg> Modelo oficial</button>
+          <button class="btn sm tab" data-mode="limpo"><svg class="ic" aria-hidden="true"><use href="#i-chat"/></svg> Formatado Zap</button>
+          <button class="btn sm tab" data-mode="detalhado"><svg class="ic" aria-hidden="true"><use href="#i-swords"/></svg> Completo c/ combate</button>
+        </div>
+        <span style="font-size:12px;font-weight:900;color:var(--muted)" id="zap-count"></span>
+      </div>
+      <pre class="bubble" id="zap-preview"></pre>
+    </div>
+    <div class="modal-foot">
+      <span class="grow" id="zap-msg">Dica: clique no botão verde para copiar tudo.</span>
+      <button class="btn" id="zap-open"><svg class="ic" aria-hidden="true"><use href="#i-chat"/></svg> Abrir no Zap</button>
+      <button class="btn green" id="zap-copy"><svg class="ic" aria-hidden="true"><use href="#i-clipboard"/></svg> Copiar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODAL: CENA ================= -->
+<div class="modal screen" id="m-scene" hidden>
+  <div class="modal-box">
+    <div class="modal-head" style="--hc:var(--lsp)">
+      <div class="ava"><img src="img/jake-capuz.jpg" alt=""></div>
+      <div style="color:#fff;text-shadow:1px 1px 0 var(--ink)"><h2><svg class="ic" aria-hidden="true"><use href="#i-clapper"/></svg> Cabeçalho de Cena</h2><p>Obrigatório para validar cenas no WhatsApp (mínimo de 10 linhas)</p></div>
+      <button class="btn sm round x" data-close aria-label="Fechar"><svg class="ic" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="grid g2">
+        <div><label class="lbl" for="sc-nucleo"><span>Núcleo (cidade e reino)</span></label><input class="inp" id="sc-nucleo" data-sc="nucleo"></div>
+        <div><label class="lbl" for="sc-loc"><span>Localização específica</span></label><input class="inp" id="sc-loc" data-sc="localizacao"></div>
+        <div><label class="lbl" for="sc-priv"><span>Privacidade</span></label>
+          <select class="inp" id="sc-priv" data-sc="privacidade">
+            <option value="Pública">Pública (locais abertos / cidades)</option>
+            <option value="Privada / Fechada">Privada / Fechada (residência / segredo)</option>
+          </select></div>
+        <div><label class="lbl" for="sc-cont"><span>Contagem da cena #</span></label>
+          <div class="row"><input class="inp" id="sc-cont" data-sc="contagemCena" type="number" min="1"><button class="btn purple" id="sc-plus">+1</button></div></div>
+        <div><label class="lbl" for="sc-part"><span>Participantes</span></label><input class="inp" id="sc-part" data-sc="participantes" placeholder="Ex: Solo, @Jogador2..."></div>
+        <div><label class="lbl" for="sc-obs"><span>Observações / rumo da cena</span></label><input class="inp" id="sc-obs" data-sc="observacoes"></div>
+      </div>
+      <div class="mini-t" style="margin:0">Pré-visualização</div>
+      <pre class="bubble" id="sc-preview"></pre>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" id="sc-send"><svg class="ic" aria-hidden="true"><use href="#i-chat"/></svg> Enviar no Zap</button>
+      <button class="btn purple" id="sc-copy"><svg class="ic" aria-hidden="true"><use href="#i-clipboard"/></svg> Copiar cabeçalho</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODAL: DADOS ================= -->
+<div class="modal screen" id="m-dice" hidden>
+  <div class="modal-box">
+    <div class="modal-head" style="--hc:var(--jake)">
+      <div class="ava contain"><img src="img/jake.gif" alt=""></div>
+      <div><h2><svg class="ic" aria-hidden="true"><use href="#i-dice"/></svg> Rolador de Dados</h2><p>Dados oficiais com os multiplicadores do RPG</p></div>
+      <button class="btn sm round x" data-close aria-label="Fechar"><svg class="ic" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="dice">
+        <button class="btn die blue" data-roll="d20"><b>1d20</b><span>Ataque</span><small>Sucesso em 10+</small></button>
+        <button class="btn die red" data-roll="d40"><b>1d40</b><span>Dano</span><small>&lt;10 multiplica!</small></button>
+        <button class="btn die teal" data-roll="d100def"><b>1d100</b><span>Defesa Absoluta</span><small>Mitiga dano</small></button>
+        <button class="btn die yellow" data-roll="d5"><b>1d5</b><span>Par ou Ímpar</span><small>Bônus aleatório</small></button>
+        <button class="btn die purple" data-roll="d100est"><b>1d100</b><span>Estudo semanal</span><small>Progresso de domingo</small></button>
+        <button class="btn die pink" data-roll="2d6"><b>2d6</b><span>Família & Amor</span><small>Conquista / bebê</small></button>
+      </div>
+      <div id="dice-result"><div class="note" style="text-align:center">O Jake está esperando! Clique em um dado aí em cima pra rolar. <svg class="ic" aria-hidden="true"><use href="#i-paw"/></svg></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODAL: REGRAS ================= -->
+<div class="modal screen" id="m-rules" hidden>
+  <div class="modal-box">
+    <div class="modal-banner" style="background-image:url(img/casa-da-arvore-dia.jpg);background-position:center 30%"></div>
+    <div class="modal-head" style="--hc:var(--finn)">
+      <div class="ava"><img src="img/finn-oculos.jpg" alt=""></div>
+      <div style="color:#fff;text-shadow:1px 1px 0 var(--ink)"><h2><svg class="ic" aria-hidden="true"><use href="#i-book"/></svg> Manual de Bolso de Ooo</h2><p>Combate, estamina, fuga, evolução e mais</p></div>
+      <button class="btn sm round x" data-close aria-label="Fechar"><svg class="ic" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="tabs" id="rules-tabs">
+        <button class="btn sm tab" data-rt="combate"><svg class="ic" aria-hidden="true"><use href="#i-swords"/></svg> Combate & Fuga</button>
+        <button class="btn sm tab" data-rt="estamina"><svg class="ic" aria-hidden="true"><use href="#i-bolt"/></svg> Estamina (EA)</button>
+        <button class="btn sm tab" data-rt="up"><svg class="ic" aria-hidden="true"><use href="#i-chartup"/></svg> Up, Estudo & Grana</button>
+        <button class="btn sm tab" data-rt="pop"><svg class="ic" aria-hidden="true"><use href="#i-star"/></svg> Popularidade</button>
+        <button class="btn sm tab" data-rt="npcs"><svg class="ic" aria-hidden="true"><use href="#i-monster"/></svg> HP de NPCs</button>
+        <button class="btn sm tab" data-rt="familia"><svg class="ic" aria-hidden="true"><use href="#i-heart"/></svg> Família</button>
+      </div>
+      <div class="rules" id="rules-body"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODAL: NERFADOR ================= -->
+<div class="modal screen" id="m-nerf" hidden>
+  <div class="modal-box">
+    <div class="modal-head" style="--hc:var(--fire)">
+      <div class="ava"><img src="img/rei-vampiro.jpg" alt=""></div>
+      <div><h2><svg class="ic" aria-hidden="true"><use href="#i-scale"/></svg> Nerfador Anti-Apelação</h2><p>Ajusta poderes e armas exageradas aos limites do Nível 1, ou gera criações equilibradas</p></div>
+      <button class="btn sm round x" data-close aria-label="Fechar"><svg class="ic" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="tabs" id="nerf-tabs">
+        <button class="btn sm tab" data-nt="habilidade"><svg class="ic" aria-hidden="true"><use href="#i-sparkle"/></svg> Habilidades</button>
+        <button class="btn sm tab" data-nt="arma"><svg class="ic" aria-hidden="true"><use href="#i-swords"/></svg> Armas</button>
+      </div>
+
+      <div id="nerf-skill">
+        <div class="gen-box">
+          <div><b>Sem ideia ou quer algo justo de primeira?</b>Cria uma habilidade temática de Ooo já dentro das regras.</div>
+          <button class="btn sm purple" id="nz-gen-skill"><svg class="ic" aria-hidden="true"><use href="#i-wand"/></svg> Gerar habilidade balanceada</button>
+        </div>
+        <div class="grid g2" style="margin-top:14px">
+          <div><label class="lbl" for="nz-sname"><span>Nome da habilidade</span></label><input class="inp" id="nz-sname" placeholder="Ex: Raio da Morte Absoluta..."></div>
+          <div><label class="lbl" for="nz-stype"><span>Tipo de ação</span></label>
+            <select class="inp" id="nz-stype"><option>Ativa</option><option>Passiva Ativável</option><option>Contra-Ataque</option></select></div>
+        </div>
+        <div style="margin-top:12px">
+          <label class="lbl" for="nz-sdesc"><span>Descrição (cole o texto suspeito de estar apelão)</span></label>
+          <textarea class="inp" id="nz-sdesc" rows="3" placeholder="Ex: Solta um raio que mata qualquer um na hora e faz o alvo perder o turno..."></textarea>
+        </div>
+        <button class="btn big yellow" id="nz-nerf-skill" style="width:100%;margin-top:12px"><svg class="ic" aria-hidden="true"><use href="#i-scale"/></svg> Analisar & nerfar habilidade</button>
+        <div id="nz-skill-res" style="margin-top:14px"></div>
+      </div>
+
+      <div id="nerf-weapon" hidden>
+        <div class="gen-box">
+          <div><b>Gerar arma de Ooo balanceada</b>Tetos justos (+1d50 de dano ou 20% de penetração) e tag DA.</div>
+          <button class="btn sm teal" id="nz-gen-weapon"><svg class="ic" aria-hidden="true"><use href="#i-wand"/></svg> Gerar arma equilibrada</button>
+        </div>
+        <div class="grid g2" style="margin-top:14px">
+          <div><label class="lbl" for="nz-wname"><span>Nome da arma / artefato</span></label><input class="inp" id="nz-wname" placeholder="Ex: Espada Destruidora de Mundos..."></div>
+          <div><label class="lbl"><span>Tipo</span></label><label class="check"><input type="checkbox" id="nz-wmag" checked> <svg class="ic" aria-hidden="true"><use href="#i-orb"/></svg> Arma mágica</label></div>
+        </div>
+        <div style="margin-top:12px">
+          <label class="lbl" for="nz-wfx"><span>Efeito da arma (exagerado ou em dúvida)</span></label>
+          <textarea class="inp" id="nz-wfx" rows="2" placeholder="Ex: Dá +100 de dano e ignora 100% da armadura..."></textarea>
+        </div>
+        <button class="btn big yellow" id="nz-nerf-weapon" style="width:100%;margin-top:12px"><svg class="ic" aria-hidden="true"><use href="#i-scale"/></svg> Analisar & nerfar arma</button>
+        <div id="nz-weapon-res" style="margin-top:14px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= TELA: LEVAR FICHA ================= -->
+<div class="modal screen" id="m-backup" hidden>
+  <div class="modal-box">
+    <div class="modal-head" style="--hc:var(--bmo)">
+      <div class="ava"><img src="img/finn-joinha.jpg" alt=""></div>
+      <div><h2><svg class="ic" aria-hidden="true"><use href="#i-chest"/></svg> Levar a ficha pra outro lugar</h2><p>Guarde um código ou arquivo e abra a ficha em outro navegador, PC ou celular</p></div>
+    </div>
+    <div class="modal-body">
+      <div class="bk-box">
+        <h3><svg class="ic" aria-hidden="true"><use href="#i-next"/></svg> 1. Exportar esta ficha</h3>
+        <p>Copie o código e mande para você mesmo no Zap, ou baixe o arquivo.</p>
+        <div class="row" style="flex-wrap:wrap">
+          <button class="btn green" id="bk-copy"><svg class="ic" aria-hidden="true"><use href="#i-clipboard"/></svg> Copiar código da ficha</button>
+          <button class="btn" id="bk-download"><svg class="ic" aria-hidden="true"><use href="#i-chest"/></svg> Baixar arquivo .json</button>
+        </div>
+        <textarea class="inp bk-code" id="bk-out" rows="3" readonly aria-label="Código da ficha"></textarea>
+      </div>
+      <div class="bk-box">
+        <h3><svg class="ic" aria-hidden="true"><use href="#i-back"/></svg> 2. Importar uma ficha</h3>
+        <p>Cole aqui o código (começa com <b>OOO1:</b>) ou escolha o arquivo .json.</p>
+        <textarea class="inp bk-code" id="bk-in" rows="3" placeholder="OOO1:..." aria-label="Colar código da ficha"></textarea>
+        <div class="row" style="flex-wrap:wrap;margin-top:10px">
+          <button class="btn blue" id="bk-import"><svg class="ic" aria-hidden="true"><use href="#i-ok"/></svg> Carregar ficha</button>
+          <label class="btn" style="cursor:pointer"><svg class="ic" aria-hidden="true"><use href="#i-scroll"/></svg> Escolher arquivo<input type="file" id="bk-file" accept=".json,application/json,text/plain" hidden></label>
+        </div>
+      </div>
+      <div class="note"><svg class="ic" aria-hidden="true"><use href="#i-warning"/></svg> Importar <b>substitui</b> a ficha que está neste navegador. Se quiser guardar a atual, exporte ela antes.</div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script>
+/* =====================================================================
+   DADOS DO SISTEMA (portados do site original)
+   ===================================================================== */
+const RACES = [
+  {id:'humano',nome:'HUMANO',descricao:'Os humanos são uma das espécies mais versáteis de Ooo. Embora não possuam uma natureza sobrenatural específica, sua capacidade de adaptação permite que desenvolvam diferentes profissões e conhecimentos.',ref:'https://adventuretime.fandom.com/wiki/Humans',bonus:{inteligencia:2,velocidade:1,fatorCura:-3}},
+  {id:'doce_vivo',nome:'DOCE VIVO',descricao:'Os Doces Vivos são criaturas formadas por açúcar, confeitos, massas e outras substâncias comestíveis. Sua aparência varia enormemente, podendo assumir formas humanoides, animais ou incomuns.',ref:'https://adventuretime.fandom.com/wiki/Candy_People',bonus:{resistencia:1,inteligencia:1,velocidade:-1}},
+  {id:'elemental_do_fogo',nome:'ELEMENTAL DO FOGO',descricao:'Seres cuja existência está ligada às chamas e à energia térmica. Seus corpos podem ser compostos inteiramente de fogo ou manifestar calor e fúria constantemente.',ref:'https://adventuretime.fandom.com/wiki/Fire_Elementals',bonus:{resistencia:2,forca:1,inteligencia:1,velocidade:-1}},
+  {id:'elemental_do_gelo',nome:'ELEMENTAL DO GELO',descricao:'Criaturas conectadas às forças do frio e do congelamento. Seus corpos apresentam temperaturas extremamente baixas e estruturas feitas de gelo, neve ou energia congelante.',ref:'https://adventuretime.fandom.com/wiki/Ice_Elementals',bonus:{resistencia:2,inteligencia:1,velocidade:1,forca:-1}},
+  {id:'gosma',nome:'GOSMA',descricao:'Possuem corpos gelatinosos, flexíveis e de composição variável. Sua estrutura permite deformações maleáveis que seriam impossíveis para criaturas de anatomia convencional.',ref:'https://adventuretime.fandom.com/wiki/Slime_People',bonus:{fatorCura:2,velocidade:1,forca:-1}},
+  {id:'caroco',nome:'CAROÇO',descricao:'Habitantes do Espaço Caroço, conhecidos por seus corpos arredondados, flutuantes e natureza dimensional peculiar. Sua constituição apresenta propriedades anti-transformação.',ref:'https://adventuretime.fandom.com/wiki/Lumpy_Space_People',bonus:{inteligencia:1,velocidade:1,resistencia:1,forca:-1}},
+  {id:'ser_limao',nome:'SER LIMÃO',descricao:'Possuem corpos semelhantes a limões, com uma constituição peculiar e personalidades frequentemente intensas e excêntricas. Marcados pela rigidez e disciplina inquebrável.',ref:'https://adventuretime.fandom.com/wiki/Lemon_People',bonus:{resistencia:2,inteligencia:1,forca:1,velocidade:-1}},
+  {id:'ser_frutifero',nome:'SER FRUTÍFERO',descricao:'Criaturas que apresentam características físicas inspiradas em frutas (morangos, bagas, framboesas). Podem possuir cascas, sementes, folhas e néctar nutritivo.',ref:'https://adventuretime.fandom.com/wiki/Wildberry_Princess',bonus:{fatorCura:1,velocidade:1,resistencia:-1}},
+  {id:'ser_vegetal',nome:'SER VEGETAL',descricao:'Corpos formados total ou parcialmente por matéria vegetal, raízes profundas, folhas, flores e galhos, com incrível poder de enraizamento e fotossíntese.',ref:'https://adventuretime.fandom.com/wiki/Plants',bonus:{fatorCura:2,resistencia:1,velocidade:-1}},
+  {id:'animal_antropomorfico',nome:'ANIMAL ANTROPOMÓRFICO',descricao:'Criaturas do reino animal que desenvolveram inteligência, fala e características bípedes ou humanoides. Sentidos aguçados e instintos velozes.',ref:'https://adventuretime.fandom.com/wiki/Category:Animals',bonus:{velocidade:1,resistencia:1,fatorCura:1,inteligencia:-1}},
+  {id:'vampiro',nome:'VAMPIRO',descricao:'Criaturas sobrenaturais que sobrevivem por meio da absorção de sangue ou da cor vermelha e energias vitais. Força lendária, agilidade e poderes místicos nas sombras.',ref:'https://adventuretime.fandom.com/wiki/Vampires',bonus:{velocidade:2,forca:2,fatorCura:1,resistencia:-1}},
+  {id:'demonio',nome:'DEMÔNIO',descricao:'Criaturas de origem sobrenatural, frequentemente associadas à Noitosfera (Nightosphere) e regiões profundas do submundo. Aspectos imponentes e pactos ardilosos.',ref:'https://adventuretime.fandom.com/wiki/Demons',bonus:{inteligencia:1,resistencia:1,forca:1,velocidade:-1}},
+  {id:'fantasma',nome:'FANTASMA',descricao:'Entidades espirituais incorpóreas que permanecem no mundo após a perda do corpo físico. Levitação fluida e raciocínio espectral rápido.',ref:'https://adventuretime.fandom.com/wiki/Ghosts',bonus:{inteligencia:2,velocidade:2,fatorCura:1,resistencia:-2}},
+  {id:'morto_vivo',nome:'MORTO-VIVO',descricao:'Retornaram à existência após a morte ou foram preservados por necromancia ou feitiços ancestrais. Não sofrem da mesma fragilidade dos órgãos vivos.',ref:'https://adventuretime.fandom.com/wiki/Undead',bonus:{resistencia:2,fatorCura:1,velocidade:-1}},
+  {id:'criatura_magica',nome:'CRIATURA MÁGICA',descricao:'Seres cuja própria essência e respiração estão ligadas aos fluxos de mana e sortilégios de Ooo. Podem possuir chifres, auras cintilantes ou anatomias encantadas.',ref:'https://adventuretime.fandom.com/wiki/Magical_Creatures',bonus:{inteligencia:2,velocidade:1,fatorCura:1,resistencia:-1}},
+  {id:'mutante',nome:'MUTANTE',descricao:'Indivíduos cuja estrutura física foi alterada pelas bombas de radiação da Guerra dos Cogumelos, experimentos ou resíduos tóxicos misteriosos.',ref:'https://adventuretime.fandom.com/wiki/Mutants',bonus:{resistencia:1,velocidade:1,inteligencia:1,fatorCura:-1}},
+  {id:'ser_celestial',nome:'SER CELESTIAL',descricao:'Entidades associadas às forças estelares, ao cosmos e a manifestações sobrenaturais luminescentes. Consciência superior e voo gracioso.',ref:'https://adventuretime.fandom.com/wiki/Celestials',bonus:{inteligencia:2,velocidade:1,fatorCura:1,resistencia:-1}},
+  {id:'ser_aquatico',nome:'SER AQUÁTICO',descricao:'Adaptados às profundezas de mares, lagos e rios de Ooo. Respiração branquial ou anfíbia, natação veloz e pele adaptada à pressão hidrostática.',ref:'https://adventuretime.fandom.com/wiki/Category:Aquatic_Creatures',bonus:{resistencia:1,velocidade:1,fatorCura:1,forca:-1}},
+  {id:'ser_de_cristal',nome:'SER DE CRISTAL',descricao:'Corpos formados inteiramente por quartzo, rubis ou gemas preciosas translúcidas. Densidade blindada com capacidades de refração de feixes e luz.',ref:'https://adventuretime.fandom.com/wiki/Crystals',bonus:{resistencia:2,forca:1,velocidade:-1}},
+  {id:'ser_de_nuvem',nome:'SER DE NUVEM',descricao:'Habitantes das alturas formados por matéria de condensação e névoa etérea. Quase sem atrito, deslocam-se com extrema velocidade e graciosidade pelos ares.',ref:'https://adventuretime.fandom.com/wiki/Cloud_People',bonus:{velocidade:2,inteligencia:1,resistencia:-1}},
+  {id:'robo',nome:'ROBÔ',descricao:'Construções mecatrônicas inteligentes criadas na era pré-guerra ou por inventores modernos (como BMO ou MOs). Blindagem sintética e cálculo objetivo.',ref:'https://adventuretime.fandom.com/wiki/Robots',bonus:{resistencia:2,inteligencia:1,fatorCura:-1}},
+  {id:'ciborgue',nome:'CIBORGUE',descricao:'Seres orgânicos que integraram próteses de alta voltagem, implantes metálicos ou engrenagens biomecânicas ao seu organismo.',ref:'https://adventuretime.fandom.com/wiki/Cyborgs',bonus:{resistencia:1,velocidade:1,forca:1}},
+  {id:'criatura_de_pedra',nome:'CRIATURA DE PEDRA',descricao:'Gigantes ou pequenos seres constituídos de granito, basalto e minerais pesados. Uma fortaleza ambulante praticamente inabalável, porém de passos pesados.',ref:'https://adventuretime.fandom.com/wiki/Rock_Creatures',bonus:{resistencia:2,forca:1,velocidade:-2}}
+];
+
+const KINGDOMS = [
+  {id:'reino_doce',nome:'Reino Doce (Candy Kingdom)',descricao:'Uma das maiores potências políticas e tecnológicas de Ooo, governada pela Princesa Jujuba. Cidades de confeito, laboratórios avançados e a famosa Guarda Banana.',passivaNome:'Ciência Açucarada (Passiva)',passivaEfeito:'+1d100 de eficiência na criação de equipamentos tecnológicos e científicos. Acesso facilitado aos laboratórios e instalações de pesquisa.',tecnologia:'Alta tecnologia, engenharia científica, robótica e experimentação mágica.'},
+  {id:'reino_de_fogo',nome:'Reino de Fogo (Fire Kingdom)',descricao:'Uma região vulcânica extremamente quente habitada por seres ígneos e governada pela Princesa de Fogo. Sociedade guerreira guiada pela honra e poder das chamas.',passivaNome:'Coração Flamejante (Passiva)',passivaEfeito:'+3 de resistência contra calor e efeitos de fogo, além de +1 de eficiência em d20 com habilidades relacionadas ao elemento fogo.',tecnologia:'Magia elemental de calor e tecnologia bélica medieval.'},
+  {id:'reino_gelado',nome:'Reino Gelado (Ice Kingdom)',descricao:'Vasta cordilheira nevada repleta de pináculos pontiagudos de gelo, cavernas azuis e bandos de pinguins liderados pelo Gunter.',passivaNome:'Sangue Congelante (Passiva)',passivaEfeito:'+3 de resistência contra frio e efeitos de gelo, além de +1 de eficiência no d20 em habilidades relacionadas ao elemento gelo.',tecnologia:'Magia de criogenia arcana e refúgios medievais congelados.'},
+  {id:'reino_das_gosmas',nome:'Reino das Gosmas (Slime Kingdom)',descricao:'Região úmida, viscosa e brilhante governada pela Princesa Gosma. Festas de patinação no lodo e seres de plasticidade corporal extrema.',passivaNome:'Corpo Maleável (Passiva)',passivaEfeito:'+2 de resistência contra impactos físicos e capacidade de deformar parcialmente o corpo para atravessar frestas e espaços estreitos.',tecnologia:'Biologia incomum, alquimia de soluções e magia natural viscosa.'},
+  {id:'reino_das_frutas_silvestres',nome:'Reino das Frutas Silvestres (Wildberry Kingdom)',descricao:'Território bucólico e fértil habitado por seres inspirados em frutas silvestres, governado pela Princesa Frutinha.',passivaNome:'Essência Natural (Passiva)',passivaEfeito:'+1 de eficiência em todas as habilidades de plantas, ervas e botânica arcana.',tecnologia:'Tecnologia primitiva harmônica e magia natural florestal.'},
+  {id:'espaco_caroco',nome:'Espaço Caroço (Lumpy Space)',descricao:'Uma dimensão alternativa etérea e arroxeada, onde tudo flutua e a realeza do drama cósmico é comandada por carismáticos habitantes bulbosos.',passivaNome:'Existência Irregular (Passiva)',passivaEfeito:'+3 de resistência contra alterações corporais forçadas e efeitos de metamorfose indesejada. Facilidade para reconhecer distorções dimensionais.',tecnologia:'Tecnologia variável cósmica e magia de deslocamento planar.'},
+  {id:'condado_de_lemongrab',nome:'Condado de Lemongrab (Earl of Lemongrab)',descricao:'Cidadela austera de arquitetura rígida onde a disciplina, as leis severas e a busca por ordem absoluta imperam dia e noite.',passivaNome:'Ordem Absoluta (Passiva)',passivaEfeito:'+1 de eficiência em atividades que exigem disciplina severa, concentração sob pressão e execução de tarefas metódicas. Percepção de fraudes.',tecnologia:'Tecnologia medieval fabril e experimentos alquímicos ácidos.'},
+  {id:'reino_das_nuvens',nome:'Reino das Nuvens (Cloud Kingdom)',descricao:'Reino aéreo e flutuante sobre as brumas de Ooo, pontilhado por templos brancos, arco-íris e criaturas celestiais aladas.',passivaNome:'Espírito Celeste (Passiva)',passivaEfeito:'+1 de eficiência em habilidades relacionadas ao vento, correntes aéreas e manipulação da atmosfera.',tecnologia:'Magia atmosférica pura e artefatos de sustentação celestial.'}
+];
+
+const DEITIES = [
+  {id:'nenhuma',nome:'Nenhuma / Não Devoto',titulo:'Independente',dominios:['Livre Arbítrio','Mundo Mortal'],simbolos:['Nenhum'],descricao:'O personagem não segue formalmente nenhuma divindade de Ooo ou Marte, confiando em suas próprias forças.'},
+  {id:'abraham_lincoln',nome:'ABRAHAM LINCOLN',titulo:'O Rei de Marte, Protetor dos Marcianos e Soberano da Justiça',dominios:['Justiça','Liderança','Proteção','Coragem','Sacrifício','Liberdade','Civilização','Sabedoria','Honra'],simbolos:['Coroa Marciana','Livro Aberto','Balança da Justiça','Águia de Asas Abertas','Planeta Vermelho'],descricao:'Antigo governante de Marte, reverenciado pela coragem e por sacrificar sua própria imortalidade pelos seus súditos. Padroeiro de líderes justos e defensores dos fracos.'},
+  {id:'grob_gob_glob_grod',nome:'GROB GOB GLOB GROD',titulo:'A Divindade de Marte, Senhor dos Quatro Rostos e Guardião da Ordem Celestial',dominios:['Divindade','Fé','Devoção','Ordem Celestial','Equilíbrio','Julgamento Sagrado','Sabedoria Cósmica'],simbolos:['Quatro Rostos Divinos','Círculo Celestial em 4 Partes','Estrela de Quatro Pontas','Pedras Vermelhas de Marte'],descricao:'Entidade cósmica milenar com quatro rostos que observam o mundo sob perspectivas distintas compartilhando uma consciência una. Mantenedor do equilíbrio cósmico.'},
+  {id:'morte',nome:'MORTE',titulo:'Soberana do Mundo dos Mortos, Senhora do Último Suspiro e Guardiã da Passagem',dominios:['Morte','Fim dos Ciclos','Mundo dos Mortos','Almas e Espíritos','Passagem Planar','Silêncio e Descanso'],simbolos:['Caveiras e Ossos Antigos','Foice Negra','Ampulheta de Areia Escura','Portões do Além','Vela de Chama Violeta'],descricao:'Soberana majestosa do Mundo dos Mortos. Não é cruel, mas representa o encerramento digno da existência mortal e a justiça impassível do destino após a vida.'},
+  {id:'party_god',nome:'PARTY GOD',titulo:'O Deus das Festas, Senhor da Celebração e Espírito da Alegria Incontrolável',dominios:['Festas','Música','Dança','Alegria','Celebração','Euforia','Liberdade de Expressão','Comunidade'],simbolos:['Máscara Colorida','Globo de Espelhos','Sapatos de Dança','Notas Musicais em Círculo','Chuva de Confetes'],descricao:'Entidade mística com cabeça de lobo e chapéu de festa flutuante, senhor supremo dos batimentos musicais e da alegria desvairada que dissipa a melancolia e o medo.'},
+  {id:'vida',nome:'VIDA',titulo:'A Senhora da Existência, Guardiã do Renascimento e Fonte de Toda a Vitalidade',dominios:['Vida','Renascimento','Nascimento','Vitalidade','Cura Profunda','Renovação','Fertilidade','Esperança'],simbolos:['Árvore Ancestral Florida','Semente em Esfera de Luz Dourada','Borboleta Dourada','Coração com Raízes'],descricao:'A essência primordial da qual brotam as sementes, as crianças e a energia regenerativa de todas as criaturas da Terra de Ooo.'}
+];
+
+const ATTR = {
+  inteligencia:{nome:'Inteligência',descricao:'Mede a velocidade neural, raciocínio lógico em combate, capacidade de previsão tática e análise de fraquezas em tempo real.',
+    regra:'Regra de Confronto: Se dois personagens de Inteligência 10 se enfrentarem em um duelo tático, a disputa é decidida pelo Nível Geral do Player. Se forem do mesmo nível, ambos se neutralizam na leitura.',
+    tiers:[[1,2,'1–2','Percepção Prática','Processamento rápido de dados. Percebe detalhes do cenário e intenções de ataque óbvias antes que aconteçam. Pode desviar de 1 ataque por combate.'],
+      [3,4,'3–4','Análise de Combate','Analisa a mecânica do oponente com poucas trocas de golpes. Consegue prever o padrão de ataque do inimigo por 2 turnos (1 vez por combate).'],
+      [5,6,'5–6','Cálculo Tático Avançado','Calcula trajetórias e impactos em milissegundos. Permite esquivar de ataques com precisão tática, mesmo se o oponente for mais rápido (2 vezes por combate).'],
+      [7,9,'7–9','Previsão Adaptativa','Identifica instantaneamente pontos fracos do inimigo (incluindo falhas anatômicas e limites de poder). Pode prever os movimentos exatos de um oponente até 3 vezes por luta.'],
+      [10,99,'10','Superinteligência','Capacidade cognitiva de nível computacional/super-humano. Capaz de traçar planos perfeitos sob pressão e prever movimentos do inimigo até 5 vezes por luta.']]},
+  fatorCura:{nome:'Fator de Cura',descricao:'Capacidade de conseguir regenerar ferimentos e sobreviver a traumas graves se o cérebro/coração durarem o suficiente.',
+    regra:'Regra de Nível x Recuperação: Se receber ataque de oponente de Nível Maior, a regeneração entra em colapso (+2 turnos por Nível de diferença).',
+    tiers:[[1,2,'1–2','Cicatrização Apressada','Fecha cortes superficiais e queimaduras de 1º grau rapidamente.'],
+      [3,4,'3–4','Reconstrução Tecidual','Regenera órgãos pequenos decepados (olhos, orelhas, dedos e mandíbulas parciais).'],
+      [5,6,'5–6','Reconstrução Óssea e Membros','Regenera braços e pernas decepados, além de costelas e vértebras fraturadas em combate.'],
+      [7,9,'7–9','Fator de Cura Aceleração Máxima','Regenera qualquer ferimento não-letal em apenas 5 segundos (1 turno narrativo).'],
+      [10,99,'10','Semi-Imortalidade','Regenera até 2 vezes por batalha até mesmo o coração ou tecido cerebral destruído.']]},
+  resistencia:{nome:'Resistência',descricao:'Mede o quão "Muralha" o personagem é, aguentando impactos físicos, venenos, explosões e magias.',regra:'',
+    tiers:[[1,2,'1–2','Inviolável a Danos Menores','Imune a ataques físicos convencionais de Força inferior à sua Resistência.'],
+      [3,4,'3–4','Absorção Anti-Explosiva','Tanque de explosões de artilharia/mísseis sem sofrer dano (se seu Nível for superior ao do atacante).'],
+      [5,6,'5–6','Blindagem Bio-Mental','Inviolável ao controle psíquico e manipulação mental de oponentes de nível inferior.'],
+      [7,9,'7–9','Campo de Inércia','Imune a venenos e toxinas biológicas. Pode ativar uma Aura de Densidade de 10m (2 vezes por luta) para absorver ataques para si e aliados.'],
+      [10,99,'10','Efeito Repulsor Total','Aura pode ser usada 4 vezes por luta. Qualquer ataque físico de Força 1–9 que atingir o personagem quebra ossos e destrói o membro do atacante no impacto. Pode segurar projéteis físicos e devolvê-los.']]},
+  forca:{nome:'Força',descricao:'Capacidade de causar destruição em massa com as próprias mãos e armas brancas.',regra:'',
+    tiers:[[1,2,'1–2','Força Destrutiva','Capaz de derrubar árvores adultas e partir veículos e carretas ao meio com um soco.'],
+      [3,4,'3–4','Quebrador de Ossos','Destrói a estrutura óssea do inimigo em um golpe (se seu Nível for maior e a resistência do oponente for 1–3).'],
+      [5,6,'5–6','Abalo Tectônico','Provoca tremores de terra e fendas no solo apenas ao pisar firme ou caminhar acelerado.'],
+      [7,9,'7–9','Pressão Gravitacional','Projeta uma aura de 10 metros (3 vezes por luta) que esmaga o oponente contra o chão devido ao deslocamento de ar e gravidade (afeta inimigos de resistência 1–5).'],
+      [10,99,'10','Destruidor','Pode partir ossos e esmagar oponentes apenas com a aproximação física ou toque leve. Expande a aura gravitacional em até 100 metros (5 vezes por luta).']]},
+  velocidade:{nome:'Velocidade',descricao:'Deslocamento corporal, tempo de reflexo motor e quebra da barreira da atmosfera.',regra:'',
+    tiers:[[1,2,'1–2','Super-Velocidade Básica','Deslocamento ágil de até 100 km/h em terra firme.'],
+      [3,4,'3–4','Pós-Imagem','Cria imagens residuais que confundem o oponente (2 vezes por combate).'],
+      [5,6,'5–6','Voo / Corrida Subsônica','Move-se a até 900 km/h (capaz de cruzar cidades inteiras em segundos).'],
+      [7,9,'7–9','Velocidade Relativística','100.878,544 km/s. O pensamento e movimento são tão velozes que oponentes de Inteligência 7–9 não conseguem prever nem reagir.'],
+      [10,99,'10','Dobra Dimensional / Velocidade Superlumínica','555.555.666 km/ms. Move-se tão rápido que rasga o tecido do espaço-tempo, abrindo fendas dimensionais e permitindo teletransporte instantâneo (1 vez por combate).']]}
+};
+const ATTR_ORDER = ['inteligencia','fatorCura','resistencia','forca','velocidade'];
+const ATTR_LOOK = {
+  inteligencia:{icon:'brain',color:'#c9b2f2'}, fatorCura:{icon:'heartplus',color:'#a6e38a'},
+  resistencia:{icon:'shield',color:'#ffd27a'}, forca:{icon:'fist',color:'#ff9d85'}, velocidade:{icon:'bolt',color:'#8fd3f4'}
+};
+
+/* =====================================================================
+   CÁLCULOS
+   ===================================================================== */
+function calcHP(level){
+  if (level <= 10) return 100;
+  let hp = 100;
+  const steps = [[11,20,10],[21,30,15],[31,40,20],[41,50,25],[51,60,10],[61,70,15],[71,80,20],[81,90,25],[91,100,30],[101,110,10],[111,120,15]];
+  for (const [a,b,inc] of steps) for (let l=a; l<=Math.min(level,b); l++) hp += inc;
+  if (level > 120) hp += (level - 120) * 20;
+  return hp;
+}
+function calcEA(level){
+  if (level < 100) return 100; if (level < 200) return 110; if (level < 400) return 120;
+  if (level < 800) return 130; if (level < 1600) return 140; return 150;
+}
+function actionEconomy(level){
+  if (level <= 10) return {ativas:2,passivas:1,contraAtaques:3};
+  if (level <= 30) return {ativas:3,passivas:2,contraAtaques:3};
+  if (level <= 60) return {ativas:4,passivas:3,contraAtaques:4};
+  if (level <= 100) return {ativas:5,passivas:3,contraAtaques:4};
+  if (level <= 200) return {ativas:6,passivas:3,contraAtaques:5};
+  if (level <= 500) return {ativas:7,passivas:4,contraAtaques:5};
+  if (level <= 1000) return {ativas:8,passivas:4,contraAtaques:6};
+  return {ativas:9,passivas:5,contraAtaques:6};
+}
+function getTier(key, value){
+  const a = ATTR[key]; if (!a || value <= 0) return null;
+  const t = a.tiers.find(t => value >= t[0] && value <= t[1]) || a.tiers[a.tiers.length-1];
+  return {range:t[2],titulo:t[3],efeito:t[4]};
+}
+const getRace = id => RACES.find(r => r.id === id || r.nome.toLowerCase() === String(id).toLowerCase());
+const getKingdom = id => KINGDOMS.find(k => k.id === id);
+const getDeity = id => DEITIES.find(d => d.id === id);
+function finalAttrs(s){
+  const b = (getRace(s.raca)||{}).bonus || {}; const o = {};
+  for (const k of ATTR_ORDER) o[k] = Math.max(0, (s.atributosBase[k]||0) + (b[k]||0));
+  return o;
+}
+const sumBase = s => ATTR_ORDER.reduce((t,k) => t + (s.atributosBase[k]||0), 0);
+const signed = v => v > 0 ? `+${v}` : `${v}`;
+const withDA = e => /\(DA\)/.test(e) ? e : `${e} (DA)`;
+function infamyStatus(p){
+  if (p >= 1000) return 'Inimigo Público (sentença de captura/morte)';
+  if (p >= 700) return 'Perseguido por tropas especiais';
+  if (p >= 500) return 'Alvo prioritário do reino';
+  if (p >= 300) return 'Investigado oficialmente';
+  if (p >= 100) return 'Vigiado e reconhecido por guardas';
+  return 'Cidadão comum';
+}
+function reputationScope(p){
+  if (p >= 2000) return 'Lenda mundial (nome gravado na história de Ooo)';
+  if (p >= 1500) return 'Ícone internacional';
+  if (p >= 1000) return 'Famoso em quase toda Ooo';
+  if (p >= 500) return 'Conhecido em reinos vizinhos';
+  return 'Reconhecimento local';
+}
+
+/* =====================================================================
+   NERFADOR
+   ===================================================================== */
+function nerfSkill(skill){
+  let d = skill.descricao || ''; const changes = [], reasons = []; let did = false;
+  const low = d.toLowerCase();
+  const has = arr => arr.some(w => low.includes(w));
+  if (has(['mata na hora','hit kill','morte instantânea','dano infinito','destrói instantaneamente','1000 de dano','d1000','100% de vida'])) {
+    d = d.replace(/(mata na hora|hit kill|morte instantânea|dano infinito|destrói instantaneamente|1000 de dano|d1000|100% de vida)[^.]*/gi,'causa +1d40 de dano extra em caso de sucesso no d20 de ataque');
+    changes.push('Dano infinito / morte instantânea reduzido para dano balanceado (+1d40).');
+    reasons.push('O sistema de Ooo não permite morte instantânea direta sem rolagem regular de combate e 0 HP.'); did = true;
+  }
+  if (has(['perde o turno','anula o turno','sem jogar','retira o turno','fica paralisado por 2 turnos','pula a vez'])) {
+    d = d.replace(/(perde o turno|anula o turno|sem jogar|retira o turno|fica paralisado por 2 turnos|pula a vez)[^.]*/gi,'aplica -2 no próximo teste de d20 do adversário por 1 rodada');
+    changes.push('Remoção de perda de turno do adversário (substituído por penalidade de -2 no d20).');
+    reasons.push('Regra oficial: habilidades defensivas ou de reação não podem retirar o próximo turno do atacante.'); did = true;
+  }
+  if (has(['invulnerável','imune a todo dano','imunidade total','nenhum dano para sempre','não pode ser atingido'])) {
+    d = d.replace(/(invulnerável|imune a todo dano|imunidade total|nenhum dano para sempre|não pode ser atingido)[^.]*/gi,'concede +1d50 de mitigação de dano por 1 turno (uso único por combate)');
+    changes.push('Imunidade absoluta substituída por mitigação com dado balanceado (+1d50).');
+    reasons.push('Invulnerabilidades permanentes quebram o balanceamento da Terra de Ooo.'); did = true;
+  }
+  if (skill.tipo === 'Contra-Ataque' && has(['1d40','1d50','dano direto'])) {
+    d = d.replace(/(\+?1d[0-9]+\s*(de dano)?)/gi,'efeito de desestabilização com -3 no próximo ataque do alvo');
+    changes.push('Contra-Ataque com dado de dano convertido para efeito tático de controle.');
+    reasons.push('Contra-ataques de habilidade não têm dado de dano, só precisam de sucesso no d20.'); did = true;
+  }
+  if (has(['rouba 50%','rouba toda a energia','rouba 100%','rouba 40%'])) {
+    d = d.replace(/(rouba (50%|toda a energia|100%|40%)[^.]*)/gi,'rouba até 20% da Estamina Arcana do oponente (máximo permitido pelo sistema)');
+    changes.push('Roubo de energia limitado a 20% da EA.');
+    reasons.push('Regra oficial: não é permitido roubar mais de 30% da energia do adversário.'); did = true;
+  }
+  if (has(['restaura 50 ea','restaura 100 ea','restaura toda a estamina'])) {
+    d = d.replace(/(restaura (50|100|toda a) ea[^.]*)/gi,'restaura 20 de Estamina Arcana (máximo do sistema, consome o turno)');
+    changes.push('Recuperação de Estamina limitada ao teto de 20 EA.');
+    reasons.push('Regra oficial: restauração permite no máximo 20 EA.'); did = true;
+  }
+  if (!low.includes('ea') && !low.includes('estamina')) {
+    d += ' [Custo: -5 EA por ativação]';
+    changes.push('Adicionado custo padrão de Estamina Arcana (-5 EA).');
+    reasons.push('Toda técnica voluntária consome Estamina Arcana em combate.'); did = true;
+  }
+  if (!low.includes('recarga') && !low.includes('cooldown') && skill.tipo === 'Ativa') {
+    d += ' [Recarga de 2 turnos em caso de falha no d20 inicial]';
+    changes.push('Adicionada regra oficial de recarga de 2 turnos para falha no d20.'); did = true;
+  }
+  return {nerfed:{...skill, descricao:d.trim(), nome:skill.nome.trim() || 'Habilidade de Ooo Balanceada'}, changes, reasons, wasNerfed:did};
+}
+function nerfWeapon(nome, efeito, isMagica){
+  const n = nome.trim() || 'Espada de Aventureiro'; let e = efeito.trim() || '+1d30 de dano cortante';
+  const changes = [], reasons = []; let did = false; const low = e.toLowerCase();
+  const has = arr => arr.some(w => low.includes(w));
+  if (has(['1d100 de dano','+100 de dano','hit kill','mata qualquer inimigo','corta tudo ao meio'])) {
+    e = e.replace(/(1d100 de dano|\+100 de dano|hit kill|mata qualquer inimigo|corta tudo ao meio)[^.]*/gi,'+1d50 de dano');
+    changes.push('Dano da arma limitado ao teto oficial inicial (+1d50).');
+    reasons.push('O manual de Ooo estabelece +1d50 como dano máximo para armas mágicas iniciais.'); did = true;
+  }
+  if (has(['ignora toda a defesa','ignora 100%','ignora 50%','ignora a armadura completamente'])) {
+    e = e.replace(/(ignora toda a defesa|ignora 100%|ignora 50%|ignora a armadura completamente)[^.]*/gi,'ignora 20% da defesa do alvo');
+    changes.push('Penetração de defesa limitada ao teto de 20% (regra do Machado).');
+    reasons.push('Machados mágicos ignoram até 20% da defesa.'); did = true;
+  }
+  if (has(['defesa infinita','defende todo o dano sempre','1d200 de defesa'])) {
+    e = e.replace(/(defesa infinita|defende todo o dano sempre|1d200 de defesa)[^.]*/gi,'+1d100 de defesa');
+    changes.push('Defesa ajustada para o teto de +1d100.');
+    reasons.push('Escudos concedem no máximo +1d100 de defesa.'); did = true;
+  }
+  if (!e.includes('(DA)')) {
+    e += ' (DA)'; changes.push('Adicionada a sigla oficial (DA) — Descrição Anterior.');
+    reasons.push('Nos turnos seguintes ao primeiro uso basta citar a sigla (DA).'); did = true;
+  }
+  if (isMagica && !e.includes('inerte abaixo de 20 EA')) {
+    e += ' [50% de efeito abaixo de 40 EA, inerte abaixo de 20 EA]';
+    changes.push('Adicionado limitador oficial de exaustão de Estamina Arcana.'); did = true;
+  }
+  return {nerfed:{nome:n, efeito:e, isMagica}, changes, reasons, wasNerfed:did};
+}
+const SKILL_TEMPLATES = [
+  ['Corte de Lâmina Espectral','Ativa','Concentra a aura de combate na ponta da arma, desferindo um golpe veloz que causa +1d40 de dano físico e projeta faíscas brilhantes. [Custo: -5 EA | Recarga de 2 turnos se o d20 for < 10]'],
+  ['Salto Elástico de Ooo','Passiva Ativável','O aventureiro flexiona seu corpo como borracha de chiclete, amortecendo aterrissagens ou recebendo +1d30 de defesa contra impactos contundentes. [Custo: -5 EA | Máx 2x por combate]'],
+  ['Chute Desestabilizador','Contra-Ataque','Reage ao ataque inimigo com uma rasteira precisa nos pontos de equilíbrio. Não causa dado de dano puro, mas se obtiver sucesso no d20 impõe -3 no próximo teste do oponente.'],
+  ['Sopro de Brasas Encantadas','Ativa','Exala uma lufada de fagulhas térmicas do Reino de Fogo em cone de 5 metros, causando +1d35 de dano de calor e iluminando a área. [Custo: -8 EA | Recarga de 2 turnos em falha]'],
+  ['Escudo de Cristal Refletor','Passiva Ativável','Ergue uma barreira translúcida mineral que absorve até +1d50 de dano mágico elemental. [Custo: -8 EA | Limite: 1 uso por combate]'],
+  ['Fio de Caramelo Pegajoso','Contra-Ataque','Dispara um filamento viscoso de açúcar puxando a arma do adversário para o lado. Sem dado de dano; com sucesso no d20 reduz o próximo ataque do inimigo em 50%.'],
+  ['Golpe Tectônico Terrestre','Ativa','Bate com força os calcanhares no solo, abrindo fendas rasas que causam +1d30 de dano de impacto e forçam o alvo a recuar 3 metros. [Custo: -5 EA]'],
+  ['Nuvem de Distração de Algodão','Passiva Ativável','Libera vapores brancos perfumados que ofuscam a visão de inimigos ao redor, concedendo vantagem no próximo teste de esquiva. [Custo: -5 EA]'],
+  ['Concentração Marcial Marciana','Passiva Ativável','Fecha os olhos por um instante sintonizando a gravidade marciana, concedendo +2 no próximo teste de 1d20 de ataque. [Custo: -5 EA]'],
+  ['Aparada Rápida com a Bainha','Contra-Ataque','Interpõe a bainha reforçada contra o golpe iminente, desviando a trajetória da arma adversária sem causar dano, permitindo reposicionamento seguro.']
+];
+function generateSkill(tipo){
+  const pool = tipo ? SKILL_TEMPLATES.filter(s => s[1] === tipo) : SKILL_TEMPLATES;
+  const r = pool[Math.floor(Math.random()*pool.length)];
+  return {id:`skill-${Date.now()}-${Math.floor(Math.random()*1000)}`, nome:r[0], tipo:r[1], descricao:r[2]};
+}
+const WEAPON_TEMPLATES = [
+  ['Espada de Grama Tramada',true,'+1d50 de dano cortante veloz (DA) [50% de efeito abaixo de 40 EA, inerte abaixo de 20 EA]'],
+  ['Machadinha de Confeito Afiado',true,'Ignora 20% da defesa física do alvo (DA) [50% de efeito abaixo de 40 EA, inerte abaixo de 20 EA]'],
+  ['Escudo Protetor de Madeira de Ooo',true,'+1d100 de mitigação de dano em caso de Defesa Absoluta (DA)'],
+  ['Adaga de Cristal Luminescente',true,'+1d40 de dano de perfuração e reflete feixes luminosos (DA)'],
+  ['Lança de Gelo Cristalizado',true,'+1d45 de dano perfurante congelante com alcance de 4 metros (DA)'],
+  ['Frigideira de Batalha Marciana',false,'+1d35 de dano contundente, emite estrondo metálico atordoante (DA)'],
+  ['Arco de Madeira Flexível de Salgueiro',false,'+1d40 de dano de projéteis a longa distância (DA)'],
+  ['Clava de Rocha Vulcânica',false,'+1d45 de dano de esmagamento contra armaduras rígidas (DA)'],
+  ['Cajado de Geleia Flamejante',true,'+1d40 de dano de calor e ilumina cavernas escuras (DA)'],
+  ['Rapieira de Raiz Rápida',false,'+1d30 de dano perfurante e concede +1 em testes de iniciativa rápida (DA)']
+];
+function generateWeapon(){
+  const w = WEAPON_TEMPLATES[Math.floor(Math.random()*WEAPON_TEMPLATES.length)];
+  return {nome:w[0], magica:w[1], efeito:w[2]};
+}
+const PRESET_WEAPONS = [
+  {nome:'Espada de Grama',magica:true,efeito:'+1d50 de dano de corte veloz (DA)'},
+  {nome:'Machado Baixo de Marceline',magica:true,efeito:'Ignora 20% da defesa do alvo (DA)'},
+  {nome:'Escudo Guardião de Ooo',magica:true,efeito:'+1d100 de mitigação de defesa (DA)'},
+  {nome:'Espada Escarlate (Scarlet)',magica:false,efeito:'+1d40 de dano cortante (DA)'},
+  {nome:'Adaga de Cristal Afiada',magica:false,efeito:'+1d30 de perfuração (DA)'}
+];
+
+/* =====================================================================
+   FORMATADORES (WhatsApp)
+   ===================================================================== */
+function formatSheet(s, mode){
+  const fa = finalAttrs(s), hp = calcHP(s.nivel), ea = calcEA(s.nivel);
+  const race = getRace(s.raca), kingdom = getKingdom(s.reinoOrigem), deity = getDeity(s.divindade);
+  const raceBonusText = race ? Object.entries(race.bonus).map(([k,v]) => `${signed(v)} ${k}`).join(', ') : '';
+  const items = (s.itensExtras||[]).filter(i => i.trim());
+  const base = k => { const m = race && race.bonus[k]; return `(Base: ${s.atributosBase[k]}${m ? ` ${signed(m)}` : ''})`; };
+
+  if (mode === 'oficial') {
+    return [
+      'ㅤㅤㅤ ㅤ ㅤㅤ     .  .  .  .    ❝      ㅤㅤㅤㅤㅤㅤㅤㅤㅤ                                ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ       ㅤ☯️ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ  ᮫  ㅤㅤㅤㅤㅤㅤ ㅤㅤㅤㅤ ㅤㅤㅤㅤ ㅤ     ㅤ ᮫ ㅤㅤㅤ                              ๋    ۪     ͜⏜ؘ͜     ݂   ݂   ݂                        ࣪   𞋄 ؘ   ✺  ִ   ๋   ࣪  𝄪  𑣮  ִ  ᮫ ',
+      'Ficha de Personagem     ',
+      `𝐍ome:  ${s.nome.trim() || '[Seu Nome]'}    `,
+      `Idade: ${s.idade || '18'}     `,
+      `𝐀parência:   ${s.aparencia.trim() || 'Aparência no estilo Adventure Time.'}    `,
+      `Divindade: ${deity ? deity.nome : (s.divindade || 'Nenhuma (Opcional)')}.    `,
+      `Raça: ${race ? race.nome : (s.raca || 'Escolha uma')} ${raceBonusText ? `[${raceBonusText}]` : ''}.    `,
+      s.reinoOrigem ? `Origem: ${kingdom ? kingdom.nome : s.reinoOrigem} [${kingdom ? kingdom.passivaNome : ''}].    ` : '',
+      `𝐍ível: ${s.nivel || 1}.    `,
+      `Popularidade: ${String(s.popularidadePontos).padStart(3,'0')} (${s.popularidadeTipo || 'Fama'}${s.reinoPopularidade ? ` em ${s.reinoPopularidade}` : ''})   `,
+      '➣ 𝐈nventário:',
+      `━ ${s.dolares || 100} Dólares`,
+      s.armaNome ? `━ Arma: ${s.armaNome}${s.armaMagica ? ' (Mágica)' : ''}${s.armaEfeito ? ` - ${withDA(s.armaEfeito)}` : ''}` : '━ Arma: Nenhuma equipada.',
+      ...items.map(i => `━ ${i}`),
+      '➣ Poderes.',
+      ...(s.skills.length ? s.skills.map((k,i) => `Skill ${i+1} [${k.tipo}]: ${k.nome || 'Sem nome'}${k.descricao ? ` - ${k.descricao}` : ''}`) : ['Crie 2 Skills iniciais. Devem ser específicas.']),
+      '➣ 𝐀tributos [15pts para distribuir]: ',
+      `┇≻ Força: ${fa.forca} ${base('forca')}`,
+      `┇≻ Velocidade: ${fa.velocidade} ${base('velocidade')}`,
+      `┇≻ Resistência: ${fa.resistencia} ${base('resistencia')}`,
+      `┇≻ Fator Cura: ${fa.fatorCura} ${base('fatorCura')}`,
+      `┇≻ Inteligência: ${fa.inteligencia} ${base('inteligencia')}`,
+      `┇≻ HP: ${hp}`,
+      `┇≻ EA: ${ea}`
+    ].filter(Boolean).join('\n');
+  }
+
+  if (mode === 'detalhado') {
+    const t = k => { const x = getTier(k, fa[k]); return x ? `→ [Tier ${x.range}: ${x.titulo}] ${x.efeito}` : ''; };
+    const act = actionEconomy(s.nivel);
+    return [
+      '👑 *FICHA DE PERSONAGEM — HORA DE AVENTURA RPG (OOO)* 👑',
+      '────────────────────────────',
+      `*Nome:* ${s.nome.trim() || '[Não informado]'}`,
+      `*Idade:* ${s.idade || 18} anos`,
+      `*Raça:* ${race ? race.nome : s.raca} ${raceBonusText ? `(${raceBonusText})` : ''}`,
+      `*Reino de Origem:* ${kingdom ? kingdom.nome : s.reinoOrigem || 'Não definido'}`,
+      kingdom ? `   ↳ _Passiva:_ ${kingdom.passivaNome} - ${kingdom.passivaEfeito}` : '',
+      `*Divindade:* ${deity ? deity.nome : (s.divindade || 'Nenhuma')}`,
+      `*Nível:* ${s.nivel} | *HP:* ${hp} | *EA:* ${ea}`,
+      `*Ações/Turno:* ${act.ativas} Ativas | ${act.passivas} Passiva | ${act.contraAtaques} Contra-Ataques`,
+      `*Popularidade:* ${s.popularidadePontos} pts [${s.popularidadeTipo}] ${s.reinoPopularidade ? `em ${s.reinoPopularidade}` : ''}`,
+      s.estudoPontos > 0 ? `*Estudo:* ${s.estudoPontos}/500 pts` : '',
+      s.projetoPontos > 0 ? `*Projeto:* ${s.projetoPontos}/1000 pts` : '',
+      '────────────────────────────',
+      '🎨 *APARÊNCIA:*',
+      s.aparencia.trim() || 'Estilo clássico cartum de Ooo.',
+      '────────────────────────────',
+      '⚔️ *ATRIBUTOS & EFEITOS DE COMBATE:*',
+      `• *Força: ${fa.forca}* ${t('forca')}`,
+      `• *Velocidade: ${fa.velocidade}* ${t('velocidade')}`,
+      `• *Resistência: ${fa.resistencia}* ${t('resistencia')}`,
+      `• *Fator Cura: ${fa.fatorCura}* ${t('fatorCura')}`,
+      `• *Inteligência: ${fa.inteligencia}* ${t('inteligencia')}`,
+      '────────────────────────────',
+      '✨ *HABILIDADES / SKILLS:*',
+      ...(s.skills.length ? s.skills.map((k,i) => `*${i+1}. ${k.nome}* (${k.tipo})\n   ${k.descricao || 'Sem descrição'}`) : ['Nenhuma habilidade cadastrada ainda.']),
+      '────────────────────────────',
+      '🎒 *INVENTÁRIO:*',
+      `• *Dólares:* $${s.dolares || 100}`,
+      s.armaNome ? `• *Arma:* ${s.armaNome} ${s.armaMagica ? '(Mágica)' : ''} ${s.armaEfeito ? `[Efeito: ${withDA(s.armaEfeito)}]` : ''}` : '• *Arma:* Nenhuma',
+      ...items.map(i => `• ${i}`),
+      '────────────────────────────',
+      '🌀 *Teletransporte:* 3 TPs por batalha | Fora de combate ilimitado'
+    ].filter(Boolean).join('\n');
+  }
+
+  return [
+    `*⚔️ FICHA DE PERSONAGEM: ${s.nome.toUpperCase() || 'HERÓI'}*`,
+    `*Idade:* ${s.idade || 18} | *Nível:* ${s.nivel}`,
+    `*Raça:* ${race ? race.nome : s.raca || 'Humano'}`,
+    `*Origem:* ${kingdom ? kingdom.nome : s.reinoOrigem || 'Terra de Ooo'}`,
+    `*Divindade:* ${deity ? deity.nome : s.divindade || 'Nenhuma'}`,
+    `*HP:* ${hp} | *EA:* ${ea}`,
+    '',
+    '*📊 ATRIBUTOS:*',
+    `• Força: ${fa.forca}`, `• Velocidade: ${fa.velocidade}`, `• Resistência: ${fa.resistencia}`,
+    `• Fator Cura: ${fa.fatorCura}`, `• Inteligência: ${fa.inteligencia}`,
+    '',
+    '*✨ PODERES:*',
+    ...s.skills.map(k => `• ${k.nome} (${k.tipo}): ${k.descricao}`),
+    '',
+    '*🎒 INVENTÁRIO:*',
+    `• $${s.dolares} Dólares`,
+    s.armaNome ? `• Arma: ${s.armaNome} ${s.armaMagica ? '🔮' : '⚔️'} ${s.armaEfeito ? `(${s.armaEfeito})` : ''}` : '',
+    ...items.map(i => `• ${i}`),
+    '',
+    '*🎨 APARÊNCIA:*',
+    s.aparencia || 'Visual original estilo Ooo.'
+  ].join('\n');
+}
+function formatSceneHeader(p){
+  const tag = (p.nomePersonagem || 'personagem').toLowerCase().replace(/\s+/g,'');
+  return [
+    `#iniciarcena${tag}`, '',
+    `✦ *${p.nomePersonagem || 'Personagem'}* ✦`,
+    `• *Núcleo:* ${p.nucleo || 'Reino Doce'}`,
+    `• *Localização:* ${p.localizacao || 'Interior da Taverna'}`,
+    `• *Privacidade:* ${p.privacidade || 'Pública'}`,
+    `• *Raça/Nível:* ${p.racaOuEspecie || 'Humano'} (Nível ${p.nivel || 1})`,
+    `• *Contagem:* Cena #${p.contagemCena || 1}`,
+    `• *Participantes:* ${p.participantes || 'Solo'}`,
+    `• *Observações:* ${p.observacoes || 'Desenvolvimento narrativo.'}`,
+    '────────────────────────────'
+  ].join('\n');
+}
+
+/* =====================================================================
+   ESTADO
+   ===================================================================== */
+const STORAGE_KEY = 'hora_de_aventura_rpg_sheet_v1';
+const EMPTY = () => ({
+  nome:'', idade:18, aparencia:'', divindade:'nenhuma', raca:'humano', reinoOrigem:'reino_doce', nivel:1,
+  popularidadeTipo:'Fama', popularidadePontos:0, reinoPopularidade:'Reino Doce', dolares:100,
+  armaNome:'', armaMagica:false, armaEfeito:'', itensExtras:[],
+  skills:[{id:'skill-1',nome:'',tipo:'Ativa',descricao:''},{id:'skill-2',nome:'',tipo:'Passiva Ativável',descricao:''}],
+  atributosBase:{forca:3,velocidade:3,resistencia:3,fatorCura:3,inteligencia:3},
+  estudoPontos:0, projetoPontos:0
+});
+let sheet = EMPTY();
+try {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    const p = JSON.parse(saved), e = EMPTY();
+    sheet = {...e, ...p, atributosBase:{...e.atributosBase, ...(p.atributosBase||{})}};
+  }
+} catch (err) {}
+let saveTimer;
+function save(){ clearTimeout(saveTimer); saveTimer = setTimeout(() => { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(sheet)); } catch (e) {} }, 250); }
+
+/* =====================================================================
+   HELPERS DE UI
+   ===================================================================== */
+const ic = n => `<svg class="ic" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let toastTimer;
+function toast(msg){ const t = $('#toast'); t.innerHTML = ic('star') + '<span>' + esc(msg) + '</span>'; t.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => t.hidden = true, 3000); }
+async function copyText(text){
+  try { await navigator.clipboard.writeText(text); return true; }
+  catch (e) {
+    const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select(); let ok = false; try { ok = document.execCommand('copy'); } catch (_) {}
+    ta.remove(); return ok;
+  }
+}
+const openZap = text => window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+
+/* =====================================================================
+   RENDERIZAÇÃO
+   ===================================================================== */
+function fillSelects(){
+  $('#f-raca').innerHTML = RACES.map(r => `<option value="${r.id}">${esc(r.nome)}</option>`).join('');
+  $('#f-reino').innerHTML = KINGDOMS.map(k => `<option value="${k.id}">${esc(k.nome)}</option>`).join('');
+  $('#f-div').innerHTML = DEITIES.map(d => `<option value="${d.id}">${esc(d.nome)}${d.titulo ? ' — ' + esc(d.titulo.split(',')[0]) : ''}</option>`).join('');
+}
+function fillInputs(){
+  $$('[data-bind]').forEach(el => {
+    const k = el.dataset.bind;
+    if (el.type === 'checkbox') el.checked = !!sheet[k]; else el.value = sheet[k] ?? '';
+  });
+}
+function renderNav(){ $('#nav-sub').textContent = sheet.nome.trim() ? `Editando: ${sheet.nome}` : 'Preencha sua ficha & mande no Zapzap'; }
+function renderAge(){
+  const bad = sheet.idade !== '' && Number(sheet.idade) < 18;
+  $('#age-warn').hidden = !bad; $('#f-idade').classList.toggle('bad', bad);
+}
+function renderRace(){
+  const r = getRace(sheet.raca); if (!r) { $('#race-card').innerHTML = ''; return; }
+  $('#race-card').innerHTML = `<h3><span><svg class="ic" aria-hidden="true"><use href="#i-crown"/></svg> ${esc(r.nome)}</span><a href="${r.ref}" target="_blank" rel="noreferrer">Fandom ↗</a></h3>
+    <p>${esc(r.descricao)}</p>
+    <div class="mini-t">Modificadores de atributo</div>
+    <div class="chips">${Object.entries(r.bonus).map(([k,v]) => `<span class="chip ${v>0?'pos':'neg'}">${signed(v)} ${esc(ATTR[k].nome)}</span>`).join('')}</div>`;
+}
+const KINGDOM_IMG = {
+  reino_doce:['reino-doce.jpg','center 45%'], reino_de_fogo:['reino-de-fogo.jpg','center 40%'],
+  reino_gelado:['reino-gelado.jpg','center 35%'], reino_das_gosmas:['reino-das-gosmas.jpg','left top',1.4],
+  reino_das_frutas_silvestres:['reino-frutas-silvestres.jpg','center 30%'], espaco_caroco:['espaco-caroco.jpg','center 45%'],
+  condado_de_lemongrab:['condado-lemongrab.jpg','center 45%'], reino_das_nuvens:['reino-das-nuvens.jpg','center 25%']
+};
+const DEITY_IMG = {morte:['caveira-rei.jpg','center 45%']};
+const infoImg = x => !x ? '' : x[2]
+  ? `<div class="info-img" style="overflow:hidden"><img src="img/${x[0]}" alt="" style="width:100%;height:100%;object-fit:cover;object-position:${x[1]};transform:scale(${x[2]});transform-origin:left top;display:block"></div>`
+  : `<img class="info-img" src="img/${x[0]}" alt="" style="object-position:${x[1]}">`;
+function renderKingdom(){
+  const k = getKingdom(sheet.reinoOrigem); if (!k) { $('#kingdom-card').innerHTML = ''; return; }
+  $('#kingdom-card').innerHTML = infoImg(KINGDOM_IMG[k.id]) + `<h3><span><svg class="ic" aria-hidden="true"><use href="#i-castle"/></svg> ${esc(k.nome.split(' (')[0])}</span></h3>
+    <p>${esc(k.descricao)}</p>
+    <div class="passive"><b><svg class="ic" aria-hidden="true"><use href="#i-sparkle"/></svg> ${esc(k.passivaNome)}</b>${esc(k.passivaEfeito)}</div>
+    <div class="mini-t">Tecnologia & magia</div><p style="margin:0">${esc(k.tecnologia)}</p>`;
+}
+function renderDeity(){
+  const d = getDeity(sheet.divindade); if (!d) { $('#deity-card').innerHTML = ''; return; }
+  $('#deity-card').innerHTML = infoImg(DEITY_IMG[d.id]) + `<h3><span><svg class="ic" aria-hidden="true"><use href="#i-orb"/></svg> ${esc(d.nome)}</span></h3>
+    <p style="font-weight:900;font-size:12px">${esc(d.titulo)}</p>
+    <p>${esc(d.descricao)}</p>
+    <div class="mini-t">Domínios</div>
+    <div class="chips">${d.dominios.map(x => `<span class="chip">${esc(x)}</span>`).join('')}</div>
+    <div class="mini-t">Símbolos</div><p style="margin:0">${d.simbolos.map(esc).join(' · ')}</p>`;
+}
+function renderPop(){
+  const inf = sheet.popularidadeTipo === 'Infâmia', p = Number(sheet.popularidadePontos) || 0;
+  $('#pop').classList.toggle('inf', inf);
+  $$('[data-pop]').forEach(b => b.classList.toggle('on', b.dataset.pop === sheet.popularidadeTipo));
+  $('#pop-status').innerHTML =
+    (inf ? `<div class="status-pill" style="background:#ffd0d0"><small>Status de procurado</small>${esc(infamyStatus(p))}</div>` : '') +
+    `<div class="status-pill" style="background:${inf ? '#fff' : '#d8f5c4'}"><small>Repercussão</small>${esc(reputationScope(p))}</div>`;
+}
+function renderVitals(){
+  const hp = calcHP(sheet.nivel), ea = calcEA(sheet.nivel);
+  $('#v-hp').textContent = `${hp} HP`; $('#v-hp-sub').textContent = `Nível ${sheet.nivel} (ciclo de Ooo)`;
+  $('#v-ea').textContent = `${ea} EA`;
+}
+let expandedAttr = null;
+function renderAttrs(){
+  const race = getRace(sheet.raca), bonus = race ? race.bonus : {};
+  const total = sumBase(sheet), rem = 15 - total, fa = finalAttrs(sheet);
+  const pool = $('#pool');
+  pool.className = 'pool ' + (rem === 0 ? 'ok' : rem > 0 ? 'warn' : 'bad');
+  pool.textContent = rem === 0 ? '15/15 distribuídos' : rem > 0 ? `Restam ${rem} pontos (${total}/15)` : `Excesso: ${total}/15`;
+  $('#attrs').innerHTML = ATTR_ORDER.map(k => {
+    const info = ATTR[k], look = ATTR_LOOK[k], base = sheet.atributosBase[k] || 0, mod = bonus[k] || 0;
+    const tier = getTier(k, fa[k]), open = expandedAttr === k;
+    return `<div class="attr" style="--c:${look.color}">
+      <div class="attr-main">
+        <div class="attr-id"><span class="attr-ico">${ic(look.icon)}</span>
+          <div><h3>${info.nome} ${mod ? `<span class="chip ${mod>0?'pos':'neg'}">Raça ${signed(mod)}</span>` : ''}</h3><p>${esc(info.descricao)}</p></div></div>
+        <div class="attr-ctl">
+          <button class="btn round" data-attr="dec" data-k="${k}" ${base <= 0 ? 'disabled' : ''} aria-label="Diminuir ${info.nome}">−</button>
+          <div class="num"><b>${base}</b><small>Base</small></div>
+          <button class="btn round" data-attr="inc" data-k="${k}" ${base >= 10 || rem <= 0 ? 'disabled' : ''} aria-label="Aumentar ${info.nome}">+</button>
+          <span class="arrow">➜</span>
+          <div class="num total"><b>${fa[k]}</b><small>Total</small></div>
+        </div>
+        <div class="attr-tier">
+          ${tier ? `<span class="tier-t">Tier ${tier.range}: ${esc(tier.titulo)}</span><span>${esc(tier.efeito)}</span>` : '<span>Abaixo do Tier 1 (sem efeitos especiais)</span>'}
+          <button class="btn sm" data-attr="exp" data-k="${k}"><svg class="ic" aria-hidden="true"><use href="#i-scroll"/></svg> ${open ? 'Fechar' : 'Ver todos os tiers'}</button>
+        </div>
+      </div>
+      ${open ? `<div class="drawer"><h4>Progressão de ${info.nome} (1 a 10)</h4>
+        ${info.regra ? `<div class="rule"><svg class="ic" aria-hidden="true"><use href="#i-warning"/></svg> ${esc(info.regra)}</div>` : ''}
+        <div class="tiers">${info.tiers.map(t => `<div class="tier ${tier && tier.range === t[2] ? 'cur' : ''}"><div class="r">${t[2]} pts${tier && tier.range === t[2] ? ' <svg class="ic" aria-hidden="true"><use href="#i-star"/></svg>' : ''}</div><div class="tt">${esc(t[3])}</div><div>${esc(t[4])}</div></div>`).join('')}</div>
+      </div>` : ''}
+    </div>`;
+  }).join('');
+}
+function renderEcon(){
+  const e = actionEconomy(sheet.nivel), c = t => sheet.skills.filter(s => s.tipo === t).length;
+  const tile = (bg, label, n, lim, word) => `<div style="--bg:${bg}" class="${n > lim ? 'over' : ''}"><b>${label}</b>${n} cadastrada(s) · limite ${word}: <strong>${lim}</strong></div>`;
+  $('#econ').innerHTML = tile('#ffe0d6','<svg class="ic" aria-hidden="true"><use href="#i-swords"/></svg> Ativas', c('Ativa'), e.ativas, 'do nível') +
+    tile('#d4ecff','<svg class="ic" aria-hidden="true"><use href="#i-shield"/></svg> Passivas ativáveis', c('Passiva Ativável'), e.passivas, 'do nível') +
+    tile('#efe6ff','<svg class="ic" aria-hidden="true"><use href="#i-bolt"/></svg> Contra-ataques', c('Contra-Ataque'), e.contraAtaques, 'por rodada');
+}
+function renderSkills(){
+  renderEcon();
+  $('#skills').innerHTML = sheet.skills.map((s, i) => `<div class="skill">
+    <div class="skill-top">
+      <div class="skill-n"><i>${i+1}</i> Habilidade ${i+1}</div>
+      <div class="btns">
+        <button class="btn sm yellow" data-skill="nerf" data-i="${i}"><svg class="ic" aria-hidden="true"><use href="#i-scale"/></svg> Nerfar</button>
+        <button class="btn sm purple" data-skill="gen" data-i="${i}"><svg class="ic" aria-hidden="true"><use href="#i-wand"/></svg> Gerar nerfada</button>
+        ${sheet.skills.length > 2 ? `<button class="btn sm red" data-skill="del" data-i="${i}" aria-label="Remover"><svg class="ic" aria-hidden="true"><use href="#i-trash"/></svg></button>` : ''}
+      </div>
+    </div>
+    <div class="grid g3">
+      <div class="span2"><label class="lbl"><span>Nome do poder <span class="req">*</span></span></label>
+        <input class="inp" data-sf="nome" data-i="${i}" value="${esc(s.nome)}" placeholder="Ex: Lâmina de Fogo Espectral, Salto de Chiclete..."></div>
+      <div><label class="lbl"><span>Tipo de ação <span class="req">*</span></span></label>
+        <select class="inp" data-sf="tipo" data-i="${i}">
+          ${[['Ativa','Ativa (ação do turno)'],['Passiva Ativável','Passiva Ativável (escudo/buff)'],['Contra-Ataque','Contra-Ataque (reação)']].map(([v,l]) => `<option value="${v}" ${s.tipo === v ? 'selected' : ''}>${l}</option>`).join('')}
+        </select></div>
+    </div>
+    <div style="margin-top:12px"><label class="lbl"><span>Descrição e efeito mecânico <span class="req">*</span></span></label>
+      <textarea class="inp" rows="2" data-sf="descricao" data-i="${i}" placeholder="Ex: Concentra energia térmica na lâmina, causando dano com rolagem d40 e queimadura por 1 turno se o d20 for 13+... [Custo: -5 EA]">${esc(s.descricao)}</textarea></div>
+  </div>`).join('');
+}
+function renderItems(){
+  $('#items').innerHTML = sheet.itensExtras.map((it, i) => `<span class="item"><span>━ ${esc(it)}</span><button data-item="${i}" aria-label="Remover">✕</button></span>`).join('');
+}
+function renderStudy(){
+  const e = Math.min(500, sheet.estudoPontos || 0), p = Math.min(1000, sheet.projetoPontos || 0);
+  $('#bar-est').style.width = (e/500*100) + '%'; $('#bar-est-t').textContent = e >= 500 ? '500/500 — CONCLUÍDO ' : `${e}/500`;
+  $('#bar-proj').style.width = (p/1000*100) + '%'; $('#bar-proj-t').textContent = p >= 1000 ? '1000/1000 — PROJETO PRONTO! ' : (e < 500 ? `${p}/1000 · conclua o Estudo` : `${p}/1000`);
+  $('#proj-box').classList.toggle('locked', e < 500);
+}
+function renderFooter(){
+  const total = sumBase(sheet), rem = 15 - total;
+  $('#s-lvl').textContent = sheet.nivel; $('#s-hp').textContent = calcHP(sheet.nivel); $('#s-ea').textContent = calcEA(sheet.nivel);
+  const pts = $('#s-pts'); pts.textContent = `${total}/15`;
+  pts.parentElement.style.background = rem === 0 ? '#c9f2b0' : rem > 0 ? '#ffe49a' : '#ffc9c9';
+}
+function renderAll(){
+  fillInputs(); renderNav(); renderAge(); renderRace(); renderKingdom(); renderDeity(); renderPop();
+  renderVitals(); renderAttrs(); renderSkills(); renderItems(); renderStudy(); renderFooter();
+}
+
+/* =====================================================================
+   EVENTOS — CAMPOS DA FICHA
+   ===================================================================== */
+const PARSE = {
+  idade: v => v === '' ? '' : Number(v),
+  nivel: v => Math.max(1, Math.floor(Number(v)) || 1),
+  popularidadePontos: v => Math.max(0, Number(v) || 0),
+  dolares: v => Math.max(0, Number(v) || 0),
+  estudoPontos: v => Math.min(500, Math.max(0, Number(v) || 0)),
+  projetoPontos: v => Math.min(1000, Math.max(0, Number(v) || 0))
+};
+function afterChange(k){
+  if (k === 'nome') renderNav();
+  if (k === 'idade') renderAge();
+  if (k === 'nivel') { renderVitals(); renderEcon(); renderFooter(); }
+  if (k === 'raca') { renderRace(); renderAttrs(); renderFooter(); }
+  if (k === 'reinoOrigem') renderKingdom();
+  if (k === 'divindade') renderDeity();
+  if (k === 'popularidadePontos') renderPop();
+  if (k === 'estudoPontos' || k === 'projetoPontos') renderStudy();
+  save();
+}
+$$('[data-bind]').forEach(el => {
+  const k = el.dataset.bind;
+  el.addEventListener('input', () => {
+    sheet[k] = el.type === 'checkbox' ? el.checked : (PARSE[k] ? PARSE[k](el.value) : el.value);
+    afterChange(k);
+  });
+  if (el.type === 'number') el.addEventListener('change', () => { if (k !== 'idade') el.value = sheet[k]; });
+});
+$$('[data-pop]').forEach(b => b.addEventListener('click', () => { sheet.popularidadeTipo = b.dataset.pop; renderPop(); save(); }));
+
+/* aparência */
+const TEMPLATE_APAR = 'Crie um(a) [TIPO DE PERSONAGEM/CRIATURA] inspirado(a) em Adventure Time com [CARACTERÍSTICAS FÍSICAS], [ROUPAS/ACESSÓRIOS] e [DETALHES EXCLUSIVOS]. Dê a ele(a) uma expressão [EXPRESSÃO] e uma silhueta de corpo inteiro bem definida. Use cores chapadas, contornos fortes, formas simples e proporções cartunescas. O personagem deve parecer pertencer naturalmente ao universo de Ooo, com aparência original. Fundo simples.';
+const SNIPPETS = ['Estilo clássico cartunista de Ooo com traços grossos pretos','Braços e pernas flexíveis de espaguete','Olhos redondos simples estilo Finn e Jake','Cabelo comprido flutuante de goma de mascar','Chapéu com orelhas pontudas de criatura mística','Capa puída de aventureiro nômade','Cores pastéis vibrantes e paleta chapada','Bolsa lateral de explorador de masmorras'];
+$('#snips').innerHTML = SNIPPETS.map((s,i) => `<button class="snip" data-snip="${i}">+ ${esc(s)}</button>`).join('');
+$('#snips').addEventListener('click', e => {
+  const b = e.target.closest('[data-snip]'); if (!b) return;
+  const s = SNIPPETS[+b.dataset.snip];
+  sheet.aparencia = sheet.aparencia.trim() ? `${sheet.aparencia.trim()}, ${s.toLowerCase()}` : s;
+  $('#f-apar').value = sheet.aparencia; save();
+});
+$('#btn-tpl').addEventListener('click', () => { sheet.aparencia = TEMPLATE_APAR; $('#f-apar').value = TEMPLATE_APAR; save(); toast('Template oficial inserido!'); });
+
+/* atributos */
+$('#attrs').addEventListener('click', e => {
+  const b = e.target.closest('[data-attr]'); if (!b || b.disabled) return;
+  const k = b.dataset.k, a = b.dataset.attr;
+  if (a === 'exp') expandedAttr = expandedAttr === k ? null : k;
+  else if (a === 'dec') sheet.atributosBase[k] = Math.max(0, sheet.atributosBase[k] - 1);
+  else if (a === 'inc' && sumBase(sheet) < 15) sheet.atributosBase[k] = Math.min(10, sheet.atributosBase[k] + 1);
+  renderAttrs(); renderFooter(); save();
+});
+
+/* habilidades */
+const emptySkill = () => ({id:`skill-${Date.now()}`, nome:'', tipo:'Ativa', descricao:''});
+$('#skills').addEventListener('input', e => {
+  const el = e.target.closest('[data-sf]'); if (!el) return;
+  sheet.skills[+el.dataset.i][el.dataset.sf] = el.value;
+  if (el.dataset.sf === 'tipo') renderEcon();
+  save();
+});
+$('#skills').addEventListener('click', e => {
+  const b = e.target.closest('[data-skill]'); if (!b) return;
+  const i = +b.dataset.i, s = sheet.skills[i];
+  if (b.dataset.skill === 'nerf') {
+    if (!s.descricao.trim()) return toast('Escreva a descrição da habilidade antes de nerfar.');
+    const r = nerfSkill(s); s.nome = r.nerfed.nome; s.descricao = r.nerfed.descricao;
+    toast(r.wasNerfed ? `Nerfada! ${r.changes[0]}` : 'Essa habilidade já está dentro das regras de Ooo.');
+  } else if (b.dataset.skill === 'gen') {
+    const g = generateSkill(); Object.assign(s, {nome:g.nome, tipo:g.tipo, descricao:g.descricao});
+    toast(`Habilidade gerada: ${g.nome}`);
+  } else if (b.dataset.skill === 'del' && sheet.skills.length > 2) {
+    sheet.skills.splice(i, 1);
+  }
+  renderSkills(); save();
+});
+function putSkill(skill, msgPrefix){
+  const idx = sheet.skills.findIndex(s => !s.nome.trim() && !s.descricao.trim());
+  if (idx >= 0) { Object.assign(sheet.skills[idx], {nome:skill.nome, tipo:skill.tipo, descricao:skill.descricao}); toast(`${msgPrefix} no slot ${idx+1}: ${skill.nome}`); }
+  else { sheet.skills.push({...skill, id:`skill-${Date.now()}`}); toast(`${msgPrefix}: ${skill.nome}`); }
+  renderSkills(); save();
+}
+$('#btn-gen-skill').addEventListener('click', () => putSkill(generateSkill(), 'Habilidade gerada'));
+$('#btn-add-skill').addEventListener('click', () => { sheet.skills.push(emptySkill()); renderSkills(); save(); toast('Nova habilidade adicionada!'); });
+
+/* inventário */
+function setWeapon(w, msg){
+  sheet.armaNome = w.nome; sheet.armaEfeito = w.efeito; sheet.armaMagica = w.magica;
+  $('#f-arma').value = w.nome; $('#f-efeito').value = w.efeito; $('#f-mag').checked = w.magica;
+  save(); toast(msg);
+}
+$('#presets').innerHTML = PRESET_WEAPONS.map((w,i) => `<button class="snip" data-preset="${i}">${w.magica ? '<svg class="ic" aria-hidden="true"><use href="#i-orb"/></svg>' : '<svg class="ic" aria-hidden="true"><use href="#i-swords"/></svg>'} ${esc(w.nome)}</button>`).join('');
+$('#presets').addEventListener('click', e => {
+  const b = e.target.closest('[data-preset]'); if (!b) return;
+  const w = PRESET_WEAPONS[+b.dataset.preset]; setWeapon(w, `Equipado: ${w.nome}`);
+});
+$('#btn-gen-weapon').addEventListener('click', () => { const w = generateWeapon(); setWeapon(w, `Arma gerada: ${w.nome}`); });
+$('#btn-nerf-weapon').addEventListener('click', () => {
+  if (!sheet.armaEfeito.trim()) return toast('Escreva o efeito da arma antes de nerfar.');
+  const r = nerfWeapon(sheet.armaNome, sheet.armaEfeito, sheet.armaMagica);
+  setWeapon({nome:r.nerfed.nome, efeito:r.nerfed.efeito, magica:r.nerfed.isMagica},
+    r.wasNerfed ? `<svg class="ic" aria-hidden="true"><use href="#i-scale"/></svg> Arma nerfada! ${r.changes[0]}` : '<svg class="ic" aria-hidden="true"><use href="#i-ok"/></svg> Essa arma já está dentro das regras de Ooo.');
+});
+function addItem(){
+  const v = $('#f-item').value.trim(); if (!v) return;
+  sheet.itensExtras.push(v); $('#f-item').value = ''; renderItems(); save();
+}
+$('#btn-add-item').addEventListener('click', addItem);
+$('#f-item').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); addItem(); } });
+$('#items').addEventListener('click', e => {
+  const b = e.target.closest('[data-item]'); if (!b) return;
+  sheet.itensExtras.splice(+b.dataset.item, 1); renderItems(); save();
+});
+
+/* estudo & projeto */
+function applyStudyRoll(roll){
+  if ((sheet.estudoPontos||0) < 500) {
+    sheet.estudoPontos = Math.min(500, (sheet.estudoPontos||0) + roll);
+    toast(sheet.estudoPontos >= 500 ? `${roll}! Estudo CONCLUÍDO — o Projeto começa do zero.` : `${roll}! Estudo: ${sheet.estudoPontos}/500`);
+  } else if ((sheet.projetoPontos||0) < 1000) {
+    sheet.projetoPontos = Math.min(1000, (sheet.projetoPontos||0) + roll);
+    toast(sheet.projetoPontos >= 1000 ? `${roll}! PROJETO FINALIZADO! ` : `${roll}! Projeto: ${sheet.projetoPontos}/1000`);
+  } else { toast('Estudo e Projeto já estão completos!'); return; }
+  $('#f-est').value = sheet.estudoPontos; $('#f-proj').value = sheet.projetoPontos; renderStudy(); save();
+}
+$('#btn-sunday').addEventListener('click', () => applyStudyRoll(Math.floor(Math.random()*100) + 1));
+
+/* salvar / limpar / copiar */
+$('#btn-save').addEventListener('click', () => { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(sheet)); toast('Ficha salva no seu navegador!'); } catch (e) { toast('Não consegui salvar neste navegador.'); } });
+$('#btn-reset').addEventListener('click', () => {
+  if (!confirm('Quer mesmo limpar todos os campos e começar uma ficha nova?')) return;
+  sheet = EMPTY(); expandedAttr = null; try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+  renderAll(); renderHome(); toast('Ficha limpa!');
+});
+
+
+/* =====================================================================
+   MODAIS
+   ===================================================================== */
+const ROUTES = {inicio:'s-home', ficha:'s-ficha', zap:'m-zap', cena:'m-scene', dados:'m-dice', regras:'m-rules', nerfador:'m-nerf', backup:'m-backup'};
+const TITLES = {inicio:'Ficha de Ooo', ficha:'Minha Ficha', zap:'Mandar no Zap', cena:'Escrever Cena', dados:'Rolar Dados', regras:'Regras', nerfador:'Nerfador', backup:'Levar ficha'};
+const ROUTE_OF = Object.fromEntries(Object.entries(ROUTES).map(([r,id]) => [id, r]));
+let current = 'inicio', pending = {}, goingBack = false;
+const parentOf = {};
+function show(route){
+  if (!ROUTES[route]) route = 'inicio';
+  if (!goingBack && route !== current && route !== 'inicio') parentOf[route] = current;
+  goingBack = false; current = route;
+  const id = ROUTES[route];
+  $$('.screen').forEach(s => s.hidden = s.id !== id);
+  $('#appbar').hidden = route === 'inicio';
+  $('.foot').hidden = route !== 'ficha';
+  document.body.classList.toggle('with-foot', route === 'ficha');
+  $('#bar-title').textContent = TITLES[route];
+  $('#nav-sub').hidden = route !== 'ficha';
+  document.title = route === 'inicio' ? 'Ficha RPG de Ooo' : TITLES[route] + ' · Ficha de Ooo';
+  if (route === 'inicio') renderHome();
+  if (route === 'ficha') { setStep(pending.step ?? step); }
+  if (route === 'zap') renderZap();
+  if (route === 'cena') openScene();
+  if (route === 'regras') renderRules();
+  if (route === 'nerfador') setNerfTab(pending.tab || nerfTab);
+  if (route === 'backup') renderBackup();
+  pending = {};
+  window.scrollTo(0, 0);
+}
+function go(route, opts = {}){
+  pending = opts;
+  if (location.hash === '#' + route) show(route); else location.hash = route;
+}
+function openModal(id, opts = {}){ go(ROUTE_OF[id], opts); }
+function closeModal(){ goingBack = true; go(parentOf[current] || 'inicio'); }
+window.addEventListener('hashchange', () => show(location.hash.slice(1)));
+$$('[data-open]').forEach(b => b.addEventListener('click', () => openModal(b.dataset.open, {tab:b.dataset.tab})));
+$('#btn-back').addEventListener('click', closeModal);
+
+/* --- exportar / importar ficha --- */
+const sheetPackage = () => JSON.stringify({app:'Ficha de Ooo', versao:1, ficha:sheet});
+const exportCode = () => 'OOO1:' + btoa(unescape(encodeURIComponent(sheetPackage())));
+function parseSheetText(txt){
+  txt = String(txt).trim();
+  const json = txt.startsWith('OOO1:') ? decodeURIComponent(escape(atob(txt.slice(5).replace(/\s+/g, '')))) : txt;
+  const raw = JSON.parse(json), d = raw && raw.ficha ? raw.ficha : raw;
+  if (!d || typeof d !== 'object' || !d.atributosBase || !Array.isArray(d.skills)) throw new Error('formato');
+  const e = EMPTY();
+  return {...e, ...d, atributosBase:{...e.atributosBase, ...d.atributosBase}, itensExtras: Array.isArray(d.itensExtras) ? d.itensExtras : []};
+}
+function importSheet(txt){
+  let s;
+  try { s = parseSheetText(txt); } catch (e) { toast('Código inválido. Confira se copiou ele inteiro.'); return; }
+  if (sheet.nome.trim() && !confirm(`Substituir a ficha atual (${sheet.nome}) pela ficha "${s.nome || 'sem nome'}"?`)) return;
+  sheet = s; expandedAttr = null;
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(sheet)); } catch (e) {}
+  renderAll(); $('#bk-in').value = '';
+  toast(`Ficha de ${s.nome || 'aventureiro'} carregada!`);
+  go('ficha', {step:0});
+}
+function renderBackup(){ $('#bk-out').value = exportCode(); }
+$('#bk-copy').addEventListener('click', async () => toast(await copyText(exportCode()) ? 'Código copiado! Cole no outro navegador.' : 'Não consegui copiar. Selecione o código e copie.'));
+$('#bk-out').addEventListener('focus', e => e.target.select());
+$('#bk-download').addEventListener('click', () => {
+  const nome = (sheet.nome.trim() || 'aventureiro').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w]+/g, '-').toLowerCase();
+  const url = URL.createObjectURL(new Blob([JSON.stringify(JSON.parse(sheetPackage()), null, 2)], {type:'application/json'}));
+  const a = document.createElement('a'); a.href = url; a.download = `ficha-${nome}.json`;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+  toast('Arquivo baixado!');
+});
+$('#bk-import').addEventListener('click', () => {
+  const v = $('#bk-in').value.trim(); if (!v) return toast('Cole o código da ficha primeiro.');
+  importSheet(v);
+});
+$('#bk-file').addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return;
+  const r = new FileReader(); r.onload = () => importSheet(r.result); r.readAsText(f); e.target.value = '';
+});
+
+/* --- tela inicial --- */
+function renderHome(){
+  const has = sheet.nome.trim() !== '';
+  const r = getRace(sheet.raca), k = getKingdom(sheet.reinoOrigem);
+  $('#hc-ava').textContent = has ? sheet.nome.trim()[0].toUpperCase() : '?';
+  $('#hc-name').textContent = has ? sheet.nome : 'Nenhum ainda';
+  $('#hc-meta').textContent = has
+    ? `${r ? r.nome : ''} · ${k ? k.nome.split(' (')[0] : ''} · Nível ${sheet.nivel} · ${calcHP(sheet.nivel)} HP · ${calcEA(sheet.nivel)} EA`
+    : 'Crie sua ficha pra começar a aventura!';
+  $('#hc-go-t').textContent = has ? 'Continuar ficha' : 'Criar minha ficha';
+  $('#btn-reset').hidden = !has;
+}
+
+/* --- passos da ficha --- */
+let step = 0;
+try { step = Math.min(5, Math.max(0, Number(localStorage.getItem('ooo_step')) || 0)); } catch (e) {}
+function setStep(nn){
+  step = Math.min(5, Math.max(0, nn));
+  $$('.step').forEach(s => s.classList.toggle('on', +s.dataset.step === step));
+  $$('.stp').forEach(b => { const i = +b.dataset.step; b.classList.toggle('on', i === step); b.classList.toggle('done', i < step); });
+  $('#step-count').textContent = `${step + 1} de 6`;
+  $('#step-prev').disabled = step === 0;
+  $('#step-next').innerHTML = step === 5 ? `Mandar no Zap ${ic('chat')}` : `Próximo ${ic('next')}`;
+  try { localStorage.setItem('ooo_step', step); } catch (e) {}
+}
+$('#stepper').addEventListener('click', e => { const b = e.target.closest('.stp'); if (b) { setStep(+b.dataset.step); window.scrollTo(0, 0); } });
+$('#step-prev').addEventListener('click', () => { setStep(step - 1); window.scrollTo(0, 0); });
+$('#step-next').addEventListener('click', () => { if (step === 5) go('zap'); else { setStep(step + 1); window.scrollTo(0, 0); } });
+
+/* --- WhatsApp --- */
+let zapMode = 'oficial';
+function renderZap(){
+  const t = formatSheet(sheet, zapMode);
+  $('#zap-preview').textContent = t; $('#zap-count').textContent = `${t.length} caracteres`;
+  $$('#zap-tabs .tab').forEach(b => b.classList.toggle('on', b.dataset.mode === zapMode));
+  $('#zap-msg').textContent = 'Dica: clique no botão verde para copiar tudo.';
+}
+$('#zap-tabs').addEventListener('click', e => { const b = e.target.closest('[data-mode]'); if (b) { zapMode = b.dataset.mode; renderZap(); } });
+$('#zap-copy').addEventListener('click', async () => {
+  const ok = await copyText(formatSheet(sheet, zapMode));
+  $('#zap-msg').textContent = ok ? 'Copiado! Agora é só colar no Zap!' : 'Não consegui copiar. Selecione o texto e copie manualmente.';
+});
+$('#zap-open').addEventListener('click', () => openZap(formatSheet(sheet, zapMode)));
+
+/* --- Cena --- */
+const scene = {nucleo:null, localizacao:'Praça Central / Taverna Açucarada', privacidade:'Pública', contagemCena:1, participantes:'Solo', observacoes:'Início de jornada e exploração local.'};
+function sceneText(){
+  const r = getRace(sheet.raca);
+  return formatSceneHeader({...scene, nomePersonagem: sheet.nome || 'Personagem', racaOuEspecie: r ? r.nome : 'Humano', nivel: sheet.nivel});
+}
+function openScene(){
+  if (scene.nucleo === null) { const k = getKingdom(sheet.reinoOrigem); scene.nucleo = k ? k.nome.split(' (')[0] : 'Reino Doce'; }
+  $$('[data-sc]').forEach(el => el.value = scene[el.dataset.sc]);
+  $('#sc-preview').textContent = sceneText();
+}
+$$('[data-sc]').forEach(el => el.addEventListener('input', () => {
+  const k = el.dataset.sc; scene[k] = k === 'contagemCena' ? Math.max(1, Number(el.value) || 1) : el.value;
+  $('#sc-preview').textContent = sceneText();
+}));
+$('#sc-plus').addEventListener('click', () => { scene.contagemCena++; $('#sc-cont').value = scene.contagemCena; $('#sc-preview').textContent = sceneText(); });
+$('#sc-copy').addEventListener('click', async () => toast(await copyText(sceneText()) ? 'Cabeçalho copiado!' : 'Não consegui copiar.'));
+$('#sc-send').addEventListener('click', () => openZap(sceneText()));
+
+/* --- Dados --- */
+let lastRoll = null;
+const d = n => Math.floor(Math.random()*n) + 1;
+const ROLLS = {
+  d20(){
+    const v = d(20); let g;
+    if (v === 1) g = 'Falha Catastrófica (complicações graves / dano a si)';
+    else if (v <= 5) g = 'Falha Grave (erra feio / perde controle do poder)';
+    else if (v <= 9) g = 'Falha Simples (ação falha / oponente abre contra-ataque)';
+    else if (v <= 12) g = 'Sucesso Parcial (funciona com custo ou efeito reduzido)';
+    else if (v <= 16) g = 'Sucesso (ação bem-sucedida conforme planejado)';
+    else if (v <= 19) g = 'Sucesso com Estilo (efeito superior / vantagem adicional)';
+    else g = 'SUCESSO ÉPICO! (o impossível acontece em Ooo!)';
+    return {tipo:'1d20 — Rolagem de Ataque', resultado:v, detalhes:g, sucesso:v >= 10, critico:v === 20};
+  },
+  d40(){
+    const base = lastRoll && lastRoll.tipo.includes('Ataque') ? lastRoll.resultado : 10;
+    const v = d(40);
+    if (v < 10) return {tipo:'1d40 — Dano de Ataque', resultado:v*base, detalhes:`1d40 [${v}] < 10! MULTIPLICADO pelo d20 (${base}) = ${v*base} de dano massivo!`, sucesso:true, critico:true};
+    return {tipo:'1d40 — Dano de Ataque', resultado:v, detalhes:`1d40 = ${v} de dano direto`, sucesso:true};
+  },
+  d100def(){ const v = d(100); return {tipo:'1d100 — Defesa Absoluta', resultado:v, detalhes:`Mitiga até ${v} pontos do dano recebido! (uso único por combate)`, sucesso:true}; },
+  d5(){
+    const v = d(5), g = {1:'+1d100 de defesa imediata',2:'+1 contra-ataque adicional',3:'+1 teletransporte extra na luta',4:'+1d50 de dano bônus',5:'+1 recarga de habilidade com dano em dobro'};
+    return {tipo:'1d5 — Presente do Par ou Ímpar', resultado:v, detalhes:`Bônus concedido: ${g[v]}`, sucesso:true, critico:true};
+  },
+  d100est(){ const v = d(100); return {tipo:'1d100 — Giro Semanal de Estudo / Projeto', resultado:v, detalhes:`+${v} pontos para a barra de Estudo (0/500) ou Projeto (0/1000)!`, sucesso:true, estudo:true}; },
+  '2d6'(){
+    const a = d(6), b = d(6), sum = a + b, dbl = a === b; let t = `Dados: [${a}] + [${b}] = ${sum}. `;
+    if (dbl) t += 'NÚMEROS IGUAIS! Conquistou o NPC com sucesso! ';
+    if (sum === 2) t += 'Um bebê está a caminho! (resultado 2: menina)';
+    else if (sum === 6) t += 'Um bebê está a caminho! (resultado 6: menino)';
+    else if (sum === 12) t += 'GÊMEOS a caminho! (role 1d6 para o sexo)';
+    else if (!dbl) t += 'Tentativa sem filhos ou falha com o NPC.';
+    return {tipo:'2d6 — Relacionamento & Família', resultado:sum, detalhes:t, sucesso: dbl || [2,6,12].includes(sum)};
+  }
+};
+function renderRoll(){
+  const r = lastRoll;
+  const tag = r.critico ? '<span class="tag epic">ÉPICO / ESPECIAL</span>' : r.sucesso ? '<span class="tag ok">SUCESSO</span>' : '<span class="tag fail">FALHA</span>';
+  $('#dice-result').innerHTML = `<div class="result">
+    <div class="big">${r.resultado}</div>
+    <div class="txt"><div style="font-family:'Luckiest Guy';font-size:18px">${esc(r.tipo)}</div>${tag}<p style="margin:6px 0 10px;font-size:14px;line-height:1.5">${esc(r.detalhes)}</p>
+      <div class="row" style="flex-wrap:wrap">
+        <button class="btn sm green" id="roll-copy"><svg class="ic" aria-hidden="true"><use href="#i-clipboard"/></svg> Copiar resultado p/ o Zap</button>
+        ${r.estudo ? '<button class="btn sm teal" id="roll-study"><svg class="ic" aria-hidden="true"><use href="#i-book"/></svg> Somar à minha barra</button>' : ''}
+      </div></div></div>`;
+  $('#roll-copy').onclick = async () => {
+    const t = `🎲 *[ROLAGEM DE DADOS — OOO]*\n*Personagem:* ${sheet.nome || 'Aventureiro'}\n*Teste:* ${r.tipo}\n*Resultado:* ${r.resultado}\n*Efeito:* ${r.detalhes}`;
+    toast(await copyText(t) ? 'Resultado copiado!' : 'Não consegui copiar.');
+  };
+  if (r.estudo) $('#roll-study').onclick = () => { applyStudyRoll(r.resultado); $('#roll-study').disabled = true; };
+}
+$$('[data-roll]').forEach(b => b.addEventListener('click', () => { lastRoll = ROLLS[b.dataset.roll](); renderRoll(); }));
+
+/* --- Regras --- */
+const RULES = {
+  combate:`<h3><svg class="ic" aria-hidden="true"><use href="#i-swords"/></svg> Rolagem de ataque (1d20)</h3>
+    <p>• <b>Sucesso (10 ou mais):</b> consegue atacar. Rola o dano (1d40). Se o 1d40 der menos de 10, multiplica pelo d20 tirado no ataque!</p>
+    <p>• <b>Falha (abaixo de 10):</b> o alvo contra-ataca. Se ele tirar maior, o dano é o d20 dele multiplicado pelo seu d20 abaixo de 10.</p>
+    <h3><svg class="ic" aria-hidden="true"><use href="#i-shield"/></svg> Opções de defesa</h3>
+    <p>1. <b>Defesa Absoluta:</b> rola 1d100 para mitigar o dano (uso único por combate). Não pode atacar em seguida.</p>
+    <p>2. <b>Teletransporte:</b> 3 TPs por luta. Duelo (seu 1d20 vs d20 do atacante). Abaixo de 10 mas maior que o atacante: metade do dano. Maior: zero dano. 1 turno de recarga.</p>
+    <p>3. <b>Defesa Passiva Ativa:</b> substitui a defesa por uma habilidade da ficha no 1d20. Recarga de 2 turnos.</p>
+    <p>4. <b>Teletransporte + Ataque:</b> até 2 vezes, com 2 turnos de intervalo.</p>
+    <h3><svg class="ic" aria-hidden="true"><use href="#i-skull"/></svg> Fuga & 0 HP</h3>
+    <p>• <b>Fuga:</b> fugitivo (1d20) vs perseguidor (1d20). Se o fugitivo vencer, o combate acaba. Se falhar, o perseguidor ataca com vantagem e a fuga entra em recarga de 2 turnos.</p>
+    <p>• <b>Ao chegar em 0 HP:</b> o vencedor escolhe entre Execução (morte definitiva), Derrota/Inconsciente, Dominação/Adestramento (1d20 vs 1d20, criaturas) ou Roubo (itens a partir de 30 HP).</p>`,
+  estamina:`<h3><svg class="ic" aria-hidden="true"><use href="#i-bolt"/></svg> Consumo de energia por turno</h3>
+    <p>• <b>Uso parcial (abaixo do limite):</b> -5 EA.</p>
+    <p>• <b>Uso máximo (limite exato do nível):</b> -8 EA.</p>
+    <p>• <b>Uso extrapolado:</b> 1ª extra = -15 EA; 2ª = -20 EA; 3ª = -25 EA. Não recupera EA nesse turno!</p>
+    <h3><svg class="ic" aria-hidden="true"><use href="#i-warning"/></svg> Estados de exaustão</h3>
+    <p>• <b>90 EA ou menos:</b> pequeno cansaço (80 EA para bruxas).</p>
+    <p>• <b>70 EA ou menos:</b> penalidade leve (-2 em testes de ataque e defesa).</p>
+    <p>• <b>40 EA ou menos:</b> Corpo Pesado (-5 nos d20, defesa cai para d50, sem contra-ataques, sem invocações, armas mágicas com 50% do efeito).</p>
+    <p>• <b>20 EA ou menos:</b> Exaustão Crítica (habilidades custam o dobro, só 1 habilidade por turno, teletransporte bloqueado, armas mágicas sem efeito).</p>
+    <p>• <b>0 EA:</b> colapso total (desmaia ou fica incapacitado, rola 1d2).</p>`,
+  up:`<h3><svg class="ic" aria-hidden="true"><use href="#i-chartup"/></svg> Up semanal</h3>
+    <p>• Todo fim de semana os jogadores recebem até <b>7 pontos</b> para distribuir entre atributos ou comprar poderes.</p>
+    <p>• <b>7 pontos = 1 poder novo</b> · 14 = 2 poderes · 21 = 3 poderes.</p>
+    <p>• Cada atributo vai até 10. Com 10 em todos, o personagem sobe o nível geral.</p>
+    <h3><svg class="ic" aria-hidden="true"><use href="#i-money"/></svg> Recompensas por cena (pontos e Dólares)</h3>
+    <p>• Iniciar cena: 5 · Cena em ON: 3 · Desenvolvimento solo: 7 · Flashback: 4 · Família, organização ou reino: 5</p>
+    <p>• Explorar um local do mapa: 5 · Visitar reinos: 4 a cada 4 cenas · Cenas hot: 5 a cada 5 cenas</p>
+    <p>• Oferendas aos deuses: 5 (máx. 5 por semana; a cada 15 pontos, chance de bênção)</p>
+    <p>• Ativo em ON: 10/semana · Ativo em OFF: 10/semana · Recrutar jogador: 7 · Divulgar em 10 grupos: 5</p>
+    <p>• Treinos (máx. 5 por semana) e lutas contra NPC: recompensa definida pela administração.</p>
+    <p>• Toda cena precisa da tag com o nome do personagem, ex: <b>#iniciarcenamaria</b>.</p>
+    <h3><svg class="ic" aria-hidden="true"><use href="#i-book"/></svg> Estudo (0/500) e Projeto (0/1000)</h3>
+    <p>• Todo domingo, gira-se <b>1d100</b> para a barra de Estudo.</p>
+    <p>• Ao completar <b>500/500</b>, o Estudo encerra e o <b>Projeto começa em 0/1000</b> (sobra não passa).</p>
+    <p>• Ao completar 1000/1000, a invenção ou artefato fica pronto!</p>`,
+  pop:`<h3><svg class="ic" aria-hidden="true"><use href="#i-star"/></svg> Fama & Infâmia</h3>
+    <p>Cada reino tem sua própria Popularidade. Fama vem de feitos que ajudam o reino; Infâmia vem de crimes, traições e destruição. Os dois caminhos dão as mesmas recompensas, só mudam as consequências.</p>
+    <h3><svg class="ic" aria-hidden="true"><use href="#i-target"/></svg> Cenas mínimas para o giro semanal</h3>
+    <p>• 0–299: 5 cenas · 300–599: 10 · 600–799: 15 · 800–999: 20 · 1.000: 25 · 1.500+: 35</p>
+    <h3><svg class="ic" aria-hidden="true"><use href="#i-medal"/></svg> Marcos (recompensa única)</h3>
+    <p>• 100: 50 · 200: 60 · 300: 70 · 400: 80 · 500: 90 · 600: 100 · 700: 110 · 800: 120 · 900: 130 · 1.000: 150 pontos e dólares</p>
+    <p>• 1.500: 200 pontos e 300 dólares · 2.000: 250 pontos e 500 dólares</p>
+    <h3><svg class="ic" aria-hidden="true"><use href="#i-siren"/></svg> Procurado (Infâmia)</h3>
+    <p>• 100: guardas reconhecem · 300: investigado oficialmente · 500: alvo prioritário · 700: equipes especiais · 1.000: inimigo público</p>
+    <h3><svg class="ic" aria-hidden="true"><use href="#i-globe"/></svg> Repercussão internacional</h3>
+    <p>• 500: reinos vizinhos · 1.000: quase toda Ooo · 1.500: Ícone · 2.000: Lenda</p>
+    <h3><svg class="ic" aria-hidden="true"><use href="#i-chartdown"/></svg> Decaimento (sem cenas mínimas)</h3>
+    <p>• 0–299: -10 · 300–599: -20 · 600–999: -30 · 1.000–1.499: -40 · 1.500–1.999: -50 · 2.000: -100</p>`,
+  npcs:`<p>Gire 1d10 para sortear o HP do monstro ou chefe no nível dele:</p>
+    <div class="npc"><b>Nível 01</b><span>100, 250, 300, 350, 400, 450, 500, 550, 650, 700 HP</span></div>
+    <div class="npc"><b>Nível 02</b><span>750, 800, 850, 950, 1000, 1100, 1200, 1300, 1400, 1500 HP</span></div>
+    <div class="npc"><b>Nível 03</b><span>1.600, 1.700, 1.800, 1.900, 2.000, 3.000, 4.000, 5.000, 6.000, 7.000 HP</span></div>
+    <div class="npc"><b>Nível 04</b><span>8.000 a 17.000 HP</span></div>
+    <div class="npc"><b>Nível 05</b><span>18.000 a 100.000 HP</span></div>
+    <div class="npc"><b>Nível misterioso</b><span>Gire 1d1.000.000!</span></div>`,
+  familia:`<h3><svg class="ic" aria-hidden="true"><use href="#i-heart"/></svg> Conquista & amor</h3>
+    <p>• <b>Conquistar NPC:</b> role 2d6. Dois números iguais garantem o sucesso. (NPCs não podem ter filhos.)</p>
+    <p>• <b>Breve descanso em casal:</b> recupera 1d50 de HP.</p>
+    <p>• <b>Filhos (role 2d6):</b> 2 = menina · 6 = menino · 12 = gêmeos (1d6: 1–2 meninos, 3–4 meninas, 5–6 casal).</p>
+    <p>• <b>Custo:</b> 100 dólares por semana por membro da família. Casa: 1.000 dólares.</p>
+    <h3><svg class="ic" aria-hidden="true"><use href="#i-warning"/></svg> Gravidez</h3>
+    <p>• Cada golpe sofrido em combate preenche a barra <b>[⬛⬛⬛⬛⬛⬛]</b>. Com 6 golpes, a personagem perde o bebê.</p>
+    <p>• A gravidez dura 3 meses na vida real.</p>
+    <h3><svg class="ic" aria-hidden="true"><use href="#i-heart"/></svg> Fases dos filhos</h3>
+    <p>• Bebê: atributos 0 · Criança: -4 em cada · Adolescente: -2 em cada · Adulto: normal · Idoso: Resistência -5</p>`
+};
+let rulesTab = 'combate';
+function renderRules(){
+  $$('#rules-tabs .tab').forEach(b => b.classList.toggle('on', b.dataset.rt === rulesTab));
+  $('#rules-body').innerHTML = RULES[rulesTab];
+}
+$('#rules-tabs').addEventListener('click', e => { const b = e.target.closest('[data-rt]'); if (b) { rulesTab = b.dataset.rt; renderRules(); } });
+
+/* --- Nerfador --- */
+let nerfTab = 'habilidade';
+function setNerfTab(t){
+  nerfTab = t;
+  $$('#nerf-tabs .tab').forEach(b => b.classList.toggle('on', b.dataset.nt === t));
+  $('#nerf-skill').hidden = t !== 'habilidade'; $('#nerf-weapon').hidden = t !== 'arma';
+}
+$('#nerf-tabs').addEventListener('click', e => { const b = e.target.closest('[data-nt]'); if (b) setNerfTab(b.dataset.nt); });
+function nerfResultHTML(r, title, okTitle, line, extra){
+  return `<div class="nerf-res ${r.wasNerfed ? 'did' : 'fine'}">
+    <h3>${r.wasNerfed ? '<svg class="ic" aria-hidden="true"><use href="#i-scale"/></svg> ' + title : '<svg class="ic" aria-hidden="true"><use href="#i-ok"/></svg> ' + okTitle}</h3>
+    ${r.changes.length ? `<div class="mini-t">O que mudou</div><ul>${r.changes.map(c => `<li>${esc(c)}</li>`).join('')}</ul>` : ''}
+    <div class="mini-t">Versão balanceada</div>
+    <div class="balanced"><b>${esc(line)}</b><br>${esc(extra)}</div>
+    <div class="row" style="margin-top:12px;flex-wrap:wrap;justify-content:flex-end">
+      <button class="btn sm" data-nr="copy"><svg class="ic" aria-hidden="true"><use href="#i-clipboard"/></svg> Copiar texto</button>
+      <button class="btn sm green" data-nr="apply"><svg class="ic" aria-hidden="true"><use href="#i-ok"/></svg> Colocar na minha ficha</button>
+    </div></div>`;
+}
+let skillRes = null, weaponRes = null;
+function showSkillRes(){
+  const s = skillRes.nerfed;
+  $('#nz-skill-res').innerHTML = nerfResultHTML(skillRes, 'Habilidade nerfada!', 'Habilidade já equilibrada!', `${s.nome} (${s.tipo})`, s.descricao);
+}
+function showWeaponRes(){
+  const w = weaponRes.nerfed;
+  $('#nz-weapon-res').innerHTML = nerfResultHTML(weaponRes, 'Arma nerfada!', 'Arma aprovada pelas regras!', `${w.nome} ${w.isMagica ? '(Mágica)' : '(Comum)'}`, w.efeito);
+}
+$('#nz-nerf-skill').addEventListener('click', () => {
+  const desc = $('#nz-sdesc').value.trim(); if (!desc) return toast('Escreva a descrição da habilidade primeiro.');
+  skillRes = nerfSkill({id:`custom-${Date.now()}`, nome:$('#nz-sname').value.trim() || 'Habilidade Customizada', tipo:$('#nz-stype').value, descricao:desc});
+  showSkillRes();
+});
+$('#nz-gen-skill').addEventListener('click', () => {
+  const g = generateSkill($('#nz-stype').value);
+  $('#nz-sname').value = g.nome; $('#nz-stype').value = g.tipo; $('#nz-sdesc').value = g.descricao;
+  skillRes = {nerfed:g, changes:['Habilidade gerada já calibrada para as regras de Nível 1.'], reasons:[], wasNerfed:false};
+  showSkillRes();
+});
+$('#nz-skill-res').addEventListener('click', async e => {
+  const b = e.target.closest('[data-nr]'); if (!b || !skillRes) return;
+  const s = skillRes.nerfed;
+  if (b.dataset.nr === 'copy') toast(await copyText(`${s.nome} (${s.tipo}): ${s.descricao}`) ? 'Copiado!' : 'Não consegui copiar.');
+  else { putSkill(s, 'Habilidade inserida'); go('ficha', {step:3}); }
+});
+$('#nz-nerf-weapon').addEventListener('click', () => {
+  const fx = $('#nz-wfx').value.trim(); if (!fx) return toast('Escreva o efeito da arma primeiro.');
+  weaponRes = nerfWeapon($('#nz-wname').value, fx, $('#nz-wmag').checked); showWeaponRes();
+});
+$('#nz-gen-weapon').addEventListener('click', () => {
+  const g = generateWeapon();
+  $('#nz-wname').value = g.nome; $('#nz-wfx').value = g.efeito; $('#nz-wmag').checked = g.magica;
+  weaponRes = {nerfed:{nome:g.nome, efeito:g.efeito, isMagica:g.magica}, changes:['Arma gerada dentro dos tetos de dano e da regra (DA).'], reasons:[], wasNerfed:false};
+  showWeaponRes();
+});
+$('#nz-weapon-res').addEventListener('click', async e => {
+  const b = e.target.closest('[data-nr]'); if (!b || !weaponRes) return;
+  const w = weaponRes.nerfed;
+  if (b.dataset.nr === 'copy') toast(await copyText(`${w.nome}: ${w.efeito}`) ? 'Copiado!' : 'Não consegui copiar.');
+  else { setWeapon({nome:w.nome, efeito:w.efeito, magica:w.isMagica}, `${w.nome} equipada!`); go('ficha', {step:4}); }
+});
+
+/* =====================================================================
+   INÍCIO
+   ===================================================================== */
+fillSelects();
+renderAll();
+show(location.hash.slice(1) || 'inicio');
+</script>
+</body>
+</html>
