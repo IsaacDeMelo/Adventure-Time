@@ -20,5 +20,5 @@ ou publique a pasta em qualquer hospedagem de site estático (GitHub Pages, Netl
 
 A ficha fica salva no navegador de quem usa.
 
-Para a prévia do link (WhatsApp/Discord) funcionar depois de publicar, troque
-`img/preview.jpg` pelo endereço completo nas tags `og:image` e `twitter:image` do `index.html`.
+A prévia do link (WhatsApp/Discord) usa a imagem `img/preview.jpg` direto do GitHub,
+então funciona em qualquer hospedagem.
