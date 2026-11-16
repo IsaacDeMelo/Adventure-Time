@@ -12,6 +12,7 @@ Página do RPG: https://honor-rating.onrender.com/rpg/adventure-time
 - **Nerfador**: ajusta habilidades e armas apelonas às regras de Nível 1.
 - **Mandar no Zap**: exporta a ficha em 3 formatos.
 - **Exportar / Importar**: leva a ficha para outro navegador por código ou arquivo `.json`.
+- **Foto do personagem**: escolha uma imagem no passo Aparência; ela aparece na tela inicial.
 
 ## Como usar
 
