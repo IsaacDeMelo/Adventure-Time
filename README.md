@@ -20,5 +20,5 @@ ou publique a pasta em qualquer hospedagem de site estático (GitHub Pages, Netl
 
 A ficha fica salva no navegador de quem usa.
 
-A prévia do link (WhatsApp/Discord) usa a imagem `img/preview.jpg` direto do GitHub,
-então funciona em qualquer hospedagem.
+Site no ar: https://adventure-time-w1hm.onrender.com/ (a prévia do link usa `img/preview.jpg`
+com o endereço completo desse site nas tags `og:image` e `twitter:image`).
