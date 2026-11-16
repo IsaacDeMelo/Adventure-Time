@@ -508,6 +508,11 @@ body.with-foot{padding-bottom:110px}
 .photo-info p{margin:4px 0 10px;font-size:13px;color:var(--muted);line-height:1.45}
 .char-ava.has-photo{background-size:cover;background-position:center}
 @media (max-width:640px){.photo-frame{width:120px;height:120px}}
+
+/* ---------- FICHA EM IMAGEM ---------- */
+.sheet-img{display:block;width:100%;max-width:560px;margin:0 auto;border-radius:18px;animation:swapA .5s cubic-bezier(.3,1.4,.5,1)}
+.img-loading{text-align:center;font-size:16px}
+.img-loading .ic{width:26px;height:26px;animation:wiggle2 .6s ease-in-out infinite}
 </style>
 </head>
 <body>
@@ -698,6 +703,10 @@ body.with-foot{padding-bottom:110px}
 </symbol>
 <symbol id="i-next" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round">
   <path d="M18 5l11 11-11 11v-6.5H4v-9h14z" fill="#7cc950"/>
+</symbol>
+<symbol id="i-photo" viewBox="0 0 32 32" stroke="#1f1d36" stroke-width="2" stroke-linejoin="round">
+  <rect x="3" y="6" width="26" height="21" rx="3" fill="#8fd3f4"/><path d="M3 23l8-8 6 6 4-4 8 8v0a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3z" fill="#7cc950"/>
+  <circle cx="22" cy="12" r="3" fill="#f6d33c"/>
 </symbol>
 </defs>
 </svg>
@@ -1008,6 +1017,7 @@ body.with-foot{padding-bottom:110px}
     </div>
     <div class="acts">
       <button class="btn sm" id="btn-save"><svg class="ic" aria-hidden="true"><use href="#i-chest"/></svg> <span class="t">Salvar</span></button>
+      <button class="btn sm pink" data-open="m-img" title="Ficha em imagem"><svg class="ic" aria-hidden="true"><use href="#i-photo"/></svg> <span class="t">Imagem</span></button>
       <button class="btn blue" data-open="m-zap"><svg class="ic" aria-hidden="true"><use href="#i-chat"/></svg> Mandar no Zap</button>
     </div>
   </div>
@@ -1034,6 +1044,7 @@ body.with-foot{padding-bottom:110px}
     </div>
     <div class="modal-foot">
       <span class="grow" id="zap-msg">Dica: clique no botão verde para copiar tudo.</span>
+      <button class="btn pink" data-open="m-img"><svg class="ic" aria-hidden="true"><use href="#i-photo"/></svg> Ficha em imagem</button>
       <button class="btn" id="zap-open"><svg class="ic" aria-hidden="true"><use href="#i-chat"/></svg> Abrir no Zap</button>
       <button class="btn green" id="zap-copy"><svg class="ic" aria-hidden="true"><use href="#i-clipboard"/></svg> Copiar</button>
     </div>
@@ -1197,6 +1208,25 @@ body.with-foot{padding-bottom:110px}
         </div>
       </div>
       <div class="note"><svg class="ic" aria-hidden="true"><use href="#i-warning"/></svg> Importar <b>substitui</b> a ficha que está neste navegador. Se quiser guardar a atual, exporte ela antes.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= TELA: FICHA EM IMAGEM ================= -->
+<div class="modal screen" id="m-img" hidden>
+  <div class="modal-box">
+    <div class="modal-head" style="--hc:var(--pb)">
+      <div class="ava"><img src="img/finn-joinha.jpg" alt=""></div>
+      <div><h2><svg class="ic" aria-hidden="true"><use href="#i-photo"/></svg> Ficha em imagem</h2><p>Um cartão bonitinho da sua ficha, com foto, pra mandar no grupo</p></div>
+    </div>
+    <div class="modal-body">
+      <div id="img-wrap"></div>
+    </div>
+    <div class="modal-foot">
+      <span class="grow" id="img-msg"></span>
+      <button class="btn" id="img-copy" hidden><svg class="ic" aria-hidden="true"><use href="#i-clipboard"/></svg> Copiar imagem</button>
+      <button class="btn blue" id="img-share" hidden><svg class="ic" aria-hidden="true"><use href="#i-chat"/></svg> Compartilhar</button>
+      <button class="btn green" id="img-down"><svg class="ic" aria-hidden="true"><use href="#i-chest"/></svg> Baixar imagem</button>
     </div>
   </div>
 </div>
@@ -1952,8 +1982,8 @@ $('#btn-reset').addEventListener('click', () => {
 /* =====================================================================
    MODAIS
    ===================================================================== */
-const ROUTES = {inicio:'s-home', ficha:'s-ficha', zap:'m-zap', cena:'m-scene', dados:'m-dice', regras:'m-rules', nerfador:'m-nerf', backup:'m-backup'};
-const TITLES = {inicio:'Ficha de Ooo', ficha:'Minha Ficha', zap:'Mandar no Zap', cena:'Escrever Cena', dados:'Rolar Dados', regras:'Regras', nerfador:'Nerfador', backup:'Levar ficha'};
+const ROUTES = {inicio:'s-home', ficha:'s-ficha', zap:'m-zap', cena:'m-scene', dados:'m-dice', regras:'m-rules', nerfador:'m-nerf', backup:'m-backup', imagem:'m-img'};
+const TITLES = {inicio:'Ficha de Ooo', ficha:'Minha Ficha', zap:'Mandar no Zap', cena:'Escrever Cena', dados:'Rolar Dados', regras:'Regras', nerfador:'Nerfador', backup:'Levar ficha', imagem:'Ficha em imagem'};
 const ROUTE_OF = Object.fromEntries(Object.entries(ROUTES).map(([r,id]) => [id, r]));
 let current = 'inicio', pending = {}, goingBack = false;
 const parentOf = {};
@@ -1976,6 +2006,7 @@ function show(route){
   if (route === 'regras') renderRules();
   if (route === 'nerfador') setNerfTab(pending.tab || nerfTab);
   if (route === 'backup') renderBackup();
+  if (route === 'imagem') openImageScreen();
   pending = {};
   window.scrollTo(0, 0);
 }
@@ -2061,6 +2092,235 @@ $('#photo-del').addEventListener('click', () => {
 ['dragover','dragenter'].forEach(ev => $('#photo-frame').addEventListener(ev, e => { e.preventDefault(); $('#photo-frame').classList.add('drop'); }));
 ['dragleave','drop'].forEach(ev => $('#photo-frame').addEventListener(ev, () => $('#photo-frame').classList.remove('drop')));
 $('#photo-frame').addEventListener('drop', e => { e.preventDefault(); loadPhoto(e.dataTransfer.files[0]); });
+
+/* --- ficha em imagem --- */
+const CV = {ink:'#1f1d36', paper:'#fffaf0', muted:'#5d5a75', jake:'#f6b73c', grass:'#7cc950', finn:'#2b9be0', pb:'#f48fb1', lsp:'#a77fe0', red:'#e5484d'};
+const LG = n => n + 'px "Luckiest Guy", Nunito, sans-serif';
+const NU = (n, w = 800) => w + ' ' + n + 'px Nunito, system-ui, sans-serif';
+const loadImg = src => new Promise(res => { if (!src) return res(null); const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = src; });
+function iconSrc(name){
+  const sym = document.getElementById('i-' + name); if (!sym || sym.querySelector('use')) return null;
+  const attrs = ['stroke','stroke-width','stroke-linejoin','stroke-linecap','fill'].map(a => sym.getAttribute(a) ? a + '="' + sym.getAttribute(a) + '"' : '').join(' ');
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="128" height="128"><g ' + attrs + '>' + sym.innerHTML + '</g></svg>');
+}
+function rr(c, x, y, w, h, r){ r = Math.min(r, w / 2, h / 2); c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
+function stick(c, x, y, w, h, r, fill, line = 5, shadow = 8){
+  if (shadow) { c.fillStyle = CV.ink; rr(c, x + shadow, y + shadow, w, h, r); c.fill(); }
+  c.fillStyle = fill; rr(c, x, y, w, h, r); c.fill(); c.lineWidth = line; c.strokeStyle = CV.ink; c.stroke();
+}
+function wrapLines(c, text, maxW, maxLines){
+  const words = String(text || '').replace(/\s+/g, ' ').trim().split(' ').filter(Boolean); const lines = []; let cur = '';
+  for (const w of words) { const t = cur ? cur + ' ' + w : w; if (c.measureText(t).width <= maxW || !cur) cur = t; else { lines.push(cur); cur = w; } }
+  if (cur) lines.push(cur);
+  if (maxLines && lines.length > maxLines) {
+    const out = lines.slice(0, maxLines); let last = out[maxLines - 1];
+    while (last && c.measureText(last + '…').width > maxW) last = last.slice(0, -1);
+    out[maxLines - 1] = last.trimEnd() + '…'; return out;
+  }
+  return lines;
+}
+function fitText(c, text, maxW){ let t = String(text); if (c.measureText(t).width <= maxW) return t; while (t && c.measureText(t + '…').width > maxW) t = t.slice(0, -1); return t.trimEnd() + '…'; }
+function drawCover(c, img, x, y, w, h, posY = .45){
+  const s = Math.max(w / img.width, h / img.height), iw = img.width * s, ih = img.height * s;
+  c.drawImage(img, x + (w - iw) / 2, y + (h - ih) * posY, iw, ih);
+}
+function pill(c, text, x, y, fill, size = 20, alignRight = false){
+  c.font = NU(size, 900); const w = c.measureText(text).width + size * 1.6, hh = size * 2;
+  const px = alignRight ? x - w : x; stick(c, px, y, w, hh, hh / 2, fill, 3.5, 3);
+  c.fillStyle = CV.ink; c.textAlign = 'left'; c.fillText(text, px + size * .8, y + hh * .68); return w;
+}
+function outlined(c, text, x, y, font, fill, stroke = 8, align = 'left'){
+  c.font = font; c.textAlign = align; c.lineJoin = 'round'; c.lineWidth = stroke; c.strokeStyle = CV.ink; c.strokeText(text, x, y); c.fillStyle = fill; c.fillText(text, x, y); c.textAlign = 'left';
+}
+
+async function renderSheetImage({ext = true, icons = true} = {}){
+  try { await Promise.all([document.fonts.load(LG(40)), document.fonts.load(NU(20, 900)), document.fonts.load(NU(20, 700))]); } catch (e) {}
+  const W = 1080, X0 = 32, X1 = W - 32, CW = X1 - X0, IN0 = X0 + 40, IN1 = X1 - 40, IW = IN1 - IN0, BH = 330, FOOT = 104;
+  const race = getRace(sheet.raca), king = getKingdom(sheet.reinoOrigem), deity = getDeity(sheet.divindade), fa = finalAttrs(sheet);
+  const kimg = KINGDOM_IMG[sheet.reinoOrigem];
+  const [banner, photo, logo] = await Promise.all([ext && kimg ? loadImg('img/' + kimg[0]) : null, loadImg(sheet.foto || null), ext ? loadImg('img/finn-bolha.png') : null]);
+  const names = ['heart','bolt','portal','star','skull','sparkle','backpack','palette','sword','money','orb','dumbbell', ...ATTR_ORDER.map(k => ATTR_LOOK[k].icon)];
+  const IC = {};
+  if (icons) { const arr = await Promise.all(names.map(n => loadImg(iconSrc(n)))); names.forEach((n, i) => IC[n] = arr[i]); }
+  const ico = (c, n, x, y, s) => { if (IC[n]) c.drawImage(IC[n], x, y, s, s); };
+
+  const L = document.createElement('canvas'); L.width = W; L.height = 7000; const c = L.getContext('2d');
+
+  /* topo: paisagem do reino */
+  c.save(); rr(c, X0, X0, CW, BH + 60, 40); c.clip(); c.beginPath(); c.rect(X0, X0, CW, BH); c.clip();
+  if (banner) drawCover(c, banner, X0, X0, CW, BH, kimg && /top/.test(kimg[1]) ? 0 : .45);
+  else { const g = c.createLinearGradient(0, X0, 0, X0 + BH); g.addColorStop(0, '#ff8a3d'); g.addColorStop(1, '#f6d33c'); c.fillStyle = g; c.fillRect(X0, X0, CW, BH); }
+  const sh = c.createLinearGradient(0, X0, 0, X0 + BH); sh.addColorStop(0, 'rgba(31,29,54,.15)'); sh.addColorStop(1, 'rgba(31,29,54,.6)'); c.fillStyle = sh; c.fillRect(X0, X0, CW, BH);
+  c.restore();
+  c.lineWidth = 6; c.strokeStyle = CV.ink; c.beginPath(); c.moveTo(X0, X0 + BH); c.lineTo(X1, X0 + BH); c.stroke();
+  pill(c, 'FICHA DE OOO', IN0, X0 + 30, CV.jake, 22);
+  pill(c, 'NÍVEL ' + sheet.nivel, IN1, X0 + 30, CV.grass, 22, true);
+  if (king) outlined(c, king.nome.split(' (')[0], IN1, X0 + BH - 28, LG(42), '#fff', 9, 'right');
+
+  /* foto */
+  const PS = 268, px = IN0, py = X0 + BH - 160;
+  c.save(); c.translate(px + PS / 2, py + PS / 2); c.rotate(-.05);
+  stick(c, -PS / 2, -PS / 2, PS, PS, 42, photo ? '#fff' : CV.pb, 7, 11);
+  if (photo) { c.save(); rr(c, -PS / 2 + 3.5, -PS / 2 + 3.5, PS - 7, PS - 7, 39); c.clip(); drawCover(c, photo, -PS / 2, -PS / 2, PS, PS, .3); c.restore(); rr(c, -PS / 2, -PS / 2, PS, PS, 42); c.lineWidth = 7; c.strokeStyle = CV.ink; c.stroke(); }
+  else { const ini = (sheet.nome.trim()[0] || '?').toUpperCase(); outlined(c, ini, 0, 52, LG(150), '#fff', 10, 'center'); }
+  c.restore();
+
+  /* nome e dados */
+  const nx = px + PS + 40, nmax = IN1 - nx; let ny = X0 + BH + 30;
+  const nome = sheet.nome.trim() || 'Aventureiro sem nome';
+  let size = 72; c.font = LG(size); while (size > 40 && c.measureText(nome).width > nmax) { size -= 2; c.font = LG(size); }
+  const nameLines = c.measureText(nome).width > nmax ? wrapLines(c, nome, nmax, 2) : [nome];
+  c.fillStyle = CV.ink; nameLines.forEach((ln, i) => { c.fillText(ln, nx, ny + size * (i + 1) * .95); }); ny += size * nameLines.length * .95 + 18;
+  c.font = NU(26, 900); c.fillStyle = CV.muted;
+  const sub = [race ? race.nome : '', king ? king.nome.split(' (')[0] : '', sheet.idade !== '' ? sheet.idade + ' anos' : ''].filter(Boolean).join(' · ');
+  wrapLines(c, sub, nmax, 2).forEach(ln => { ny += 32; c.fillText(ln, nx, ny); });
+  if (deity && deity.id !== 'nenhuma') { ny += 12; c.font = NU(22, 900); const w = c.measureText('DIVINDADE: ' + deity.nome).width; ny += 6; pill(c, 'DIVINDADE: ' + deity.nome, nx, ny, '#efe6ff', 18); ny += 36; }
+  let y = Math.max(py + PS + 34, ny + 24);
+
+  /* números */
+  const inf = sheet.popularidadeTipo === 'Infâmia';
+  const tiles = [
+    ['VIDA', calcHP(sheet.nivel) + ' HP', '#ffd6d6', 'heart'],
+    ['ESTAMINA', calcEA(sheet.nivel) + ' EA', '#d4ecff', 'bolt'],
+    ['TELEPORTES', '3 TPs', '#ece0ff', 'portal'],
+    [inf ? 'INFÂMIA' : 'FAMA', String(sheet.popularidadePontos || 0), inf ? '#ffd0d0' : '#d8f5c4', inf ? 'skull' : 'star']
+  ];
+  const tg = 18, tw = (IW - tg * 3) / 4, th = 118;
+  tiles.forEach(([lab, val, bg, icn], i) => {
+    const tx = IN0 + i * (tw + tg); stick(c, tx, y, tw, th, 22, bg, 4.5, 6);
+    ico(c, icn, tx + tw - 58, y + 14, 44);
+    c.fillStyle = CV.ink; c.font = NU(17, 900); c.fillText(lab, tx + 18, y + 34);
+    c.font = LG(40); c.fillText(fitText(c, val, tw - 30), tx + 18, y + 92);
+  });
+  y += th + 50;
+
+  const section = (title, icn) => { ico(c, icn, IN0, y - 6, 44); c.fillStyle = CV.ink; c.font = LG(36); c.fillText(title, IN0 + 56, y + 30);
+    c.setLineDash([12, 10]); c.lineWidth = 3; c.strokeStyle = '#e3d3ae'; c.beginPath(); c.moveTo(IN0, y + 52); c.lineTo(IN1, y + 52); c.stroke(); c.setLineDash([]); y += 74; };
+
+  /* atributos */
+  section('ATRIBUTOS', 'dumbbell');
+  const race2 = race ? race.bonus : {};
+  ATTR_ORDER.forEach(k => {
+    const v = fa[k], t = getTier(k, v), col = ATTR_LOOK[k].color, mod = race2[k] || 0;
+    ico(c, ATTR_LOOK[k].icon, IN0, y + 4, 40);
+    c.fillStyle = CV.ink; c.font = NU(25, 900); c.fillText(ATTR[k].nome, IN0 + 52, y + 28);
+    c.font = NU(17, 800); c.fillStyle = CV.muted; c.fillText(fitText(c, t ? t.titulo : 'Sem tier', 250), IN0 + 52, y + 52);
+    const bx = IN0 + 330, bw = IW - 330 - 96, by = y + 10, bh = 40;
+    c.fillStyle = '#fff'; rr(c, bx, by, bw, bh, 20); c.fill();
+    if (v > 0) { c.fillStyle = col; rr(c, bx, by, Math.max(bh, bw * Math.min(v, 10) / 10), bh, 20); c.fill(); }
+    c.lineWidth = 4; c.strokeStyle = CV.ink; rr(c, bx, by, bw, bh, 20); c.stroke();
+    if (mod) { c.font = NU(16, 900); c.fillStyle = CV.ink; c.textAlign = 'right'; c.fillText('base ' + sheet.atributosBase[k] + ' ' + (mod > 0 ? '+' : '') + mod, bx + bw - 14, by + 27); c.textAlign = 'left'; }
+    const cx = IN1 - 38, cy = y + 30; c.fillStyle = CV.ink; c.beginPath(); c.arc(cx + 4, cy + 4, 34, 0, 7); c.fill();
+    c.fillStyle = col; c.beginPath(); c.arc(cx, cy, 34, 0, 7); c.fill(); c.lineWidth = 4.5; c.stroke();
+    c.fillStyle = CV.ink; c.font = LG(34); c.textAlign = 'center'; c.fillText(String(v), cx, cy + 13); c.textAlign = 'left';
+    y += 80;
+  });
+  y += 26;
+
+  /* poderes */
+  section('PODERES', 'sparkle');
+  const skills = sheet.skills.filter(s => s.nome.trim() || s.descricao.trim());
+  const TIPO_BG = {'Ativa':'#ffe0d6', 'Passiva Ativável':'#d4ecff', 'Contra-Ataque':'#efe6ff'};
+  if (!skills.length) { c.font = NU(22, 800); c.fillStyle = CV.muted; c.fillText('Nenhuma habilidade ainda.', IN0, y + 10); y += 40; }
+  skills.forEach((s, i) => {
+    c.font = NU(21, 700); const lines = wrapLines(c, s.descricao, IW - 48, 4);
+    const ch = 76 + lines.length * 30 + (lines.length ? 14 : 0);
+    stick(c, IN0, y, IW, ch, 24, '#fff', 4, 6);
+    c.fillStyle = CV.lsp; c.beginPath(); c.arc(IN0 + 40, y + 40, 21, 0, 7); c.fill(); c.lineWidth = 3.5; c.strokeStyle = CV.ink; c.stroke();
+    c.fillStyle = '#fff'; c.font = LG(22); c.textAlign = 'center'; c.fillText(String(i + 1), IN0 + 40, y + 49); c.textAlign = 'left';
+    c.font = NU(18, 900); const tagW = c.measureText(s.tipo.toUpperCase()).width + 28;
+    c.fillStyle = CV.ink; c.font = LG(28); c.fillText(fitText(c, s.nome.trim() || 'Sem nome', IW - 100 - tagW - 30), IN0 + 76, y + 51);
+    pill(c, s.tipo.toUpperCase(), IN1 - 20, y + 20, TIPO_BG[s.tipo] || '#fff', 15, true);
+    c.font = NU(21, 700); c.fillStyle = CV.ink; lines.forEach((ln, j) => c.fillText(ln, IN0 + 24, y + 96 + j * 30));
+    y += ch + 18;
+  });
+  y += 20;
+
+  /* mochila */
+  section('MOCHILA', 'backpack');
+  if (sheet.armaNome.trim()) {
+    c.font = NU(21, 700); const el = wrapLines(c, sheet.armaEfeito, IW - 48, 3);
+    const ch = 74 + el.length * 30 + (el.length ? 10 : 0);
+    stick(c, IN0, y, IW, ch, 24, '#eef8ff', 4, 6);
+    ico(c, 'sword', IN0 + 18, y + 16, 40);
+    c.fillStyle = CV.ink; c.font = LG(28); const an = fitText(c, sheet.armaNome.trim(), IW - 260); c.fillText(an, IN0 + 68, y + 48);
+    if (sheet.armaMagica) pill(c, 'MÁGICA', IN0 + 68 + c.measureText(an).width + 16, y + 20, '#efe6ff', 15);
+    c.font = NU(21, 700); el.forEach((ln, j) => c.fillText(ln, IN0 + 24, y + 92 + j * 30));
+    y += ch + 18;
+  }
+  // dólares + itens em fichas
+  const chips = [['$ ' + (sheet.dolares || 0) + ' dólares', '#c9f2b0'], ...(sheet.itensExtras || []).filter(t => t.trim()).map(t => [t.trim(), '#fff'])];
+  let cx2 = IN0; c.font = NU(19, 900);
+  chips.forEach(([t, bg]) => {
+    const label = fitText(c, t, IW - 40), w = c.measureText(label).width + 34;
+    if (cx2 + w > IN1) { cx2 = IN0; y += 58; }
+    stick(c, cx2, y, w, 44, 22, bg, 3.5, 3); c.fillStyle = CV.ink; c.font = NU(19, 900); c.fillText(label, cx2 + 17, y + 29);
+    cx2 += w + 12;
+  });
+  y += 70;
+
+  /* aparência */
+  if (sheet.aparencia.trim()) {
+    y += 10; section('APARÊNCIA', 'palette');
+    c.font = NU(21, 700); c.fillStyle = CV.ink;
+    wrapLines(c, sheet.aparencia, IW, 5).forEach((ln, j) => c.fillText(ln, IN0, y + 6 + j * 30));
+    y += 5 * 0 + wrapLines(c, sheet.aparencia, IW, 5).length * 30 + 20;
+  }
+
+  /* composição final */
+  const H = Math.ceil(y + FOOT + X0 + 10);
+  const F = document.createElement('canvas'); F.width = W; F.height = H; const f = F.getContext('2d');
+  const bg = f.createLinearGradient(0, 0, 0, H); bg.addColorStop(0, '#8fd3f4'); bg.addColorStop(1, '#e9f8dc'); f.fillStyle = bg; f.fillRect(0, 0, W, H);
+  f.fillStyle = CV.ink; rr(f, X0 + 14, X0 + 14, CW, H - X0 * 2, 40); f.fill();
+  f.fillStyle = CV.paper; rr(f, X0, X0, CW, H - X0 * 2, 40); f.fill();
+  f.drawImage(L, 0, 0, W, H - X0 - FOOT, 0, 0, W, H - X0 - FOOT);
+  const fy = H - X0 - FOOT;
+  f.save(); rr(f, X0, X0, CW, H - X0 * 2, 40); f.clip();
+  f.fillStyle = CV.grass; f.fillRect(X0, fy, CW, FOOT + 10);
+  for (let x = X0 - 10; x < X1 + 30; x += 44) { f.beginPath(); f.arc(x, fy + 2, 22, Math.PI, 0); f.fillStyle = CV.grass; f.fill(); f.lineWidth = 4; f.strokeStyle = CV.ink; f.stroke(); }
+  f.fillStyle = CV.grass; f.fillRect(X0, fy + 2, CW, FOOT);
+  if (logo) f.drawImage(logo, IN0, fy + 20, 66, 66);
+  outlined(f, 'FICHA RPG DE OOO', IN0 + (logo ? 84 : 0), fy + 60, LG(30), '#fff', 7);
+  f.font = NU(19, 900); f.fillStyle = CV.ink; f.textAlign = 'right'; f.fillText('adventure-time-w1hm.onrender.com', IN1, fy + 62); f.textAlign = 'left';
+  f.restore();
+  f.lineWidth = 7; f.strokeStyle = CV.ink; rr(f, X0, X0, CW, H - X0 * 2, 40); f.stroke();
+  return F;
+}
+const canvasBlob = cv => new Promise((res, rej) => { try { cv.toBlob(b => b ? res(b) : rej(new Error('vazio')), 'image/png'); } catch (e) { rej(e); } });
+let imgBlob = null, imgUrl = null, imgBusy = false;
+async function openImageScreen(){
+  if (imgBusy) return; imgBusy = true;
+  $('#img-wrap').innerHTML = '<div class="note img-loading">' + ic('palette') + ' Desenhando sua ficha…</div>';
+  $('#img-msg').textContent = ''; $('#img-down').disabled = true;
+  let blob = null;
+  for (const opt of [{ext:true, icons:true}, {ext:false, icons:true}, {ext:false, icons:false}]) {
+    try { blob = await canvasBlob(await renderSheetImage(opt)); break; } catch (e) { blob = null; }
+  }
+  imgBusy = false;
+  if (!blob) { $('#img-wrap').innerHTML = '<div class="note">Não consegui gerar a imagem neste navegador.</div>'; return; }
+  imgBlob = blob; if (imgUrl) URL.revokeObjectURL(imgUrl); imgUrl = URL.createObjectURL(blob);
+  $('#img-wrap').innerHTML = '<img class="sheet-img" src="' + imgUrl + '" alt="Ficha em imagem">';
+  $('#img-down').disabled = false;
+  const file = new File([blob], 'ficha.png', {type:'image/png'});
+  $('#img-share').hidden = !(navigator.canShare && navigator.canShare({files:[file]}));
+  $('#img-copy').hidden = !(window.ClipboardItem && navigator.clipboard && navigator.clipboard.write);
+  $('#img-msg').textContent = 'Prontinho! Baixe ou compartilhe.';
+}
+const imgFileName = () => 'ficha-' + ((sheet.nome.trim() || 'aventureiro').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w]+/g, '-').toLowerCase()) + '.png';
+$('#img-down').addEventListener('click', () => {
+  if (!imgUrl) return; const a = document.createElement('a'); a.href = imgUrl; a.download = imgFileName();
+  document.body.appendChild(a); a.click(); a.remove(); toast('Imagem baixada!'); confetti(26);
+});
+$('#img-share').addEventListener('click', async () => {
+  if (!imgBlob) return;
+  try { await navigator.share({files:[new File([imgBlob], imgFileName(), {type:'image/png'})], title:'Ficha de ' + (sheet.nome || 'Ooo')}); }
+  catch (e) { if (e.name !== 'AbortError') toast('Não deu pra compartilhar. Baixe a imagem.'); }
+});
+$('#img-copy').addEventListener('click', async () => {
+  if (!imgBlob) return;
+  try { await navigator.clipboard.write([new ClipboardItem({'image/png': imgBlob})]); toast('Imagem copiada! Cole no Zap.'); }
+  catch (e) { toast('Não deu pra copiar. Baixe a imagem.'); }
+});
 
 /* --- tela inicial --- */
 function renderHome(){
